@@ -17,11 +17,11 @@ export default function SignInPage() {
                 {/* Logo */}
                 <div className="flex items-center gap-2">
                     <div className="bg-blue-600 text-white p-2 rounded-md">🎓</div>
-                    <h1 className="font-semibold text-lg">CampusConnect Pro+</h1>
+                    <h1 className="font-semibold text-lg">CampusConnect</h1>
                 </div>
 
                 {/* Background Pattern */}
-                {/* <div className="absolute inset-0 opacity-20 bg-[url('/pattern.png')] bg-cover" /> */}
+                <div className="absolute inset-0 opacity-20 bg-[url('/images/sign-in-bg.jpg')] bg-cover" />
 
                 {/* Quote Section */}
                 <div className="relative z-10">
@@ -33,16 +33,16 @@ export default function SignInPage() {
 
                     <div className="flex items-center gap-3 mt-6">
                         <Image
-                            src="/avatar.png"
+                            src="/images/avatar.png"
                             alt="user"
                             width={40}
                             height={40}
                             className="rounded-full"
                         />
                         <div>
-                            <p className="font-medium text-sm">Dr. Emily Chen</p>
+                            <p className="font-medium text-sm">Dr. D.P Joshi</p>
                             <p className="text-xs text-gray-500">
-                                Dean of Placements, Tech University
+                                Principal of SITMS
                             </p>
                         </div>
                     </div>
@@ -60,12 +60,12 @@ export default function SignInPage() {
                     </div>
 
                     {/* Role Tabs */}
-                    <div className="flex bg-gray-100 rounded-lg p-1">
+                    {/* <div className="flex bg-gray-100 rounded-lg p-1.5">
                         {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
                             <button
                                 key={item}
                                 onClick={() => setRole(item)}
-                                className={`flex-1 text-sm py-2 rounded-md ${role === item
+                                className={`flex-1 text-sm py-2 rounded-md cursor-pointer ${role === item
                                     ? "bg-white shadow font-medium"
                                     : "text-gray-500"
                                     }`}
@@ -73,7 +73,7 @@ export default function SignInPage() {
                                 {item}
                             </button>
                         ))}
-                    </div>
+                    </div> */}
 
                     {/* Form */}
                     <form className="space-y-4">
@@ -99,49 +99,50 @@ export default function SignInPage() {
 
                         {/* Remember + Forgot */}
                         <div className="flex items-center justify-between text-sm">
-                            <label className="flex items-center gap-2">
+                            {/* <label className="flex items-center gap-2">
                                 <input type="checkbox" />
                                 Remember for 30 days
-                            </label>
+                            </label> */}
                             <button type="button" className="text-blue-600">
                                 Forgot password?
                             </button>
                         </div>
 
                         {/* Submit */}
-                        <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
+                        <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition cursor-pointer">
                             Sign In
                         </button>
                     </form>
 
                     {/* Divider */}
-                    <div className="flex items-center gap-3">
+                    {/* <div className="flex items-center gap-3">
                         <div className="flex-1 h-px bg-gray-200" />
                         <span className="text-xs text-gray-400">
                             OR CONTINUE WITH
                         </span>
                         <div className="flex-1 h-px bg-gray-200" />
-                    </div>
+                    </div> */}
 
                     {/* Social Buttons */}
-                    <div className="flex gap-3">
+                    {/* <div className="flex gap-3">
                         <button className="flex-1 border py-2 rounded-md hover:bg-gray-50">
                             GitHub
                         </button>
                         <button className="flex-1 border py-2 rounded-md hover:bg-gray-50">
                             University SSO
                         </button>
-                    </div>
+                    </div> */}
 
                     {/* Footer */}
-                    <p className="text-center text-sm text-gray-500">
+                    {/* <p className="text-center text-sm text-gray-500">
                         Don’t have an account?{" "}
                         <span className="text-blue-600 cursor-pointer">
                             Request Access
                         </span>
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </div>
     );
 }
+
