@@ -2,8 +2,25 @@
 
 import SchoolIcon from "@mui/icons-material/School";
 import { Avatar, BackgroundImage, Container, ForgotButton, Form, FormWrapper, HeadingSection, Input, InputGroup, Label, LeftSection, LogoIcon, LogoText, LogoWrapper, QuoteSection, QuoteText, RightSection, SignInButton, Subtitle, Title, UserDetails, UserInfo, UserName, UserRole } from "./styled";
+import { useState } from "react";
+import axios from "axios";
 
 export default function SignIn() {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/user/login", user);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   return (
     <Container>
       <LeftSection>
@@ -44,20 +61,30 @@ export default function SignIn() {
             </Subtitle>
           </HeadingSection>
 
-          <Form>
+          <Form >
             <InputGroup>
               <Label>Work or University Email</Label>
-              <Input type="email" placeholder="name@university.edu" />
+              <Input
+                type="email"
+                placeholder="name@university.edu"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required />
             </InputGroup>
 
             <InputGroup>
               <Label>Password</Label>
-              <Input type="password" placeholder="••••••••••" />
+              <Input
+                type="password"
+                placeholder="••••••••••"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                required />
             </InputGroup>
 
             <ForgotButton type="button">Forgot password?</ForgotButton>
 
-            <SignInButton>Sign In</SignInButton>
+            <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
           </Form>
         </FormWrapper>
       </RightSection>
