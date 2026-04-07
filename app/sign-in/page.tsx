@@ -34,8 +34,10 @@ import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -52,6 +54,9 @@ export default function SignIn() {
         user,
       );
       setMessage(response.data.message);
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
