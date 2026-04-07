@@ -24,8 +24,8 @@ export const BackgroundImage = styled.img`
 
 export const LogoWrapper = styled.div`
   position: absolute;
-  top: 50px;
-  left: 50px;
+  top: 70px;
+  left: 70px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -37,24 +37,19 @@ export const LogoIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #008000bb, #0000ffbb);
-  border-radius: 10px;
+  background-color: #0b75ff;
+  border-radius: 4px;
 `;
 
 export const LogoText = styled.h1`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  color: blue;
-
-  span {
-    color: green;
-  }
 `;
 
 export const QuoteSection = styled.div`
   position: absolute;
-  bottom: 50px;
-  left: 50px;
+  bottom: 70px;
+  left: 70px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -96,8 +91,10 @@ export const UserRole = styled.p`
 export const RightSection = styled.div`
   width: 50%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 export const FormWrapper = styled.div`
@@ -140,25 +137,86 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input`
-  border: 1px solid #000;
+  border: none;
+  outline: none;
+  background-color: #fff;
   border-radius: 4px;
   padding: 10px;
   font-size: 14px;
-  outline: none;
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
 `;
 
-export const ForgotButton = styled.button`
-  text-align: left;
-  background: none;
+export const PasswordInput = styled.div`
+  position: relative;
   border: none;
+  outline: none;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 14px;
+    width: 100%;
+  }
+`;
+
+export const EyeIcon = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
 `;
 
+export const ForgotButton = styled.button`
+  text-align: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0b75ff;
+  font-size: 14px;
+`;
+
 export const SignInButton = styled.button`
-  background-color: blue;
+  background-color: #0b75ff;
   color: white;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
   border: none;
+
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #0b75ffe7;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    background-color: #0b75ff;
+  }
 `;

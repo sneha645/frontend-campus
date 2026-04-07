@@ -1,9 +1,39 @@
 "use client";
 
 import SchoolIcon from "@mui/icons-material/School";
-import { Avatar, BackgroundImage, Container, ForgotButton, Form, FormWrapper, HeadingSection, Input, InputGroup, Label, LeftSection, LogoIcon, LogoText, LogoWrapper, QuoteSection, QuoteText, RightSection, SignInButton, Subtitle, Title, UserDetails, UserInfo, UserName, UserRole } from "./styled";
+import {
+  Avatar,
+  BackgroundImage,
+  Container,
+  EyeIcon,
+  ForgotButton,
+  Form,
+  FormWrapper,
+  HeadingSection,
+  Input,
+  InputGroup,
+  Label,
+  LeftSection,
+  LogoIcon,
+  LogoText,
+  LogoWrapper,
+  PasswordInput,
+  QuoteSection,
+  QuoteText,
+  RightSection,
+  SignInButton,
+  Subtitle,
+  Title,
+  UserDetails,
+  UserInfo,
+  UserName,
+  UserRole,
+} from "./styled";
 import { useState } from "react";
 import axios from "axios";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Alert } from "@mui/material";
 
 export default function SignIn() {
   const [user, setUser] = useState({
@@ -11,15 +41,21 @@ export default function SignIn() {
     password: "",
   });
 
-  const handleSubmit = async () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/user/login", user);
-      console.log(response);
+      const response = await axios.post(
+        "http://localhost:3000/user/login",
+        user,
+      );
+      setMessage(response.data.message);
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   return (
     <Container>
@@ -30,9 +66,7 @@ export default function SignIn() {
           <LogoIcon>
             <SchoolIcon sx={{ color: "white", fontSize: "20px" }} />
           </LogoIcon>
-          <LogoText>
-            Campus<span>Connect</span>
-          </LogoText>
+          <LogoText>CampusConnect</LogoText>
         </LogoWrapper>
 
         <QuoteSection>
@@ -42,26 +76,32 @@ export default function SignIn() {
             completely seamless and centralized."
           </QuoteText>
 
-          <UserInfo>
+          {/* <UserInfo>
             <Avatar src="/images/avatar.png" alt="avatar" />
             <UserDetails>
               <UserName>Dr. D.P Joshi</UserName>
               <UserRole>Principal of SITMS</UserRole>
             </UserDetails>
-          </UserInfo>
+          </UserInfo> */}
         </QuoteSection>
       </LeftSection>
 
       <RightSection>
+        {message && (
+          <Alert
+            severity="success"
+            sx={{ mb: 2, position: "absolute", top: "20px" }}
+          >
+            {message}
+          </Alert>
+        )}
         <FormWrapper>
           <HeadingSection>
             <Title>Welcome Back</Title>
-            <Subtitle>
-              Enter your credentials to access your dashboard
-            </Subtitle>
+            <Subtitle>Enter your credentials to access your dashboard</Subtitle>
           </HeadingSection>
 
-          <Form >
+          <Form onSubmit={handleSubmit}>
             <InputGroup>
               <Label>Work or University Email</Label>
               <Input
@@ -69,22 +109,40 @@ export default function SignIn() {
                 placeholder="name@university.edu"
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
-                required />
+                required
+              />
             </InputGroup>
 
             <InputGroup>
               <Label>Password</Label>
-              <Input
-                type="password"
-                placeholder="••••••••••"
-                value={user.password}
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-                required />
+
+              <PasswordInput>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••••"
+                  value={user.password}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                  required
+                />
+                <EyeIcon onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <VisibilityOffIcon
+                      sx={{ color: "#cccccc", fontSize: "20px" }}
+                    />
+                  ) : (
+                    <VisibilityIcon
+                      sx={{ color: "#cccccc", fontSize: "20px" }}
+                    />
+                  )}
+                </EyeIcon>
+              </PasswordInput>
             </InputGroup>
 
             <ForgotButton type="button">Forgot password?</ForgotButton>
 
-            <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
+            <SignInButton type="submit">Sign In</SignInButton>
           </Form>
         </FormWrapper>
       </RightSection>
