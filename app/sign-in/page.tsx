@@ -76,9 +76,9 @@ export default function SignIn() {
 
         <QuoteSection>
           <QuoteText>
-            "This platform completely transformed our campus placement drive.
+            This platform completely transformed our campus placement drive.
             Connecting students with recruiters and tracking projects is now
-            completely seamless and centralized."
+            completely seamless and centralized.
           </QuoteText>
 
           {/* <UserInfo>
