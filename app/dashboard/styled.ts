@@ -84,7 +84,7 @@ export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 export const MenuHeading = styled.h1`

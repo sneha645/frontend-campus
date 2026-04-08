@@ -26,21 +26,23 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const menuItems = [
   {
-    path: "/student/dashboard",
+    path: "/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
   },
-  { path: "/student/profile", label: "Profile", icon: User },
-  { path: "/student/upload", label: "Upload Project", icon: Upload },
-  { path: "/student/projects", label: "My Projects", icon: FolderOpen },
-  { path: "/student/feedback", label: "Feedback", icon: MessageSquare },
+  { path: "/dashboard/profile", label: "Profile", icon: User },
+  { path: "/dashboard/upload-project", label: "Upload Project", icon: Upload },
+  { path: "/projects", label: "My Projects", icon: FolderOpen },
+  { path: "/feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
   const [selectMenu, setSelectMenu] = useState<string>("");
   return (
     <Container>
@@ -86,7 +88,10 @@ export default function Dashboard() {
                 <MenuBtn
                   key={item.label}
                   $active={selectMenu === item.label}
-                  onClick={() => setSelectMenu(item.label)}
+                  onClick={() => {
+                    setSelectMenu(item.label);
+                    router.push(item.path);
+                  }}
                 >
                   <item.icon size={20} />
                   {item.label}
