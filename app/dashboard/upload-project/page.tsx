@@ -9,6 +9,7 @@ import {
   Container,
   DateContainer,
   Description,
+  FormModal,
   Hr,
   ProjectCard,
   ProjectContent,
@@ -26,10 +27,13 @@ import { useState } from "react";
 
 import { FiGithub } from "react-icons/fi";
 import { LuSquareArrowOutUpRight } from "react-icons/lu";
+import { UploadProject } from "./components/UploadProject";
+import { UploadInternship } from "./components/UploadInternship";
 
-export default function UploadProject() {
+export default function UploadProjectPage() {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
+
   return (
     <Container>
       <ButtonContainer>
@@ -41,7 +45,7 @@ export default function UploadProject() {
             Upload Internship
           </UploadButton>
         </ButtonWrapper>
-        <ButtonWrapper>Dropdown</ButtonWrapper>
+        {/* <ButtonWrapper>Dropdown</ButtonWrapper> */}
       </ButtonContainer>
       <ProjectGrid>
         <ProjectCard>
@@ -83,15 +87,19 @@ export default function UploadProject() {
           </ProjectContent>
         </ProjectCard>
       </ProjectGrid>
-      <Modal open={openProjectModal} onClose={() => setOpenProjectModal(false)}>
-        <h1>Upload Project</h1>
-      </Modal>
-      <Modal
+      <FormModal
+        open={openProjectModal}
+        onClose={() => setOpenProjectModal(false)}
+        style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
+      >
+        <UploadProject />
+      </FormModal>
+      <FormModal
         open={openInternshipModal}
         onClose={() => setOpenInternshipModal(false)}
       >
-        <h1>Upload Internship</h1>
-      </Modal>
+        <UploadInternship />
+      </FormModal>
     </Container>
   );
 }

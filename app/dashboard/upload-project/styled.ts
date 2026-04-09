@@ -1,3 +1,4 @@
+import { Modal } from "@mui/material";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -150,4 +151,126 @@ export const CardButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+`;
+
+
+
+//modal form style
+
+export const FormModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-self: center;
+`;  
+
+export const FormContainer = styled.div`
+  width: 700px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #00000033;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const FormInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const FormLabel = styled.label`
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+`;
+
+export const FormInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const TextAreaInput = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+`;
+
+export const FormDateContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const FormDateSubContainer = styled.div`
+  flex: 1;
+`;
+
+export const FormDateInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const TechStackContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const Option = styled.option`
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const FormButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const FormButton = styled.button`
+  padding: 10px 30px;
+  border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  background-color: #2563eb;
+`;
+
+export const ResetButton = styled.button`
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  background-color: #e5e7eb;
 `;
