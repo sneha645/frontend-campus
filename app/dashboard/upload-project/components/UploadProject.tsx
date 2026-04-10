@@ -16,6 +16,7 @@ import {
   TechStackContainer,
   Option,
 } from "../styled";
+import axios from "axios";
 
 export const UploadProject = () => {
   const [formData, setFormData] = useState({
@@ -25,12 +26,28 @@ export const UploadProject = () => {
     endDate: "",
     technologies: "",
     projectUrl: "",
-    mentorId: "",
+    mentorId: "M-101",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      const token = localStorage.getItem("token");
+      console.log("token", token);
+      const response = await axios.post(
+        "http://localhost:3000/student/uploadProject",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
 
   return (
@@ -115,10 +132,10 @@ export const UploadProject = () => {
           <FormLabel>Mentor *</FormLabel>
           <Select
             name="mentorId"
-            value={formData.mentorId}
-            onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
-            }
+            // value={formData.mentorId}
+            // onChange={(e) =>
+            //   setFormData({ ...formData, mentorId: e.target.value })
+            // }
           >
             <Option value="">Select Mentor</Option>
             {/* {mentors.map((m) => (

@@ -53,7 +53,9 @@ export default function SignIn() {
         "http://localhost:3000/user/login",
         user,
       );
+      console.log(response);
       setMessage(response.data.message);
+      localStorage.setItem("token", response.data.token);
       setTimeout(() => {
         router.push("/dashboard");
       }, 3000);
