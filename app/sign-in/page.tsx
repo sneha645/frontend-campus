@@ -50,8 +50,11 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/user/login",
+        "http://localhost:3000/auth/login",
         user,
+        {
+          withCredentials: true,
+        }
       );
       console.log(response);
       setMessage(response.data.message);

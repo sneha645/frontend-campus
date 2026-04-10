@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
+  console.log("token", token);
 
   const { pathname } = request.nextUrl;
 
