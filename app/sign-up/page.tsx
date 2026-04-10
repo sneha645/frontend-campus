@@ -2,7 +2,6 @@
 
 import SchoolIcon from "@mui/icons-material/School";
 import {
-  Avatar,
   BackgroundImage,
   Container,
   EyeIcon,
@@ -24,48 +23,41 @@ import {
   SignInButton,
   Subtitle,
   Title,
-  UserDetails,
-  UserInfo,
-  UserName,
-  UserRole,
-} from "./styled";
+} from "../sign-in/styled";
 import { useState } from "react";
-import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
-import { useRouter } from "next/navigation";
 
-export default function SignInPage() {
-  const router = useRouter();
+export default function SignUpPage() {
   const [user, setUser] = useState({
+    name: "",
     email: "",
     password: "",
+    role: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const [role, setRole] = useState("Student");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/auth/login",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response);
-      setMessage(response.data.message);
-      localStorage.setItem("token", response.data.token);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 3000);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:3000/user/login",
+  //       user,
+  //     );
+  //     console.log(response);
+  //     setMessage(response.data.message);
+  //     localStorage.setItem("token", response.data.token);
+  //     setTimeout(() => {
+  //       router.push("/dashboard");
+  //     }, 3000);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Container>
@@ -85,14 +77,6 @@ export default function SignInPage() {
             Connecting students with recruiters and tracking projects is now
             completely seamless and centralized.
           </QuoteText>
-
-          {/* <UserInfo>
-            <Avatar src="/images/avatar.png" alt="avatar" />
-            <UserDetails>
-              <UserName>Dr. D.P Joshi</UserName>
-              <UserRole>Principal of SITMS</UserRole>
-            </UserDetails>
-          </UserInfo> */}
         </QuoteSection>
       </LeftSection>
 
@@ -107,16 +91,47 @@ export default function SignInPage() {
         )}
         <FormWrapper>
           <HeadingSection>
-            <Title>Welcome Back</Title>
-            <Subtitle>Enter your credentials to access your dashboard</Subtitle>
+            <Title>Build your future</Title>
+            <Subtitle>
+              One account to manage placements, projects, and opportunities
+            </Subtitle>
           </HeadingSection>
 
-          <Form onSubmit={handleSubmit}>
+          <div className="flex bg-gray-100 rounded-lg p-1">
+            {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
+              <button
+                key={item}
+                onClick={() => setRole(item)}
+                className={`flex-1 text-sm py-2 rounded-md ${
+                  role === item
+                    ? "bg-white shadow font-medium"
+                    : "text-gray-500"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          <Form
+          // onSubmit={handleSubmit}
+          >
             <InputGroup>
-              <Label>Work or University Email</Label>
+              <Label>Name</Label>
+              <Input
+                type="text"
+                placeholder="John Doe"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
+              />
+            </InputGroup>
+
+            <InputGroup>
+              <Label>Email</Label>
               <Input
                 type="email"
-                placeholder="name@university.edu"
+                placeholder="johndoe@grr.la"
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
                 required
