@@ -57,8 +57,8 @@ export default function SignInPage() {
         },
       );
       console.log(response);
-      setMessage(response.data.message);
-      localStorage.setItem("token", response.data.token);
+      setMessage(response.data.data.message);
+      localStorage.setItem("token", response.data.data.token);
       setTimeout(() => {
         router.push("/dashboard");
       }, 3000);
