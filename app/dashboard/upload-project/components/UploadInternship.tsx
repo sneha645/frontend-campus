@@ -16,8 +16,11 @@ import {
   TechStackContainer,
   Option,
 } from "../styled";
+import axios from "axios";
 
 export const UploadInternship = () => {
+  const [certificateImage, setCertificateImage] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -26,17 +29,62 @@ export const UploadInternship = () => {
     endDate: "",
     technologies: "",
     projectUrl: "",
-    certificate: "",
+    certificateImage: "",
     mentorId: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("startDate", formData.startDate);
+      formDataToSend.append("endDate", formData.endDate);
+      formDataToSend.append("technologies", formData.technologies);
+      formDataToSend.append("projectUrl", formData.projectUrl);
+      formDataToSend.append("mentorId", formData.mentorId);
+
+      if (certificateImage) {
+        formDataToSend.append("certificateImage", certificateImage);
+      }
+
+      const response = await axios.post(
+        "http://localhost:3000/student/uploadInternship",
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      console.log(response);
+    } catch (error: any) {
+      console.log(error.response?.data?.message);
+    }
   };
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
+        <FormInputContainer>
+          <FormLabel>Certificate Image *</FormLabel>
+          <FormInput
+            type="file"
+            accept="image/*"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (e.target.files && e.target.files[0]) {
+                setCertificateImage(e.target.files[0]);
+              }
+            }}
+          />
+        </FormInputContainer>
+
         <FormInputContainer>
           <FormLabel>Title *</FormLabel>
           <FormInput
@@ -124,18 +172,18 @@ export const UploadInternship = () => {
         </FormInputContainer>
 
         <FormInputContainer>
-          <FormLabel>Certificate</FormLabel>
+          <FormLabel>Mentor ID *</FormLabel>
           <FormInput
-            type="file"
-            name="certificate"
-            value={formData.certificate}
+            type="text"
+            name="mentorId"
+            value={formData.mentorId}
             onChange={(e) =>
-              setFormData({ ...formData, certificate: e.target.value })
+              setFormData({ ...formData, mentorId: e.target.value })
             }
           />
         </FormInputContainer>
 
-        <FormInputContainer>
+        {/* <FormInputContainer>
           <FormLabel>Mentor *</FormLabel>
           <Select
             name="mentorId"
@@ -145,13 +193,13 @@ export const UploadInternship = () => {
             }
           >
             <Option value="">Select Mentor</Option>
-            {/* {mentors.map((m) => (
+            {mentors.map((m) => (
                   <option key={m.id} value={m.id}>
                     {m.name} ({m.expertise})
                   </option>
-                ))} */}
+                ))}
           </Select>
-        </FormInputContainer>
+        </FormInputContainer> */}
 
         <FormButtonContainer>
           <FormButton type="submit">Submit</FormButton>
@@ -161,7 +209,6 @@ export const UploadInternship = () => {
             onClick={() => {
               setFormData({
                 title: "",
-
                 description: "",
                 company: "",
                 startDate: "",
@@ -169,7 +216,7 @@ export const UploadInternship = () => {
                 technologies: "",
                 mentorId: "",
                 projectUrl: "",
-                certificate: "",
+                certificateImage: "",
               });
             }}
           >

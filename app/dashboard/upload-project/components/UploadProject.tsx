@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 
 export const UploadProject = () => {
+  
   const [image, setImage] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     title: "",
