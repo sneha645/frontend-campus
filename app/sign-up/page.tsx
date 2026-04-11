@@ -4,6 +4,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import {
   BackgroundImage,
   Container,
+  ExtraContainer,
+  ExtraText,
   EyeIcon,
   ForgotButton,
   Form,
@@ -19,7 +21,10 @@ import {
   PasswordInput,
   QuoteSection,
   QuoteText,
+  RedirectLink,
   RightSection,
+  Role,
+  RoleContainer,
   SignInButton,
   Subtitle,
   Title,
@@ -28,6 +33,7 @@ import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const [user, setUser] = useState({
@@ -97,21 +103,17 @@ export default function SignUpPage() {
             </Subtitle>
           </HeadingSection>
 
-          <div className="flex bg-gray-100 rounded-lg p-1">
+          <RoleContainer>
             {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
-              <button
+              <Role
                 key={item}
                 onClick={() => setRole(item)}
-                className={`flex-1 text-sm py-2 rounded-md ${
-                  role === item
-                    ? "bg-white shadow font-medium"
-                    : "text-gray-500"
-                }`}
+                $active={item === role}
               >
                 {item}
-              </button>
+              </Role>
             ))}
-          </div>
+          </RoleContainer>
 
           <Form
           // onSubmit={handleSubmit}
@@ -168,6 +170,13 @@ export default function SignUpPage() {
             <ForgotButton type="button">Forgot password?</ForgotButton>
 
             <SignInButton type="submit">Sign In</SignInButton>
+
+            <ExtraContainer>
+              <ExtraText>
+                Already Have an Account?
+                <RedirectLink href={"/sign-in"}>Sign In</RedirectLink>
+              </ExtraText>
+            </ExtraContainer>
           </Form>
         </FormWrapper>
       </RightSection>

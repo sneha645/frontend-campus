@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -220,3 +221,42 @@ export const SignInButton = styled.button`
     background-color: #0b75ff;
   }
 `;
+
+export const ExtraContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ExtraText = styled.p`
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 400;
+`;
+
+export const RedirectLink = styled(Link)`
+  font-size: 14px;
+  color: #0b75ff;
+  font-weight: 400;
+  margin-left: 6px;
+`;
+
+export const RoleContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  background-color: #eeeeee;
+  padding: 8px;
+  border-radius: 4px;
+`;
+
+export const Role = styled.button<{ $active: boolean }>(
+  ({ $active = false }) => `
+  font-size: 14px;
+  color: #000;
+  background-color: ${$active ? "#fff" : "transparent"} ;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+`,
+);

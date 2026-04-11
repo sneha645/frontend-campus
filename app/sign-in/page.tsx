@@ -2,9 +2,10 @@
 
 import SchoolIcon from "@mui/icons-material/School";
 import {
-  Avatar,
   BackgroundImage,
   Container,
+  ExtraContainer,
+  ExtraText,
   EyeIcon,
   ForgotButton,
   Form,
@@ -20,14 +21,13 @@ import {
   PasswordInput,
   QuoteSection,
   QuoteText,
+  RedirectLink,
   RightSection,
+  Role,
+  RoleContainer,
   SignInButton,
   Subtitle,
   Title,
-  UserDetails,
-  UserInfo,
-  UserName,
-  UserRole,
 } from "./styled";
 import { useState } from "react";
 import axios from "axios";
@@ -43,6 +43,8 @@ export default function SignInPage() {
     password: "",
   });
 
+  const [role, setRole] = useState("Student");
+
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -54,7 +56,7 @@ export default function SignInPage() {
         user,
         {
           withCredentials: true,
-        }
+        },
       );
       console.log(response);
       setMessage(response.data.message);
@@ -111,6 +113,18 @@ export default function SignInPage() {
             <Subtitle>Enter your credentials to access your dashboard</Subtitle>
           </HeadingSection>
 
+          <RoleContainer>
+            {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
+              <Role
+                key={item}
+                onClick={() => setRole(item)}
+                $active={item === role}
+              >
+                {item}
+              </Role>
+            ))}
+          </RoleContainer>
+
           <Form onSubmit={handleSubmit}>
             <InputGroup>
               <Label>Work or University Email</Label>
@@ -153,6 +167,13 @@ export default function SignInPage() {
             <ForgotButton type="button">Forgot password?</ForgotButton>
 
             <SignInButton type="submit">Sign In</SignInButton>
+
+            <ExtraContainer>
+              <ExtraText>
+                Dont Have an Account?
+                <RedirectLink href={"/sign-up"}>Sign Up</RedirectLink>
+              </ExtraText>
+            </ExtraContainer>
           </Form>
         </FormWrapper>
       </RightSection>
