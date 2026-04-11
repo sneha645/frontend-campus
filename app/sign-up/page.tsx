@@ -34,36 +34,58 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [role, setRole] = useState("Student");
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    role: "",
+    role: "Student",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
-  const [role, setRole] = useState("Student");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      let response;
+      if (role === "Student") {
+        response = await axios.post(
+          "http://localhost:3000/auth/registerStudent",
+          user,
+        );
+        console.log(response);
+      } else if (role === "Faculty") {
+        response = await axios.post(
+          "http://localhost:3000/auth/registerMentor",
+          user,
+        );
+        console.log(response);
+      } else if (role === "Recruiter") {
+        response = await axios.post(
+          "http://localhost:3000/auth/registerRecruiter",
+          user,
+        );
+        console.log(response);
+      }
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3000/user/login",
-  //       user,
-  //     );
-  //     console.log(response);
-  //     setMessage(response.data.message);
-  //     localStorage.setItem("token", response.data.token);
-  //     setTimeout(() => {
-  //       router.push("/dashboard");
-  //     }, 3000);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      if (response) {
+        setMessage(response.data.message);
+
+        setTimeout(() => {
+          router.push("/sign-in");
+        }, 3000);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setMessage(error.response?.data.message);
+      }
+    }
+  };
 
   return (
     <Container>
@@ -104,10 +126,13 @@ export default function SignUpPage() {
           </HeadingSection>
 
           <RoleContainer>
-            {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
+            {["Student", "Faculty", "Recruiter"].map((item) => (
               <Role
                 key={item}
-                onClick={() => setRole(item)}
+                onClick={() => {
+                  setRole(item);
+                  setUser({ ...user, role: item });
+                }}
                 $active={item === role}
               >
                 {item}
@@ -115,9 +140,7 @@ export default function SignUpPage() {
             ))}
           </RoleContainer>
 
-          <Form
-          // onSubmit={handleSubmit}
-          >
+          <Form onSubmit={handleSubmit}>
             <InputGroup>
               <Label>Name</Label>
               <Input
@@ -167,9 +190,9 @@ export default function SignUpPage() {
               </PasswordInput>
             </InputGroup>
 
-            <ForgotButton type="button">Forgot password?</ForgotButton>
-
-            <SignInButton type="submit">Sign In</SignInButton>
+            <SignInButton type="submit" style={{ marginTop: "10px" }}>
+              Sign Up
+            </SignInButton>
 
             <ExtraContainer>
               <ExtraText>

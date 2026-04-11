@@ -23,8 +23,6 @@ import {
   QuoteText,
   RedirectLink,
   RightSection,
-  Role,
-  RoleContainer,
   SignInButton,
   Subtitle,
   Title,
@@ -112,18 +110,6 @@ export default function SignInPage() {
             <Title>Welcome Back</Title>
             <Subtitle>Enter your credentials to access your dashboard</Subtitle>
           </HeadingSection>
-
-          <RoleContainer>
-            {["Student", "Faculty", "Recruiter", "Admin"].map((item) => (
-              <Role
-                key={item}
-                onClick={() => setRole(item)}
-                $active={item === role}
-              >
-                {item}
-              </Role>
-            ))}
-          </RoleContainer>
 
           <Form onSubmit={handleSubmit}>
             <InputGroup>

@@ -245,9 +245,9 @@ export const RedirectLink = styled(Link)`
 export const RoleContainer = styled.div`
   display: flex;
   gap: 10px;
-  background-color: #eeeeee;
+  background-color: #f3f4f6;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 8px;
 `;
 
 export const Role = styled.button<{ $active: boolean }>(
@@ -258,5 +258,6 @@ export const Role = styled.button<{ $active: boolean }>(
   border-radius: 4px;
   padding: 8px;
   width: 100%;
+  cursor: pointer;
 `,
 );
