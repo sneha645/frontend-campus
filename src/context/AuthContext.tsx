@@ -17,6 +17,7 @@ export const AuthContext = createContext<AuthContextType>({
   registerStudent: async () => {},
   registerMentor: async () => {},
   registerRecruiter: async () => {},
+  isLoading: false,
 });
 
 export const useAuth = () => {
@@ -25,11 +26,13 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (email: string, password: string) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/login",
@@ -44,22 +47,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(response.data.data);
       if (response.status === 201) {
         setUser(response.data.data.user);
+        setIsLoading(false);
         setToken(response.data.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.data.token);
-        router.push("/dashboard");
+        // router.push("/dashboard");
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error signing in:", error);
     }
   };
 
   const logout = () => {
+    setIsLoading(true);
     setUser(null);
     setToken(null);
     setIsAuthenticated(false);
     localStorage.removeItem("token");
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setIsLoading(false);
   };
 
   const registerStudent = async (
@@ -68,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     name: string,
     role: string,
   ) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/register-student",
@@ -81,6 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         },
       );
+      setIsLoading(false);
       if (response.status === 201) {
         setUser(response.data.user);
         setToken(response.data.token);
@@ -88,6 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("token", response.data.token);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error registering student:", error);
     }
   };
@@ -98,6 +108,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     name: string,
     role: string,
   ) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/register-mentor",
@@ -111,6 +122,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         },
       );
+      setIsLoading(false);
       if (response.status === 201) {
         setUser(response.data.user);
         setToken(response.data.token);
@@ -118,6 +130,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("token", response.data.token);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error registering mentor:", error);
     }
   };
@@ -129,6 +142,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     role: string,
     companyName: string,
   ) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/register-recruiter",
@@ -143,13 +157,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         },
       );
+      setIsLoading(false);
       if (response.status === 201) {
         setUser(response.data.user);
         setToken(response.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
       }
+
     } catch (error) {
+      setIsLoading(false);
       console.error("Error registering recruiter:", error);
     }
   };
@@ -168,6 +185,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         registerStudent,
         registerMentor,
         registerRecruiter,
+        isLoading,
       }}
     >
       {children}

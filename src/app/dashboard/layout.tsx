@@ -1,24 +1,24 @@
 "use client";
 
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import {
-  Container,
-  Header,
-  IconContainer,
-  LeftHeader,
-  LogoContainer,
-  LogoTitle,
-  LogoutBtn,
-  LogoutContainer,
-  Main,
-  MainBar,
-  Menu,
-  MenuBtn,
-  MenuHeading,
-  PageTitle,
-  RightHeader,
-  SideBar,
-} from "./styled";
+// import {
+//   Container,
+//   Header,
+//   IconContainer,
+//   LeftHeader,
+//   LogoContainer,
+//   LogoTitle,
+//   LogoutBtn,
+//   LogoutContainer,
+//   Main,
+//   MainBar,
+//   Menu,
+//   MenuBtn,
+//   MenuHeading,
+//   PageTitle,
+//   RightHeader,
+//   SideBar,
+// } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
 
@@ -111,7 +111,8 @@ export default function DashboardLayout({
 
   return (
     <AuthProvider>
-      <Container>
+      hello
+      {/* <Container>
         <Header>
           <LeftHeader>
             <LogoContainer>
@@ -279,7 +280,7 @@ export default function DashboardLayout({
             {user?.role === "admin" && (
               <>
                 <Menu>
-                  {/* <MenuHeading>overview</MenuHeading> */}
+                  <MenuHeading>overview</MenuHeading>
                   <Box>
                     {AdminMenuItems.map((item, index) => (
                       <MenuBtn
@@ -293,7 +294,7 @@ export default function DashboardLayout({
                     ))}
                   </Box>
                 </Menu>
-                {/* <Menu>
+                <Menu>
                   <MenuHeading>career & academic</MenuHeading>
                   <Box>
                     {AdminMenuItems.slice(2, 4).map((item, index) => (
@@ -307,8 +308,8 @@ export default function DashboardLayout({
                       </MenuBtn>
                     ))}
                   </Box>
-                </Menu> */}
-                {/* <Menu>
+                </Menu>
+                <Menu>
                   <MenuHeading>communication</MenuHeading>
                   <Box>
                     {AdminMenuItems.slice(4, 5).map((item, index) => (
@@ -322,7 +323,7 @@ export default function DashboardLayout({
                       </MenuBtn>
                     ))}
                   </Box>
-                </Menu> */}
+                </Menu>
               </>
             )}
 
@@ -335,7 +336,7 @@ export default function DashboardLayout({
           </SideBar>
           <MainBar>{children}</MainBar>
         </Main>
-      </Container>
+      </Container> */}
     </AuthProvider>
   );
 }

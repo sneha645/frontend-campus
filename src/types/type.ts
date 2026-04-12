@@ -64,6 +64,7 @@ export interface AuthContextType {
   registerStudent: (email: string, password: string, name: string, role: string) => Promise<void>;
   registerMentor: (email: string, password: string, name: string, role: string) => Promise<void>;
   registerRecruiter: (email: string, password: string, name: string, role: string, companyName: string) => Promise<void>;
+  isLoading: boolean;
 }
 
 export interface RecruiterTableColumns {
