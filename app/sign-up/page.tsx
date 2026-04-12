@@ -47,6 +47,7 @@ export default function SignUpPage() {
     email: "",
     password: "",
     role: "Student",
+    companyName: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -162,6 +163,21 @@ export default function SignUpPage() {
                 required
               />
             </InputGroup>
+
+            {role === "Recruiter" && (
+              <InputGroup>
+                <Label>Company Name</Label>
+                <Input
+                  type="text"
+                  placeholder="Company Name"
+                  value={user.companyName}
+                  onChange={(e) =>
+                    setUser({ ...user, companyName: e.target.value })
+                  }
+                  required
+                />
+              </InputGroup>
+            )}
 
             <InputGroup>
               <Label>Password</Label>
