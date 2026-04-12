@@ -113,6 +113,8 @@ export default function RecruiterPage() {
         gap: "20px",
         height: "100%",
         width: "100%",
+        overflow: "auto",
+        overflowY: "hidden",
       }}
     >
       <Paper style={{ width: "100%", height: "100%" }}>
@@ -133,7 +135,7 @@ export default function RecruiterPage() {
             />
           </SearchContainer>
         </PaperContainer>
-        <TableContainer style={{ height: "100%" }}>
+        <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
             <TableHead style={{ backgroundColor: "#f7f8fa" }}>
               <TableRow>
@@ -187,7 +189,7 @@ export default function RecruiterPage() {
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
                       {recruiter.status === "pending" ? (
-                        <>
+                        <Box>
                           <ApproveButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
@@ -206,7 +208,7 @@ export default function RecruiterPage() {
                           >
                             Reject
                           </RejectButton>
-                        </>
+                        </Box>
                       ) : (
                         <ViewProfile>View Profile</ViewProfile>
                       )}
@@ -215,16 +217,17 @@ export default function RecruiterPage() {
                 ))}
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30]}
+            component={"div"}
+            count={paginatiedRecruiter.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{ fontFamily: "Poppins" }}
+          />
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 20, 30]}
-          component={"div"}
-          count={paginatiedRecruiter.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
     </div>
   );

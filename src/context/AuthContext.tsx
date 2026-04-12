@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Restore the user and token from localStorage when the app loads
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -43,6 +42,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setIsLoading(false);
   }, []);
+
+  const me = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setUser(response.data.user);
+        setIsAuthenticated(true);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
   console.log("user", user);
 

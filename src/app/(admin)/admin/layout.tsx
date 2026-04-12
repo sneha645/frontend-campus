@@ -22,9 +22,14 @@ import {
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
-import { LogOutIcon, User } from "lucide-react";
+import { LayoutDashboard, LogOutIcon, User } from "lucide-react";
 
 const AdminMenuItems = [
+  {
+    path: "/admin/dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+  },
   {
     path: "/admin/recruiters",
     label: "Recruiters",

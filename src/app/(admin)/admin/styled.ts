@@ -76,7 +76,7 @@ export const SideBar = styled.div`
   flex-direction: column;
   background-color: #fff;
   border-right: 1px solid #f0f0f0;
-  padding: 40px 14px;
+  padding: 14px;
 `;
 
 export const Menu = styled.div`
