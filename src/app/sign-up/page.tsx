@@ -36,54 +36,49 @@ import { Alert } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
+  const { registerStudent, registerMentor, registerRecruiter } = useAuth();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const [role, setRole] = useState("Student");
+  const [role, setRole] = useState("student");
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    role: "Student",
+    role: "",
     companyName: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      let response;
-      if (role === "Student") {
-        response = await axios.post(
-          "http://localhost:3000/api/auth/register-student",
-          user,
+      if (role === "student") {
+        await registerStudent(user.email, user.password, user.name, user.role);
+      } else if (role === "faculty") {
+        await registerMentor(user.email, user.password, user.name, user.role);
+      } else if (role === "recruiter") {
+        await registerRecruiter(
+          user.email,
+          user.password,
+          user.name,
+          user.role,
+          user.companyName,
         );
-        console.log(response);
-      } else if (role === "Faculty") {
-        response = await axios.post(
-          "http://localhost:3000/auth/registerMentor",
-          user,
-        );
-        console.log(response);
-      } else if (role === "Recruiter") {
-        response = await axios.post(
-          "http://localhost:3000/auth/registerRecruiter",
-          user,
-        );
-        console.log(response);
       }
 
-      if (response) {
-        setMessage(response.data.message);
+      setMessage("Registration successful!");
 
-        setTimeout(() => {
-          router.push("/sign-in");
-        }, 3000);
-      }
+      setTimeout(() => {
+        router.push("/sign-in");
+      }, 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setMessage(error.response?.data.message);
+        setMessage(error.response?.data.message || "An error occurred");
+      } else {
+        setMessage("An unexpected error occurred");
       }
     }
   };
@@ -127,7 +122,7 @@ export default function SignUpPage() {
           </HeadingSection>
 
           <RoleContainer>
-            {["Student", "Faculty", "Recruiter"].map((item) => (
+            {["student", "faculty", "recruiter"].map((item) => (
               <Role
                 key={item}
                 onClick={() => {
