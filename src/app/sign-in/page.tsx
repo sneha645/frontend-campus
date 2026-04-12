@@ -33,6 +33,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -41,31 +42,38 @@ export default function SignInPage() {
     password: "",
   });
 
-  const [role, setRole] = useState("Student");
+  const { login } = useAuth();
+
+  // const [role, setRole] = useState("Student");
 
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/auth/login",
-        user,
-        {
-          withCredentials: true,
-        },
-      );
-      console.log(response);
-      setMessage(response.data.message);
-      localStorage.setItem("token", response.data.token);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 3000);
-    } catch (error) {
-      console.log(error);
-    }
+    await login(user.email, user.password);
   };
+
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:3000/auth/login",
+  //       user,
+  //       {
+  //         withCredentials: true,
+  //       },
+  //     );
+  //     console.log(response);
+  //     setMessage(response.data.message);
+  //     localStorage.setItem("token", response.data.token);
+  //     setTimeout(() => {
+  //       router.push("/dashboard");
+  //     }, 3000);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Container>

@@ -61,9 +61,9 @@ export interface AuthContextType {
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  registerStudent: (user: User, token: string) => void;
-  registerMentor: (user: User, token: string) => void;
-  registerRecruiter: (user: User, token: string) => void;
+  registerStudent: (email: string, password: string, name: string, role: string) => Promise<void>;
+  registerMentor: (email: string, password: string, name: string, role: string) => Promise<void>;
+  registerRecruiter: (email: string, password: string, name: string, role: string, companyName: string) => Promise<void>;
 }
 
 export interface RecruiterTableColumns {

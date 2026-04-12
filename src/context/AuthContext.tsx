@@ -2,6 +2,7 @@
 
 import { AuthContextType, User } from "@/types/type";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext<AuthContextType>({
@@ -13,9 +14,9 @@ export const AuthContext = createContext<AuthContextType>({
   setIsAuthenticated: () => {},
   login: async () => {},
   logout: () => {},
-  registerStudent: () => {},
-  registerMentor: () => {},
-  registerRecruiter: () => {},
+  registerStudent: async () => {},
+  registerMentor: async () => {},
+  registerRecruiter: async () => {},
 });
 
 export const useAuth = () => {
@@ -23,6 +24,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter()
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,11 +41,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         },
       );
+      console.log(response.data.data);
       if (response.status === 201) {
-        setUser(response.data.user);
-        setToken(response.data.token);
+        setUser(response.data.data.user);
+        setToken(response.data.data.token);
         setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.data.token);
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error("Error signing in:", error);
@@ -160,10 +164,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isAuthenticated,
         setIsAuthenticated,
         login,
-        logout: () => {},
-        registerStudent: () => {},
-        registerMentor: () => {},
-        registerRecruiter: () => {},
+        logout,
+        registerStudent,
+        registerMentor,
+        registerRecruiter,
       }}
     >
       {children}

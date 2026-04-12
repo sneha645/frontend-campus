@@ -119,3 +119,26 @@ export const MainBar = styled.div`
   justify-content: center;
   background-color: #f7f8fa;
 `;
+
+export const LogoutContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // position: absolute;
+  // bottom: 0;
+`;
+
+export const LogoutBtn = styled.button`
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 14px;
+  color: #000;
+  background-color: transparent;
+  font-size: 16px;
+  border-radius: 4px;
+`;

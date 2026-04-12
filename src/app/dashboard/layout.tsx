@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import {
   Container,
   Header,
@@ -8,6 +8,8 @@ import {
   LeftHeader,
   LogoContainer,
   LogoTitle,
+  LogoutBtn,
+  LogoutContainer,
   Main,
   MainBar,
   Menu,
@@ -26,6 +28,7 @@ import {
   Upload,
   MessageSquare,
   User,
+  LogOutIcon,
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
@@ -101,224 +104,238 @@ export default function DashboardLayout({
 
   const { user, token, logout } = useAuth();
 
+  const handleLogout = () => {
+    logout();
+    router.push("/sign-in");
+  };
+
   return (
-    <Container>
-      <Header>
-        <LeftHeader>
-          <LogoContainer>
-            <IconContainer>
-              <SchoolOutlinedIcon
-                style={{ color: "#ffff", fontSize: "20px" }}
-              />
-            </IconContainer>
-            <LogoTitle>CampusConnect</LogoTitle>
-          </LogoContainer>
-        </LeftHeader>
-        <RightHeader>
-          <PageTitle>{activeMenu}</PageTitle>
-        </RightHeader>
-      </Header>
-      <Main>
-        <SideBar>
-          {user?.role === "student" && (
-            <>
-              <Menu>
-                <MenuHeading>overview</MenuHeading>
-                <Box>
-                  {StudentMenuItems.slice(0, 2).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>career & academic</MenuHeading>
-                <Box>
-                  {StudentMenuItems.slice(2, 4).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>communication</MenuHeading>
-                <Box>
-                  {StudentMenuItems.slice(4, 5).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-            </>
-          )}
-          {user?.role === "mentor" && (
-            <>
-              <Menu>
-                <MenuHeading>overview</MenuHeading>
-                <Box>
-                  {MentorMenuItems.slice(0, 2).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>career & academic</MenuHeading>
-                <Box>
-                  {MentorMenuItems.slice(2, 4).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>communication</MenuHeading>
-                <Box>
-                  {MentorMenuItems.slice(4, 5).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-            </>
-          )}
-          {user?.role === "recruiter" && (
-            <>
-              <Menu>
-                <MenuHeading>overview</MenuHeading>
-                <Box>
-                  {RecruiterMenuItems.slice(0, 2).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>career & academic</MenuHeading>
-                <Box>
-                  {RecruiterMenuItems.slice(2, 4).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>communication</MenuHeading>
-                <Box>
-                  {RecruiterMenuItems.slice(4, 5).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-            </>
-          )}
-          {user?.role === "admin" && (
-            <>
-              <Menu>
-                <MenuHeading>overview</MenuHeading>
-                <Box>
-                  {AdminMenuItems.slice(0, 2).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>career & academic</MenuHeading>
-                <Box>
-                  {AdminMenuItems.slice(2, 4).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-              <Menu>
-                <MenuHeading>communication</MenuHeading>
-                <Box>
-                  {AdminMenuItems.slice(4, 5).map((item, index) => (
-                    <MenuBtn
-                      $active={activeMenu === item.label}
-                      key={index}
-                      onClick={() => handleMenuClick(item.label, item.path)}
-                    >
-                      <item.icon size={20} />
-                      {item.label}
-                    </MenuBtn>
-                  ))}
-                </Box>
-              </Menu>
-            </>
-          )}
-        </SideBar>
-        <MainBar>{children}</MainBar>
-      </Main>
-    </Container>
+    <AuthProvider>
+      <Container>
+        <Header>
+          <LeftHeader>
+            <LogoContainer>
+              <IconContainer>
+                <SchoolOutlinedIcon
+                  style={{ color: "#ffff", fontSize: "20px" }}
+                />
+              </IconContainer>
+              <LogoTitle>CampusConnect</LogoTitle>
+            </LogoContainer>
+          </LeftHeader>
+          <RightHeader>
+            <PageTitle>{activeMenu}</PageTitle>
+          </RightHeader>
+        </Header>
+        <Main>
+          <SideBar>
+            {user?.role === "student" && (
+              <>
+                <Menu>
+                  <MenuHeading>overview</MenuHeading>
+                  <Box>
+                    {StudentMenuItems.slice(0, 2).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>career & academic</MenuHeading>
+                  <Box>
+                    {StudentMenuItems.slice(2, 4).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>communication</MenuHeading>
+                  <Box>
+                    {StudentMenuItems.slice(4, 5).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+              </>
+            )}
+            {user?.role === "mentor" && (
+              <>
+                <Menu>
+                  <MenuHeading>overview</MenuHeading>
+                  <Box>
+                    {MentorMenuItems.slice(0, 2).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>career & academic</MenuHeading>
+                  <Box>
+                    {MentorMenuItems.slice(2, 4).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>communication</MenuHeading>
+                  <Box>
+                    {MentorMenuItems.slice(4, 5).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+              </>
+            )}
+            {user?.role === "recruiter" && (
+              <>
+                <Menu>
+                  <MenuHeading>overview</MenuHeading>
+                  <Box>
+                    {RecruiterMenuItems.slice(0, 2).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>career & academic</MenuHeading>
+                  <Box>
+                    {RecruiterMenuItems.slice(2, 4).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                <Menu>
+                  <MenuHeading>communication</MenuHeading>
+                  <Box>
+                    {RecruiterMenuItems.slice(4, 5).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+              </>
+            )}
+            {user?.role === "admin" && (
+              <>
+                <Menu>
+                  {/* <MenuHeading>overview</MenuHeading> */}
+                  <Box>
+                    {AdminMenuItems.map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu>
+                {/* <Menu>
+                  <MenuHeading>career & academic</MenuHeading>
+                  <Box>
+                    {AdminMenuItems.slice(2, 4).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu> */}
+                {/* <Menu>
+                  <MenuHeading>communication</MenuHeading>
+                  <Box>
+                    {AdminMenuItems.slice(4, 5).map((item, index) => (
+                      <MenuBtn
+                        $active={activeMenu === item.label}
+                        key={index}
+                        onClick={() => handleMenuClick(item.label, item.path)}
+                      >
+                        <item.icon size={20} />
+                        {item.label}
+                      </MenuBtn>
+                    ))}
+                  </Box>
+                </Menu> */}
+              </>
+            )}
+
+            <LogoutContainer>
+              <LogoutBtn onClick={handleLogout}>
+                <LogOutIcon size={20} />
+                Logout
+              </LogoutBtn>
+            </LogoutContainer>
+          </SideBar>
+          <MainBar>{children}</MainBar>
+        </Main>
+      </Container>
+    </AuthProvider>
   );
 }
