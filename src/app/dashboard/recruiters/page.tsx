@@ -1,4 +1,4 @@
-import { recruiterTableColumns } from "@/app/types/type";
+import { recruiterTableColumns } from "@/types/type";
 import {
   Paper,
   TableContainer,
@@ -10,7 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Recruiter } from "@/app/types/type";
+import { Recruiter } from "@/types/type";
 
 export default function RecruiterPage() {
   const [recruiters, setRecruiters] = useState<Recruiter[]>([]);

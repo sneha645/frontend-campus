@@ -30,7 +30,7 @@ import { LuSquareArrowOutUpRight } from "react-icons/lu";
 import { UploadProject } from "./components/UploadProject";
 import { UploadInternship } from "./components/UploadInternship";
 import axios from "axios";
-import { Project, Internship } from "@/app/types/type";
+import { Project, Internship } from "@/types/type";
 
 export default function UploadProjectPage() {
   const [openProjectModal, setOpenProjectModal] = useState(false);
@@ -115,7 +115,8 @@ export default function UploadProjectPage() {
 
               <TechStack>
                 {typeof item.technologies === "string"
-                  ? item.technologies.split(",")
+                  ? item.technologies
+                      .split(",")
                       .map((tech, i) => <Tech key={i}>{tech.trim()}</Tech>)
                   : item.technologies?.map((tech, i) => (
                       <Tech key={i}>{tech}</Tech>

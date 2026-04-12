@@ -1,3 +1,19 @@
+export interface User {
+  user_id?: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  isVerified?: boolean;
+  isDeleted?: boolean;
+  status?: string;
+  companyName?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  studentProjects?: Project[];
+  mentorProjects?: Project[];
+}
+
 export interface Project {
   title: string;
   description: string;
@@ -34,6 +50,20 @@ export interface Recruiter {
   email: string;
   status: string;
   createdAt: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+  registerStudent: (user: User, token: string) => void;
+  registerMentor: (user: User, token: string) => void;
+  registerRecruiter: (user: User, token: string) => void;
 }
 
 export interface RecruiterTableColumns {

@@ -56,7 +56,7 @@ export default function SignUpPage() {
       let response;
       if (role === "Student") {
         response = await axios.post(
-          "http://localhost:3000/auth/registerStudent",
+          "http://localhost:3000/api/auth/register-student",
           user,
         );
         console.log(response);
