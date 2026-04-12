@@ -56,7 +56,7 @@ export interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void; 
+  logout: () => void;
   registerStudent: (
     email: string,
     password: string,
@@ -91,6 +91,36 @@ export interface RecruiterTableColumns {
 export const recruiterTableColumns: readonly RecruiterTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "companyName", label: "Company Name", minWidth: 100, align: "left" },
+  { id: "email", label: "Email", minWidth: 100, align: "left" },
+  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
+  { id: "status", label: "Status", minWidth: 100, align: "left" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+];
+
+export interface MentorTableColumns {
+  id: "name" | "email" | "createdAt" | "status" | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const mentorTableColumns: readonly MentorTableColumns[] = [
+  { id: "name", label: "Name", minWidth: 100, align: "left" },
+  { id: "email", label: "Email", minWidth: 100, align: "left" },
+  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
+  { id: "status", label: "Status", minWidth: 100, align: "left" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+];
+
+export interface StudentTableColumns {
+  id: "name" | "email" | "createdAt" | "status" | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const studentTableColumns: readonly StudentTableColumns[] = [
+  { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
   { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
   { id: "status", label: "Status", minWidth: 100, align: "left" },

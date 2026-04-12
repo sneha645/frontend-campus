@@ -20,10 +20,17 @@ import {
 } from "../app/(student)/student/upload/styled";
 import axios from "axios";
 import { User } from "@/types/type";
+import { Alert } from "@mui/material";
 
-export const UploadProject = () => {
+export const UploadProject = ({
+  setOpenProjectModal,
+}: {
+  setOpenProjectModal: (open: boolean) => void;
+}) => {
   const [image, setImage] = useState<File | null>(null);
   const [mentors, setMentors] = useState<User[]>([]);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -70,7 +77,7 @@ export const UploadProject = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/student/uploadProject",
+        "http://localhost:3000/api/student/uploadProject",
         formDataToSend,
         {
           headers: {
@@ -80,9 +87,22 @@ export const UploadProject = () => {
         },
       );
 
-      console.log(response);
+      setOpenProjectModal(false);
+      setFormData({
+        title: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        technologies: "",
+        projectUrl: "",
+        githubUrl: "",
+        mentorId: "",
+      });
+
+      setSuccess(response.data.message);
     } catch (error: any) {
       console.log(error.response?.data?.message);
+      setError(error.response?.data?.message);
     }
   };
 
@@ -260,6 +280,19 @@ export const UploadProject = () => {
           >
             Reset
           </ResetButton>
+          {!success && (
+            <Alert
+              severity="success"
+              style={{ position: "absolute", right: 0 }}
+            >
+              {success}hello
+            </Alert>
+          )}
+          {error && (
+            <Alert severity="error" style={{ position: "absolute", right: 0 }}>
+              {error}
+            </Alert>
+          )}
         </FormButtonContainer>
       </Form>
     </FormContainer>

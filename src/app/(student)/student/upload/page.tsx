@@ -38,6 +38,8 @@ export default function UploadPage() {
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [internships, setInternships] = useState<Internship[]>([]);
+  console.log(projects);
+  console.log(internships);
 
   const getStudentProjectandInternship = async () => {
     try {
@@ -48,14 +50,14 @@ export default function UploadPage() {
       }
 
       const response1 = await axios.get(
-        "http://localhost:3000/student/getMyProjects",
+        "http://localhost:3000/api/student/getMyProjects",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
 
       const response2 = await axios.get(
-        "http://localhost:3000/student/getMyInternships",
+        "http://localhost:3000/api/student/getMyInternships",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -149,7 +151,7 @@ export default function UploadPage() {
         {internships.map((item, index) => (
           <ProjectCard key={`internship-${index}`}>
             <img
-              src={item.certificateImage || "/images/sign-in-bg.jpg"}
+              src={`http://localhost:3000/${item.certificateImage}`}
               alt=""
               style={{ width: "100%", height: "100%", borderRadius: "4px" }}
             />
@@ -199,13 +201,13 @@ export default function UploadPage() {
         onClose={() => setOpenProjectModal(false)}
         style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
       >
-        <UploadProject />
+        <UploadProject setOpenProjectModal={setOpenProjectModal} />
       </FormModal>
       <FormModal
         open={openInternshipModal}
         onClose={() => setOpenInternshipModal(false)}
       >
-        <UploadInternship />
+        <UploadInternship setOpenInternshipModal={setOpenInternshipModal} />
       </FormModal>
     </Container>
   );

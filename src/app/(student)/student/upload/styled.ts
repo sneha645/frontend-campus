@@ -250,6 +250,7 @@ export const Option = styled.option`
 export const FormButtonContainer = styled.div`
   display: flex;
   gap: 10px;
+  position: relative;
 `;
 
 export const FormButton = styled.button`

@@ -135,8 +135,8 @@ export const LogoutBtn = styled.button`
   justify-content: flex-start;
   gap: 10px;
   padding: 14px;
-  color: #000;
-  background-color: transparent;
+  color: #fff;
+  background-color: #e11d48;
   font-size: 16px;
   border-radius: 4px;
 `;

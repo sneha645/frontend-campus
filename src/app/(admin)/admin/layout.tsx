@@ -64,7 +64,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const handleLogout = () => {
     logout();
-    router.push("/sign-in");
   };
 
   const handleMenuClick = (label: string, path: string) => {
