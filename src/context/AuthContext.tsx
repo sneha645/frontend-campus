@@ -5,13 +5,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   setUser: () => {},
-  token: null,
-  setToken: () => {},
-  isAuthenticated: false,
-  setIsAuthenticated: () => {},
   login: async () => {},
   logout: () => {},
   registerStudent: async () => {},
@@ -20,201 +18,124 @@ export const AuthContext = createContext<AuthContextType>({
   isLoading: false,
 });
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
-  }, []);
 
   const me = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/auth/me", {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+
+      const res = await axios.get(`${API_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.status === 200) {
-        setUser(response.data.user);
-        setIsAuthenticated(true);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-      }
+
+      setUser(res.data.user);
     } catch (error) {
       console.error("Error fetching user:", error);
+      localStorage.removeItem("token");
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  console.log("user", user);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        },
+      const res = await axios.post(
+        `${API_URL}/auth/login`,
+        { email, password },
+        { withCredentials: true },
       );
-      console.log(response.data.data);
-      if (response.status === 201) {
-        setUser(response.data.data.user);
-        setIsLoading(false);
-        setToken(response.data.data.token);
-        setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
-        router.push(`/${response.data.data.user.role}/dashboard`);
+
+      if (res.status === 200 || res.status === 201) {
+        const { user, token } = res.data.data;
+
+        localStorage.setItem("token", token);
+
+        setUser(user);
+
+        router.push(`/${user.role}/dashboard`);
       }
     } catch (error) {
-      setIsLoading(false);
       console.error("Error signing in:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = () => {
-    setIsLoading(true);
     setUser(null);
-    setToken(null);
-    setIsAuthenticated(false);
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    setIsLoading(false);
+
+    router.push("/sign-in");
   };
 
-  const registerStudent = async (
+  const register = async (url: string, payload: any) => {
+    setIsLoading(true);
+    try {
+      const res = await axios.post(`${API_URL}${url}`, payload, {
+        withCredentials: true,
+      });
+
+      if (res.status === 201) {
+        setUser(res.data.user);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const registerStudent = (
     email: string,
     password: string,
     name: string,
     role: string,
-  ) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register-student",
-        {
-          email,
-          password,
-          name,
-          role,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      setIsLoading(false);
-      if (response.status === 201) {
-        setUser(response.data.user);
-        setToken(response.data.token);
-        setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error registering student:", error);
-    }
-  };
+  ) => register("/auth/register-student", { email, password, name, role });
 
-  const registerMentor = async (
+  const registerMentor = (
     email: string,
     password: string,
     name: string,
     role: string,
-  ) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register-mentor",
-        {
-          email,
-          password,
-          name,
-          role,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      setIsLoading(false);
-      if (response.status === 201) {
-        setUser(response.data.user);
-        setToken(response.data.token);
-        setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error registering mentor:", error);
-    }
-  };
+  ) => register("/auth/register-mentor", { email, password, name, role });
 
-  const registerRecruiter = async (
+  const registerRecruiter = (
     email: string,
     password: string,
     name: string,
     role: string,
     companyName: string,
-  ) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register-recruiter",
-        {
-          email,
-          password,
-          name,
-          role,
-          companyName,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-      setIsLoading(false);
-      if (response.status === 201) {
-        setUser(response.data.user);
-        setToken(response.data.token);
-        setIsAuthenticated(true);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error registering recruiter:", error);
-    }
-  };
+  ) =>
+    register("/auth/register-recruiter", {
+      email,
+      password,
+      name,
+      role,
+      companyName,
+    });
+
+  useEffect(() => {
+    me();
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
-        token,
-        setToken,
-        isAuthenticated,
-        setIsAuthenticated,
         login,
         logout,
         registerStudent,

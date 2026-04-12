@@ -55,20 +55,32 @@ export interface Recruiter {
 export interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  token: string | null;
-  setToken: (token: string | null) => void;
-  isAuthenticated: boolean;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  registerStudent: (email: string, password: string, name: string, role: string) => Promise<void>;
-  registerMentor: (email: string, password: string, name: string, role: string) => Promise<void>;
-  registerRecruiter: (email: string, password: string, name: string, role: string, companyName: string) => Promise<void>;
+  logout: () => void; 
+  registerStudent: (
+    email: string,
+    password: string,
+    name: string,
+    role: string,
+  ) => Promise<void>;
+  registerMentor: (
+    email: string,
+    password: string,
+    name: string,
+    role: string,
+  ) => Promise<void>;
+  registerRecruiter: (
+    email: string,
+    password: string,
+    name: string,
+    role: string,
+    companyName: string,
+  ) => Promise<void>;
   isLoading: boolean;
 }
 
 export interface RecruiterTableColumns {
-  id: "name" | "companyName" | "email" | 'createdAt' | "status" | "actions";
+  id: "name" | "companyName" | "email" | "createdAt" | "status" | "actions";
   label: string;
   minWidth: number;
   align: "left" | "right" | "center";
