@@ -3,7 +3,7 @@
 import { AuthContextType, User } from "@/types/type";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -25,11 +25,26 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Restore the user and token from localStorage when the app loads
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false);
+  }, []);
+
+  console.log("user", user);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
@@ -51,7 +66,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(response.data.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.data.token);
-        // router.push("/dashboard");
+        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        router.push(`/${response.data.data.user.role}/dashboard`);
       }
     } catch (error) {
       setIsLoading(false);
@@ -65,6 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setToken(null);
     setIsAuthenticated(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     setIsLoading(false);
   };
@@ -95,6 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(response.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
     } catch (error) {
       setIsLoading(false);
@@ -128,6 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(response.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
     } catch (error) {
       setIsLoading(false);
@@ -163,8 +182,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(response.data.token);
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
-
     } catch (error) {
       setIsLoading(false);
       console.error("Error registering recruiter:", error);

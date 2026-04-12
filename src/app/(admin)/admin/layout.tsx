@@ -1,3 +1,5 @@
+"use client"
+
 import { useAuth } from "@/context/AuthContext";
 import { redirect, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
@@ -49,7 +51,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     return <div>Loading...</div>;
   }
   if (!user) {
-    redirect("/login");
+    redirect("/sign-in");
   }
   if (user.role !== "admin") {
     redirect("/dashboard");
