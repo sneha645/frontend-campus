@@ -26,18 +26,18 @@ import { LogOutIcon, User } from "lucide-react";
 
 const AdminMenuItems = [
   {
-    path: "/recruiter",
-    label: "Recruiter",
+    path: "/admin/recruiters",
+    label: "Recruiters",
     icon: User,
   },
   {
-    path: "/mentor",
-    label: "Mentor",
+    path: "/admin/mentors",
+    label: "Mentors",
     icon: User,
   },
   {
-    path: "/student",
-    label: "Student",
+    path: "/admin/students",
+    label: "Students",
     icon: User,
   },
 ];
