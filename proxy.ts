@@ -16,12 +16,12 @@ export function proxy(request: NextRequest) {
   }
 
   if (token && isPublicRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/sign-in", "/sign-up", "/dashboard/:path*"],
+  matcher: ["/sign-in", "/sign-up", "/admin/dashboard/:path*"],
 };

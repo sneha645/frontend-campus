@@ -31,7 +31,6 @@ import {
 } from "./styled";
 
 export default function RecruiterPage() {
-  const { token } = useAuth();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchRecruiter, setSearchRecruiter] = useState("");
@@ -40,6 +39,7 @@ export default function RecruiterPage() {
   console.log("recruiters", recruiters);
 
   const fetchRecruiters = async () => {
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         "http://localhost:3000/api/recruiter/all",
@@ -88,6 +88,7 @@ export default function RecruiterPage() {
   }, []);
 
   const handleApprove = async (id: string) => {
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
@@ -189,7 +190,7 @@ export default function RecruiterPage() {
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
                       {recruiter.status === "pending" ? (
-                        <Box>
+                        <Box sx={{display: 'flex', gap: '10px'}}>
                           <ApproveButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>

@@ -159,7 +159,7 @@ export default function SignUpPage() {
               />
             </InputGroup>
 
-            {role === "Recruiter" && (
+            {role === "recruiter" && (
               <InputGroup>
                 <Label>Company Name</Label>
                 <Input
