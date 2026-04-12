@@ -11,16 +11,30 @@ import {
   TableBody,
   Button,
   Box,
+  TablePagination,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Recruiter } from "@/types/type";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { Dot } from "lucide-react";
-import { ApproveButton, RejectButton, ViewProfile } from "./styled";
+import { Dot, Search } from "lucide-react";
+import {
+  ApproveButton,
+  HeadingContainer,
+  PaperContainer,
+  RejectButton,
+  SearchContainer,
+  SearchInput,
+  TableHeading,
+  TableSubHeading,
+  ViewProfile,
+} from "./styled";
 
 export default function RecruiterPage() {
   const { token } = useAuth();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchRecruiter, setSearchRecruiter] = useState("");
 
   const [recruiters, setRecruiters] = useState<User[]>([]);
   console.log("recruiters", recruiters);
@@ -42,6 +56,32 @@ export default function RecruiterPage() {
       console.log(error);
     }
   };
+
+  const filteredRecruiters = useMemo(() => {
+    return recruiters.filter((r) =>
+      r.name.toLowerCase().includes(searchRecruiter.toLowerCase()),
+    );
+  }, [recruiters, searchRecruiter]);
+
+  const paginatiedRecruiter = useMemo(() => {
+    const start = page * rowsPerPage;
+    return filteredRecruiters.slice(start, start + rowsPerPage);
+  }, [filteredRecruiters, page, rowsPerPage]);
+
+  const handleChangePage = useCallback(
+    (_: unknown, newPage: number) => {
+      setPage(newPage);
+    },
+    [setPage],
+  );
+
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    },
+    [setPage, setRowsPerPage],
+  );
 
   useEffect(() => {
     fetchRecruiters();
@@ -76,9 +116,26 @@ export default function RecruiterPage() {
       }}
     >
       <Paper style={{ width: "100%", height: "100%" }}>
+        <PaperContainer>
+          <HeadingContainer>
+            <TableHeading>New Recruiter Requests</TableHeading>
+            <TableSubHeading>
+              Pending requests list with manual moderation for approvals,
+              rejects and compliance review.
+            </TableSubHeading>
+          </HeadingContainer>
+          <SearchContainer>
+            <Search size={20} />
+            <SearchInput
+              placeholder="Search recruiter"
+              value={searchRecruiter}
+              onChange={(e) => setSearchRecruiter(e.target.value)}
+            />
+          </SearchContainer>
+        </PaperContainer>
         <TableContainer style={{ height: "100%" }}>
           <Table>
-            <TableHead>
+            <TableHead style={{ backgroundColor: "#f7f8fa" }}>
               <TableRow>
                 {recruiterTableColumns.map((column) => (
                   <TableCell
@@ -86,7 +143,7 @@ export default function RecruiterPage() {
                     align={column.align}
                     style={{
                       minWidth: column.minWidth,
-                      fontWeight: "bold",
+                      fontWeight: "600",
                       fontFamily: "Poppins",
                     }}
                   >
@@ -96,9 +153,9 @@ export default function RecruiterPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {recruiters &&
-                recruiters?.length > 0 &&
-                recruiters?.map((recruiter) => (
+              {paginatiedRecruiter &&
+                paginatiedRecruiter?.length > 0 &&
+                paginatiedRecruiter?.map((recruiter) => (
                   <TableRow key={recruiter.email}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       {recruiter.name}
@@ -159,6 +216,15 @@ export default function RecruiterPage() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component={"div"}
+          count={paginatiedRecruiter.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
     </div>
   );

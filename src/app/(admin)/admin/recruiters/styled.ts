@@ -61,3 +61,43 @@ export const ViewProfile = styled.button`
     transform: scale(0.98);
   }
 `;
+
+export const PaperContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+`;
+
+export const HeadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const TableHeading = styled.h1`
+  font-size: 26px;
+  font-weight: 500;
+  color: #000;
+`;
+
+export const TableSubHeading = styled.h1`
+  font-size: 16px;
+  font-weight: 400;
+  color: #786096;
+`;
+
+export const SearchContainer = styled.div`
+  width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+`;
+
+export const SearchInput = styled.input`
+  outline: none;
+  border: none;
+`;
