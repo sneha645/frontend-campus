@@ -44,8 +44,6 @@ export default function SignInPage() {
 
   const { login } = useAuth();
 
-  // const [role, setRole] = useState("Student");
-
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -53,27 +51,6 @@ export default function SignInPage() {
     e.preventDefault();
     await login(user.email, user.password);
   };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:3000/auth/login",
-  //       user,
-  //       {
-  //         withCredentials: true,
-  //       },
-  //     );
-  //     console.log(response);
-  //     setMessage(response.data.message);
-  //     localStorage.setItem("token", response.data.token);
-  //     setTimeout(() => {
-  //       router.push("/dashboard");
-  //     }, 3000);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <Container>
@@ -93,14 +70,6 @@ export default function SignInPage() {
             Connecting students with recruiters and tracking projects is now
             completely seamless and centralized.
           </QuoteText>
-
-          {/* <UserInfo>
-            <Avatar src="/images/avatar.png" alt="avatar" />
-            <UserDetails>
-              <UserName>Dr. D.P Joshi</UserName>
-              <UserRole>Principal of SITMS</UserRole>
-            </UserDetails>
-          </UserInfo> */}
         </QuoteSection>
       </LeftSection>
 

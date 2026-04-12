@@ -77,6 +77,8 @@ export interface AuthContextType {
     companyName: string,
   ) => Promise<void>;
   isLoading: boolean;
+  success: string;
+  error: string;
 }
 
 export interface RecruiterTableColumns {

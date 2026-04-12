@@ -22,29 +22,25 @@ import {
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
-import { LayoutDashboard, LogOutIcon, User } from "lucide-react";
+import {
+  FolderOpen,
+  LayoutDashboard,
+  LogOutIcon,
+  MessageSquare,
+  Upload,
+  User,
+} from "lucide-react";
 
-const AdminMenuItems = [
+const StudentMenuItems = [
   {
-    path: "/admin/dashboard",
+    path: "/student/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
   },
-  {
-    path: "/admin/recruiters",
-    label: "Recruiters",
-    icon: User,
-  },
-  {
-    path: "/admin/mentors",
-    label: "Mentors",
-    icon: User,
-  },
-  {
-    path: "/admin/students",
-    label: "Students",
-    icon: User,
-  },
+  { path: "/student/profile", label: "Profile", icon: User },
+  { path: "/student/upload", label: "Upload", icon: Upload },
+  { path: "/student/projects", label: "Projects", icon: FolderOpen },
+  { path: "/student/feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -58,7 +54,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (!user) {
     redirect("/sign-in");
   }
-  if (user.role !== "admin") {
+  if (user.role !== "student") {
     redirect(`/${user.role}/dashboard`);
   }
 
@@ -86,14 +82,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </LogoContainer>
         </LeftHeader>
         <RightHeader>
-          <PageTitle>Admin Dashboard</PageTitle>
+          <PageTitle>{activeMenu}</PageTitle>
         </RightHeader>
       </Header>
       <Main>
         <SideBar>
           <Menu>
             <Box>
-              {AdminMenuItems.map((item, index) => (
+              {StudentMenuItems.map((item, index) => (
                 <MenuBtn
                   $active={activeMenu === item.label}
                   key={index}

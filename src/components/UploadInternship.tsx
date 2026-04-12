@@ -1,4 +1,8 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+
+import axios from "axios";
 import {
   Form,
   FormButton,
@@ -15,25 +19,39 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "../styled";
-import axios from "axios";
+} from "../app/(student)/student/upload/styled";
+import { User } from "@/types/type";
 
-export const UploadProject = () => {
-  
-  const [image, setImage] = useState<File | null>(null);
+export const UploadInternship = () => {
+  const [certificateImage, setCertificateImage] = useState<File | null>(null);
+  const [mentors, setMentors] = useState<User[]>([]);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    company: "",
     startDate: "",
     endDate: "",
     technologies: "",
     projectUrl: "",
-    githubUrl: "",
+    certificateImage: "",
     mentorId: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.startDate ||
+      !formData.endDate ||
+      !formData.technologies ||
+      !formData.projectUrl ||
+      !formData.mentorId
+    ) {
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -46,15 +64,14 @@ export const UploadProject = () => {
       formDataToSend.append("endDate", formData.endDate);
       formDataToSend.append("technologies", formData.technologies);
       formDataToSend.append("projectUrl", formData.projectUrl);
-      formDataToSend.append("githubUrl", formData.githubUrl);
       formDataToSend.append("mentorId", formData.mentorId);
 
-      if (image) {
-        formDataToSend.append("image", image);
+      if (certificateImage) {
+        formDataToSend.append("certificateImage", certificateImage);
       }
 
       const response = await axios.post(
-        "http://localhost:3000/student/uploadProject",
+        "http://localhost:3000/student/uploadInternship",
         formDataToSend,
         {
           headers: {
@@ -62,7 +79,6 @@ export const UploadProject = () => {
             "Content-Type": "multipart/form-data",
           },
         },
-
       );
 
       console.log(response);
@@ -71,17 +87,37 @@ export const UploadProject = () => {
     }
   };
 
+  const fetchMentor = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.get("http://localhost:3000/api/mentor/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+      const data = await response.data;
+      setMentors(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMentor();
+  }, []);
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
-          <FormLabel>Project Image *</FormLabel>
+          <FormLabel>Certificate Image *</FormLabel>
           <FormInput
             type="file"
             accept="image/*"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (e.target.files && e.target.files[0]) {
-                setImage(e.target.files[0]);
+                setCertificateImage(e.target.files[0]);
               }
             }}
           />
@@ -110,6 +146,35 @@ export const UploadProject = () => {
               setFormData({ ...formData, description: e.target.value })
             }
           />
+        </FormInputContainer>
+
+        <FormInputContainer>
+          <FormLabel>Company Name</FormLabel>
+          <FormInput
+            name="company"
+            value={formData.company}
+            onChange={(e) =>
+              setFormData({ ...formData, company: e.target.value })
+            }
+          />
+        </FormInputContainer>
+
+        <FormInputContainer>
+          <FormLabel>Mentor *</FormLabel>
+          <Select
+            name="mentorId"
+            value={formData.mentorId}
+            onChange={(e) =>
+              setFormData({ ...formData, mentorId: e.target.value })
+            }
+          >
+            <Option value="">Select Mentor</Option>
+            {mentors.map((m, index) => (
+              <option key={index} value={m.user_id}>
+                {m.name}
+              </option>
+            ))}
+          </Select>
         </FormInputContainer>
 
         <FormDateContainer>
@@ -162,19 +227,7 @@ export const UploadProject = () => {
           />
         </FormInputContainer>
 
-        <FormInputContainer>
-          <FormLabel>Github URL</FormLabel>
-          <FormInput
-            type="url"
-            name="githubUrl"
-            value={formData.githubUrl}
-            onChange={(e) =>
-              setFormData({ ...formData, githubUrl: e.target.value })
-            }
-          />
-        </FormInputContainer>
-
-        <FormInputContainer>
+        {/* <FormInputContainer>
           <FormLabel>Mentor ID *</FormLabel>
           <FormInput
             type="text"
@@ -184,7 +237,7 @@ export const UploadProject = () => {
               setFormData({ ...formData, mentorId: e.target.value })
             }
           />
-        </FormInputContainer>
+        </FormInputContainer> */}
 
         {/* <FormInputContainer>
           <FormLabel>Mentor *</FormLabel>
@@ -213,12 +266,13 @@ export const UploadProject = () => {
               setFormData({
                 title: "",
                 description: "",
+                company: "",
                 startDate: "",
                 endDate: "",
                 technologies: "",
                 mentorId: "",
                 projectUrl: "",
-                githubUrl: "",
+                certificateImage: "",
               });
             }}
           >

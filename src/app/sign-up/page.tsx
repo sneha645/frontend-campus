@@ -39,7 +39,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
-  const { registerStudent, registerMentor, registerRecruiter } = useAuth();
+  const { registerStudent, registerMentor, registerRecruiter, success, error } =
+    useAuth();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
@@ -48,17 +49,35 @@ export default function SignUpPage() {
     name: "",
     email: "",
     password: "",
-    role: "",
+    role: "student",
     companyName: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !user.name ||
+      !user.email ||
+      !user.password ||
+      !user.role ||
+      (role === "recruiter" && !user.companyName)
+    ) {
+      setMessage("Please fill all the fields");
+      return;
+    }
+
     try {
       if (role === "student") {
         await registerStudent(user.email, user.password, user.name, user.role);
-      } else if (role === "faculty") {
+        if (success) {
+          setMessage(success);
+        }
+      } else if (role === "mentor") {
         await registerMentor(user.email, user.password, user.name, user.role);
+        if (success) {
+          setMessage(success);
+        }
       } else if (role === "recruiter") {
         await registerRecruiter(
           user.email,
@@ -67,13 +86,10 @@ export default function SignUpPage() {
           user.role,
           user.companyName,
         );
+        if (success) {
+          setMessage(success);
+        }
       }
-
-      setMessage("Registration successful!");
-
-      setTimeout(() => {
-        router.push("/sign-in");
-      }, 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setMessage(error.response?.data.message || "An error occurred");

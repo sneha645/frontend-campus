@@ -27,12 +27,13 @@ import { useEffect, useState } from "react";
 
 import { FiGithub } from "react-icons/fi";
 import { LuSquareArrowOutUpRight } from "react-icons/lu";
-import { UploadProject } from "./components/UploadProject";
-import { UploadInternship } from "./components/UploadInternship";
+
 import axios from "axios";
 import { Project, Internship } from "@/types/type";
+import { UploadProject } from "@/components/UploadProject";
+import { UploadInternship } from "@/components/UploadInternship";
 
-export default function UploadProjectPage() {
+export default function UploadPage() {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);

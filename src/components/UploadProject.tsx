@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   Form,
   FormButton,
@@ -15,26 +17,39 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "../styled";
+} from "../app/(student)/student/upload/styled";
 import axios from "axios";
+import { User } from "@/types/type";
 
-export const UploadInternship = () => {
-  const [certificateImage, setCertificateImage] = useState<File | null>(null);
-
+export const UploadProject = () => {
+  const [image, setImage] = useState<File | null>(null);
+  const [mentors, setMentors] = useState<User[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    company: "",
     startDate: "",
     endDate: "",
     technologies: "",
     projectUrl: "",
-    certificateImage: "",
+    githubUrl: "",
     mentorId: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.startDate ||
+      !formData.endDate ||
+      !formData.technologies ||
+      !formData.projectUrl ||
+      !formData.githubUrl ||
+      !formData.mentorId
+    ) {
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -47,14 +62,15 @@ export const UploadInternship = () => {
       formDataToSend.append("endDate", formData.endDate);
       formDataToSend.append("technologies", formData.technologies);
       formDataToSend.append("projectUrl", formData.projectUrl);
+      formDataToSend.append("githubUrl", formData.githubUrl);
       formDataToSend.append("mentorId", formData.mentorId);
 
-      if (certificateImage) {
-        formDataToSend.append("certificateImage", certificateImage);
+      if (image) {
+        formDataToSend.append("image", image);
       }
 
       const response = await axios.post(
-        "http://localhost:3000/student/uploadInternship",
+        "http://localhost:3000/student/uploadProject",
         formDataToSend,
         {
           headers: {
@@ -69,17 +85,39 @@ export const UploadInternship = () => {
       console.log(error.response?.data?.message);
     }
   };
+
+  const fetchMentor = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.get("http://localhost:3000/api/mentor/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+      const data = await response.data;
+      setMentors(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMentor();
+  }, []);
+
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
-          <FormLabel>Certificate Image *</FormLabel>
+          <FormLabel>Project Image *</FormLabel>
           <FormInput
             type="file"
             accept="image/*"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (e.target.files && e.target.files[0]) {
-                setCertificateImage(e.target.files[0]);
+                setImage(e.target.files[0]);
               }
             }}
           />
@@ -110,17 +148,6 @@ export const UploadInternship = () => {
           />
         </FormInputContainer>
 
-        <FormInputContainer>
-          <FormLabel>Company Name</FormLabel>
-          <FormInput
-            name="company"
-            value={formData.company}
-            onChange={(e) =>
-              setFormData({ ...formData, company: e.target.value })
-            }
-          />
-        </FormInputContainer>
-
         <FormDateContainer>
           <FormDateSubContainer>
             <FormLabel>Start Date *</FormLabel>
@@ -147,6 +174,36 @@ export const UploadInternship = () => {
           </FormDateSubContainer>
         </FormDateContainer>
 
+        {/* <FormInputContainer>
+          <FormLabel>Mentor ID *</FormLabel>
+          <FormInput
+            type="text"
+            name="mentorId"
+            value={formData.mentorId}
+            onChange={(e) =>
+              setFormData({ ...formData, mentorId: e.target.value })
+            }
+          />
+        </FormInputContainer> */}
+
+        <FormInputContainer>
+          <FormLabel>Mentor *</FormLabel>
+          <Select
+            name="mentorId"
+            value={formData.mentorId}
+            onChange={(e) =>
+              setFormData({ ...formData, mentorId: e.target.value })
+            }
+          >
+            <Option value="">Select Mentor</Option>
+            {mentors.map((m, index) => (
+              <option key={index} value={m.user_id}>
+                {m.name}
+              </option>
+            ))}
+          </Select>
+        </FormInputContainer>
+
         <TechStackContainer>
           <FormLabel>Technologies *</FormLabel>
           <FormInput
@@ -172,34 +229,16 @@ export const UploadInternship = () => {
         </FormInputContainer>
 
         <FormInputContainer>
-          <FormLabel>Mentor ID *</FormLabel>
+          <FormLabel>Github URL</FormLabel>
           <FormInput
-            type="text"
-            name="mentorId"
-            value={formData.mentorId}
+            type="url"
+            name="githubUrl"
+            value={formData.githubUrl}
             onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
+              setFormData({ ...formData, githubUrl: e.target.value })
             }
           />
         </FormInputContainer>
-
-        {/* <FormInputContainer>
-          <FormLabel>Mentor *</FormLabel>
-          <Select
-            name="mentorId"
-            value={formData.mentorId}
-            onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
-            }
-          >
-            <Option value="">Select Mentor</Option>
-            {mentors.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name} ({m.expertise})
-                  </option>
-                ))}
-          </Select>
-        </FormInputContainer> */}
 
         <FormButtonContainer>
           <FormButton type="submit">Submit</FormButton>
@@ -210,13 +249,12 @@ export const UploadInternship = () => {
               setFormData({
                 title: "",
                 description: "",
-                company: "",
                 startDate: "",
                 endDate: "",
                 technologies: "",
                 mentorId: "",
                 projectUrl: "",
-                certificateImage: "",
+                githubUrl: "",
               });
             }}
           >

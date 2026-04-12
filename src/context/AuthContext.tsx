@@ -16,13 +16,16 @@ export const AuthContext = createContext<AuthContextType>({
   registerMentor: async () => {},
   registerRecruiter: async () => {},
   isLoading: false,
+  success: "",
+  error: "",
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
@@ -90,9 +93,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (res.status === 201) {
         setUser(res.data.user);
+        setSuccess("Registration successful!");
+
+        setTimeout(() => {
+          router.push("/sign-in");
+        }, 3000);
       }
     } catch (error) {
       console.error("Registration error:", error);
+      setError("Registration failed!");
     } finally {
       setIsLoading(false);
     }
@@ -142,6 +151,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         registerMentor,
         registerRecruiter,
         isLoading,
+        success,
+        error,
       }}
     >
       {children}
