@@ -17,7 +17,7 @@ export default function RecruiterPage() {
 
   const fetchRecruiters = async () => {
     try {
-      const response = await fetch("http://localhost:3000/recruiter/all");
+      const response = await fetch("http://localhost:3000/api/recruiter/all");
       const data = await response.json();
       setRecruiters(data);
     } catch (error) {}

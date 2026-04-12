@@ -2,7 +2,7 @@
 
 import { AuthContextType, User } from "@/types/type";
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -17,6 +17,10 @@ export const AuthContext = createContext<AuthContextType>({
   registerMentor: () => {},
   registerRecruiter: () => {},
 });
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
