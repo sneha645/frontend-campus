@@ -86,7 +86,7 @@ export const UploadCompany = () => {
         companyEmail: "",
       });
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         setSuccess(response.data.message);
         router.push("/recruiter/job-postings");
       }

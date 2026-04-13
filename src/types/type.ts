@@ -12,6 +12,19 @@ export interface User {
   updatedAt?: string;
   studentProjects?: Project[];
   mentorProjects?: Project[];
+  company?: Company;
+}
+
+export interface Company {
+  company_id?: string;
+  companyName: string;
+  companyDescription: string;
+  website: string;
+  location: string;
+  companyEmail: string;
+  logo: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Project {
