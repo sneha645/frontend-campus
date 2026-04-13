@@ -10,7 +10,7 @@ const theme = createTheme({
   },
 });
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function RecruiterLayout({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

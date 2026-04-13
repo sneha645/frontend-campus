@@ -248,35 +248,7 @@ export const UploadInternship = ({
           />
         </FormInputContainer>
 
-        {/* <FormInputContainer>
-          <FormLabel>Mentor ID *</FormLabel>
-          <FormInput
-            type="text"
-            name="mentorId"
-            value={formData.mentorId}
-            onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
-            }
-          />
-        </FormInputContainer> */}
 
-        {/* <FormInputContainer>
-          <FormLabel>Mentor *</FormLabel>
-          <Select
-            name="mentorId"
-            value={formData.mentorId}
-            onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
-            }
-          >
-            <Option value="">Select Mentor</Option>
-            {mentors.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name} ({m.expertise})
-                  </option>
-                ))}
-          </Select>
-        </FormInputContainer> */}
 
         <FormButtonContainer>
           <FormButton type="submit">Submit</FormButton>
@@ -299,12 +271,12 @@ export const UploadInternship = ({
           >
             Reset
           </ResetButton>
-          {!success && (
+          {success && (
             <Alert
               severity="success"
               style={{ position: "absolute", right: 0 }}
             >
-              {success}hello
+              {success}
             </Alert>
           )}
           {error && (

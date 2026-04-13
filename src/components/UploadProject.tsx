@@ -194,18 +194,6 @@ export const UploadProject = ({
           </FormDateSubContainer>
         </FormDateContainer>
 
-        {/* <FormInputContainer>
-          <FormLabel>Mentor ID *</FormLabel>
-          <FormInput
-            type="text"
-            name="mentorId"
-            value={formData.mentorId}
-            onChange={(e) =>
-              setFormData({ ...formData, mentorId: e.target.value })
-            }
-          />
-        </FormInputContainer> */}
-
         <FormInputContainer>
           <FormLabel>Mentor *</FormLabel>
           <Select
@@ -280,12 +268,12 @@ export const UploadProject = ({
           >
             Reset
           </ResetButton>
-          {!success && (
+          {success && (
             <Alert
               severity="success"
               style={{ position: "absolute", right: 0 }}
             >
-              {success}hello
+              {success}
             </Alert>
           )}
           {error && (
