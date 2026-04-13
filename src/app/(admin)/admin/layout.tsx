@@ -45,6 +45,11 @@ const AdminMenuItems = [
     label: "Students",
     icon: User,
   },
+  {
+    path: "/admin/profile",
+    label: "Profile",
+    icon: User,
+  },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

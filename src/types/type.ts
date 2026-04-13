@@ -87,7 +87,6 @@ export interface AuthContextType {
     password: string,
     name: string,
     role: string,
-    companyName: string,
   ) => Promise<void>;
   isLoading: boolean;
   success: string;

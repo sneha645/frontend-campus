@@ -50,19 +50,12 @@ export default function SignUpPage() {
     email: "",
     password: "",
     role: "student",
-    companyName: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      !user.name ||
-      !user.email ||
-      !user.password ||
-      !user.role ||
-      (role === "recruiter" && !user.companyName)
-    ) {
+    if (!user.name || !user.email || !user.password || !user.role) {
       setMessage("Please fill all the fields");
       return;
     }
@@ -84,7 +77,6 @@ export default function SignUpPage() {
           user.password,
           user.name,
           user.role,
-          user.companyName,
         );
         if (success) {
           setMessage(success);
@@ -174,21 +166,6 @@ export default function SignUpPage() {
                 required
               />
             </InputGroup>
-
-            {role === "recruiter" && (
-              <InputGroup>
-                <Label>Company Name</Label>
-                <Input
-                  type="text"
-                  placeholder="Company Name"
-                  value={user.companyName}
-                  onChange={(e) =>
-                    setUser({ ...user, companyName: e.target.value })
-                  }
-                  required
-                />
-              </InputGroup>
-            )}
 
             <InputGroup>
               <Label>Password</Label>

@@ -69,9 +69,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(user);
 
         router.push(`/${user.role}/dashboard`);
+
+        // setSuccess(res.data.message);
+        console.log(res.data.message);
       }
     } catch (error) {
-      console.error("Error signing in:", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Error signing in:", error.response?.data.message);
+        setError(error.response?.data.message);
+      } else {
+        console.error("Error signing in:", error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -125,15 +133,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string,
     name: string,
     role: string,
-    companyName: string,
-  ) =>
-    register("/auth/register-recruiter", {
-      email,
-      password,
-      name,
-      role,
-      companyName,
-    });
+  ) => register("/auth/register-recruiter", { email, password, name, role });
 
   useEffect(() => {
     me();
