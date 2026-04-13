@@ -1,175 +1,404 @@
-import React from 'react';
-import { Sparkles, Search } from 'lucide-react';
-
 export default function CompanyProfilePage() {
   return (
-    <div className="min-h-screen bg-gray-50 p-6 md:p-8 flex justify-center w-full">
-      <div className="max-w-[800px] w-full space-y-6">
-        
-        {/* Basic Company Details Card */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="p-6 md:p-8 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start gap-4">
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1.5">Basic company details</h2>
-              <p className="text-[15px] leading-relaxed text-gray-500 max-w-lg">
-                Start with the essentials recruiters typically need before posting campus opportunities.
+    <div
+      style={{
+        display: "flex",
+        padding: "20px",
+        gap: "20px",
+        height: "100%",
+        width: "100%",
+        overflow: "auto",
+        overflowY: "hidden",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "80%",
+          border: "1px solid #E5E7EB",
+          borderRadius: "8px",
+          backgroundColor: "#ffffff",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+            }}
+          >
+            <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
+              Basic Company Details
+            </h1>
+            <p style={{ fontSize: "14px", color: "#666666" }}>
+              Start with the essentials recruiters typically need before posting
+              <br />
+              campus opportunities.
+            </p>
+          </div>
+          <div>
+            <div
+              style={{
+                backgroundColor: "#e3e8edff",
+                padding: "10px",
+                borderRadius: "8px",
+              }}
+            >
+              <p style={{ fontSize: "14px", color: "#000000" }}>
+                Draft saved 2 min ago
               </p>
-            </div>
-            <span className="text-xs font-semibold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-[999px] shrink-0">
-              Draft saved 2 min ago
-            </span>
-          </div>
-          
-          <div className="p-6 md:p-8 space-y-7">
-            {/* Grid for Name and Website */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Company name</label>
-                <input 
-                  type="text" 
-                  defaultValue="NovaEdge Technologies"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Website</label>
-                <input 
-                  type="text" 
-                  defaultValue="www.novaedge.io"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                />
-              </div>
-            </div>
-
-            {/* Grid for Industry and Size */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Industry</label>
-                <div className="relative">
-                  <select className="appearance-none w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors bg-white">
-                    <option>Software & Cloud Services</option>
-                    <option>Hardware & Electronics</option>
-                    <option>Consulting</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Company size</label>
-                <div className="relative">
-                  <select className="appearance-none w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors bg-white">
-                    <option>201–500 employees</option>
-                    <option>51–200 employees</option>
-                    <option>11–50 employees</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Short company headline */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2">Short company headline</label>
-              <textarea 
-                rows={2}
-                defaultValue="Building AI-powered infrastructure products for modern enterprises and campus-ready engineering teams."
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none leading-relaxed"
-              ></textarea>
-            </div>
-
-            {/* About company */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2">About company</label>
-              <textarea 
-                rows={4}
-                placeholder="Write a concise company summary for students and campus placement teams. Highlight your mission, work culture, and the type of roles you usually hire for."
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none leading-relaxed"
-              ></textarea>
-            </div>
-
-            {/* Company logo upload */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2">Company logo</label>
-              <div className="border border-dashed border-gray-300 rounded-xl bg-slate-50/50 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-1">Upload square logo</h3>
-                  <p className="text-[13px] text-gray-500 leading-relaxed max-w-lg">
-                    SVG, PNG, or JPG - Recommended 512×512 - Used across job listings and candidate search.
-                  </p>
-                </div>
-                <button className="whitespace-nowrap px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm shrink-0">
-                  Choose file
-                </button>
-              </div>
-            </div>
-
-          </div>
-          
-          {/* Action buttons */}
-          <div className="p-6 md:px-8 md:py-6 bg-white border-t border-gray-100 flex flex-wrap items-center gap-3">
-            <button className="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-              Save as draft
-            </button>
-            <button className="px-4 py-2.5 bg-slate-100 rounded-lg text-sm font-semibold text-gray-700 hover:bg-slate-200 transition-colors">
-              Preview public view
-            </button>
-            <div className="flex-1"></div>
-            <button className="px-5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-              Back
-            </button>
-            <button className="px-5 py-2.5 bg-[#0066FF] hover:bg-blue-700 rounded-lg text-sm font-semibold text-white transition-colors shadow-sm">
-              Continue to brand assets
-            </button>
-          </div>
-        </div>
-
-        {/* Smart suggestions Card */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="p-6 md:p-8 flex flex-col sm:flex-row justify-between items-start gap-4">
-            <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-1">Smart suggestions</h2>
-              <p className="text-[15px] text-gray-500 leading-relaxed">
-                Helpful prompts to improve discoverability for colleges and students.
-              </p>
-            </div>
-            <span className="text-xs font-semibold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-[999px] shrink-0">
-              AI-assisted
-            </span>
-          </div>
-          
-          <div className="px-6 md:px-8 pb-6 md:pb-8 pt-0 space-y-4">
-            {/* Suggestion 1 */}
-            <div className="flex items-start gap-4 p-5 rounded-xl bg-slate-50/70 border border-gray-100">
-              <div className="mt-0.5 p-2 bg-white rounded-lg border border-gray-200 text-gray-600 shrink-0 shadow-sm">
-                <Sparkles size={18} />
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-1">Add a sharper hiring message</h3>
-                <p className="text-[14px] text-gray-500 leading-relaxed">
-                  Profiles with a one-line headline and logo usually receive better engagement in student search and recruiter discovery modules.
-                </p>
-              </div>
-            </div>
-
-            {/* Suggestion 2 */}
-            <div className="flex items-start gap-4 p-5 rounded-xl bg-slate-50/70 border border-gray-100">
-              <div className="mt-0.5 p-2 bg-white rounded-lg border border-gray-200 text-gray-600 shrink-0 shadow-sm">
-                <Search size={18} />
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-1">Improve smart search match</h3>
-                <p className="text-[14px] text-gray-500 leading-relaxed">
-                  Using a clear industry and company size helps your job posts show up in filtered campus searches faster.
-                </p>
-              </div>
             </div>
           </div>
         </div>
-
+        <hr style={{ color: "#E5E7EB" }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div
+            style={{
+              padding: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "20px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="companyName">Company Name</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  placeholder="Tech Mahindra Pvt Ltd"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="companyName">Website</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  placeholder="www.techmahindra.com"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>{" "}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="companyName">Industry</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  placeholder="IT Services & Consulting"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>{" "}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="companyName">Company Size</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  placeholder="1001-5000 employees"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <label htmlFor="companyName">About Company</label>
+              <textarea
+                id="companyName"
+                placeholder="Write a short description of your company"
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "4px",
+                  resize: "none",
+                }}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <label htmlFor="companyName">Company Logo</label>
+              <div
+                style={{
+                  backgroundColor: "#e3e8edff",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  gap: "6px",
+                  padding: "20px",
+                  borderRadius: "4px",
+                  border: "1px dashed #0000003d",
+                }}
+              >
+                <h1 style={{ fontSize: "16px", fontWeight: "600" }}>
+                  Upload Logo
+                </h1>
+                <p style={{ fontSize: "14px", color: "#666666" }}>
+                  SVG, PNG or JPG Recommended 512x512px Used across job listings
+                  and candidate search.
+                </p>
+                <input
+                  type="file"
+                  id="companyLogo"
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            gap: "10px",
+            padding: "20px",
+          }}
+        >
+          <button
+            style={{
+              backgroundColor: "#0b75ff",
+              color: "#ffffff",
+              padding: "10px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Submit
+          </button>
+          <button
+            style={{
+              backgroundColor: "#e5e7eb",
+              color: "#000000",
+              padding: "10px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Reset
+          </button>
+          <button
+            style={{
+              backgroundColor: "#0b75ff",
+              color: "#ffffff",
+              padding: "10px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Update
+          </button>
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "30%",
+          border: "1px solid #E5E7EB",
+          borderRadius: "8px",
+          backgroundColor: "#ffffff",
+          height: "fit-content",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "#ddecff",
+                padding: "20px",
+                borderRadius: "4px",
+                height: "80px",
+                width: "80px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "24px",
+                fontWeight: "600",
+                color: "#0b75ff",
+              }}
+            >
+              TM
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
+                Tech Mahindra
+              </h1>
+              <a href="" style={{ color: "#0b75ff" }}>
+                www.techmahindra.com
+              </a>
+            </div>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+            commodi necessitatibus, fugit cupiditate dolores velit ipsam
+            provident unde aliquam! Non?
+          </p>
+        </div>
+        <hr
+          style={{
+            color: "#E5E7EB",
+            height: "1px",
+          }}
+        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Industry
+            </label>
+            <p>IT Services & Consulting</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Company Size
+            </label>
+            <p>1001-5000 employees</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Campus Hiring
+            </label>
+            <p>Internship and Full-time</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Primary Audience
+            </label>
+            <p>Undergraduate and Postgraduate</p>
+          </div>
+        </div>
       </div>
     </div>
   );
