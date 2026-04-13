@@ -1,3 +1,7 @@
+"use client"
+
+import { FormModal } from "@/app/(student)/student/upload/styled";
+import { UploadJob } from "@/components/UploadJob";
 import {
   Briefcase,
   Clock8,
@@ -7,8 +11,10 @@ import {
   Plus,
   Search,
 } from "lucide-react";
+import { useState } from "react";
 
 export default function JobPostingsPage() {
+  const [openJobModal, setOpenJobModal] = useState(false);
   return (
     <div
       style={{
@@ -62,6 +68,7 @@ export default function JobPostingsPage() {
               color: "#fff",
               cursor: "pointer",
             }}
+            onClick={() => setOpenJobModal(true)}
           >
             {" "}
             <Plus />
@@ -239,6 +246,13 @@ export default function JobPostingsPage() {
           </div>
         </div>
       </div>
+      <FormModal
+        open={openJobModal}
+        onClose={() => setOpenJobModal(false)}
+        style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
+      >
+        <UploadJob setOpenJobModal={setOpenJobModal} />
+      </FormModal>
     </div>
   );
 }
