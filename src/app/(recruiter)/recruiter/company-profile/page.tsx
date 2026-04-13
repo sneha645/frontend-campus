@@ -1,4 +1,64 @@
+"use client";
+
+import axios from "axios";
+import React, { useState } from "react";
+
 export default function CompanyProfilePage() {
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+
+  const [companyProfile, setCompanyProfile] = useState({
+    companyName: "",
+    website: "",
+    industry: "",
+    companySize: "",
+    aboutCompany: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (
+      !companyProfile.companyName ||
+      !companyProfile.website ||
+      !companyProfile.industry ||
+      !companyProfile.companySize ||
+      !companyProfile.aboutCompany ||
+      !companyLogo
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("companyName", companyProfile.companyName);
+      formDataToSend.append("companyDescription", companyProfile.aboutCompany);
+      formDataToSend.append("website", companyProfile.website);
+      formDataToSend.append("industry", companyProfile.industry);
+      formDataToSend.append("companySize", companyProfile.companySize);
+
+      if (companyLogo) {
+        formDataToSend.append("logo", companyLogo);
+      }
+      const response = await axios.post(
+        "http://localhost:3000/api/recruiter/createCompanyProfile",
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -60,7 +120,10 @@ export default function CompanyProfilePage() {
           </div>
         </div>
         <hr style={{ color: "#E5E7EB" }} />
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+        >
           <div
             style={{
               padding: "20px",
@@ -88,6 +151,13 @@ export default function CompanyProfilePage() {
                   type="text"
                   id="companyName"
                   placeholder="Tech Mahindra Pvt Ltd"
+                  value={companyProfile.companyName}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      companyName: e.target.value,
+                    })
+                  }
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -108,6 +178,13 @@ export default function CompanyProfilePage() {
                   type="text"
                   id="companyName"
                   placeholder="www.techmahindra.com"
+                  value={companyProfile.website}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      website: e.target.value,
+                    })
+                  }
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -128,6 +205,13 @@ export default function CompanyProfilePage() {
                   type="text"
                   id="companyName"
                   placeholder="IT Services & Consulting"
+                  value={companyProfile.industry}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      industry: e.target.value,
+                    })
+                  }
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -148,6 +232,13 @@ export default function CompanyProfilePage() {
                   type="text"
                   id="companyName"
                   placeholder="1001-5000 employees"
+                  value={companyProfile.companySize}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      companySize: e.target.value,
+                    })
+                  }
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -168,6 +259,13 @@ export default function CompanyProfilePage() {
               <textarea
                 id="companyName"
                 placeholder="Write a short description of your company"
+                value={companyProfile.aboutCompany}
+                onChange={(e) =>
+                  setCompanyProfile({
+                    ...companyProfile,
+                    aboutCompany: e.target.value,
+                  })
+                }
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -208,57 +306,63 @@ export default function CompanyProfilePage() {
                   type="file"
                   id="companyLogo"
                   style={{ cursor: "pointer" }}
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setCompanyLogo(e.target.files[0]);
+                    }
+                  }}
                 />
               </div>
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            gap: "10px",
-            padding: "20px",
-          }}
-        >
-          <button
+          <div
             style={{
-              backgroundColor: "#0b75ff",
-              color: "#ffffff",
-              padding: "10px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              gap: "10px",
+              padding: "20px",
             }}
           >
-            Submit
-          </button>
-          <button
-            style={{
-              backgroundColor: "#e5e7eb",
-              color: "#000000",
-              padding: "10px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Reset
-          </button>
-          <button
-            style={{
-              backgroundColor: "#0b75ff",
-              color: "#ffffff",
-              padding: "10px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Update
-          </button>
-        </div>
+            <button
+              style={{
+                backgroundColor: "#0b75ff",
+                color: "#ffffff",
+                padding: "10px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Submit
+            </button>
+            <button
+              style={{
+                backgroundColor: "#e5e7eb",
+                color: "#000000",
+                padding: "10px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Reset
+            </button>
+            <button
+              style={{
+                backgroundColor: "#0b75ff",
+                color: "#ffffff",
+                padding: "10px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Update
+            </button>
+          </div>
+        </form>
       </div>
       <div
         style={{

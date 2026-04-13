@@ -29,7 +29,6 @@ export default function RecruiterDashboardPage() {
   //   getCompanyProfile();
   // }, []);
 
-
   return (
     // <div
     //   style={{
@@ -79,8 +78,8 @@ export default function RecruiterDashboardPage() {
     //           zIndex: 10
     //         }}>
     //           {companyProfile.logo ? (
-    //             <img 
-    //               src={companyProfile.logo?.startsWith("http") ? companyProfile.logo : `http://localhost:3000${companyProfile.logo}`} 
+    //             <img
+    //               src={companyProfile.logo?.startsWith("http") ? companyProfile.logo : `http://localhost:3000${companyProfile.logo}`}
     //               alt={companyProfile.companyName}
     //               style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "50%" }}
     //             />
@@ -92,18 +91,18 @@ export default function RecruiterDashboardPage() {
 
     //       {/* Content Section */}
     //       <div style={{ padding: "60px 40px 40px 40px" }}>
-    //         <h1 style={{ 
-    //           margin: 0, 
-    //           fontSize: "32px", 
-    //           fontWeight: 800, 
+    //         <h1 style={{
+    //           margin: 0,
+    //           fontSize: "32px",
+    //           fontWeight: 800,
     //           color: "#0f172a",
     //           letterSpacing: "-0.5px"
     //         }}>
     //           {companyProfile.companyName}
     //         </h1>
-            
-    //         <div style={{ 
-    //           margin: "12px 0 32px 0", 
+
+    //         <div style={{
+    //           margin: "12px 0 32px 0",
     //           color: "#64748b",
     //           fontSize: "15px",
     //           display: "flex",
@@ -124,7 +123,7 @@ export default function RecruiterDashboardPage() {
     //             <a href={companyProfile.website} target="_blank" rel="noopener noreferrer" style={{ color: "#64748b", textDecoration: "underline", textUnderlineOffset: "4px" }}>{companyProfile.website}</a>
     //           </span>
     //         </div>
-            
+
     //         <div style={{
     //           background: "#f8fafc",
     //           padding: "24px 32px",
