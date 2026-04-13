@@ -22,7 +22,7 @@ import {
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
-import { Building2, LayoutDashboard, LogOutIcon, User } from "lucide-react";
+import { Briefcase, Building2, LayoutDashboard, LogOutIcon, User } from "lucide-react";
 
 const RecruiterMenuItems = [
   {
@@ -38,7 +38,7 @@ const RecruiterMenuItems = [
   {
     path: "/recruiter/job-postings",
     label: "Job Postings",
-    icon: User,
+    icon: Briefcase,
   },
   {
     path: "/recruiter/applications",
