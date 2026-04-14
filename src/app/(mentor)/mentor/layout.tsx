@@ -23,38 +23,34 @@ import {
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
 import {
-  BookOpenText,
-  Briefcase,
-  FolderOpen,
   LayoutDashboard,
   LogOutIcon,
   MessageSquare,
+  Settings,
   User,
 } from "lucide-react";
 
 const StudentMenuItems = [
   {
-    path: "/student/dashboard",
+    path: "/mentor/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
   },
   {
-    path: "/student/profile-and-resume",
-    label: "Profile & Resume",
+    path: "/mentor/feedbacks",
+    label: "Feedbacks",
+    icon: MessageSquare,
+  },
+  {
+    path: "/mentor/students",
+    label: "Students",
     icon: User,
   },
   {
-    path: "/student/projects-and-internships",
-    label: "Projects & Internships",
-    icon: FolderOpen,
+    path: "/student/settings",
+    label: "Settings",
+    icon: Settings,
   },
-  {
-    path: "/student/jobs-and-internships",
-    label: "Jobs & Internships",
-    icon: Briefcase,
-  },
-  { path: "/student/feedbacks", label: "Feedbacks", icon: MessageSquare },
-  { path: "/student/assignments", label: "Assignments", icon: BookOpenText },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -68,7 +64,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (!user) {
     redirect("/sign-in");
   }
-  if (user.role !== "student") {
+  if (user.role !== "mentor") {
     redirect(`/${user.role}/dashboard`);
   }
 

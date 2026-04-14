@@ -33,7 +33,7 @@ import { Project, Internship } from "@/types/type";
 import { UploadProject } from "@/components/UploadProject";
 import { UploadInternship } from "@/components/UploadInternship";
 
-export default function UploadPage() {
+export default function ProjectAndInternshipPage() {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
