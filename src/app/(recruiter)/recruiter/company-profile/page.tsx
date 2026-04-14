@@ -41,7 +41,7 @@ export default function CompanyProfilePage() {
       const formDataToSend = new FormData();
 
       formDataToSend.append("companyName", companyProfile.companyName);
-      formDataToSend.append("companyDescription", companyProfile.aboutCompany);
+      formDataToSend.append("aboutCompany", companyProfile.aboutCompany);
       formDataToSend.append("website", companyProfile.website);
       formDataToSend.append("industry", companyProfile.industry);
       formDataToSend.append("companySize", companyProfile.companySize);
@@ -427,7 +427,23 @@ export default function CompanyProfilePage() {
         </form>
       </div>
 
-      {user?.company && (
+      {user?.company === null ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "35%",
+            height: "100%",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff",
+          }}
+        >
+          <p>No profile found</p>
+        </div>
+      ) : (
         <div
           style={{
             display: "flex",
