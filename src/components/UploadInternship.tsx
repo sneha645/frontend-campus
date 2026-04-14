@@ -248,8 +248,6 @@ export const UploadInternship = ({
           />
         </FormInputContainer>
 
-
-
         <FormButtonContainer>
           <FormButton type="submit">Submit</FormButton>
 
