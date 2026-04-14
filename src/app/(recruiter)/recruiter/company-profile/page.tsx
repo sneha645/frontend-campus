@@ -1,10 +1,12 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import React, { useState } from "react";
 
 export default function CompanyProfilePage() {
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const { user } = useAuth();
 
   const [companyProfile, setCompanyProfile] = useState({
     companyName: "",
@@ -12,6 +14,8 @@ export default function CompanyProfilePage() {
     industry: "",
     companySize: "",
     aboutCompany: "",
+    location: "",
+    companyEmail: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +27,9 @@ export default function CompanyProfilePage() {
       !companyProfile.industry ||
       !companyProfile.companySize ||
       !companyProfile.aboutCompany ||
-      !companyLogo
+      !companyLogo ||
+      !companyProfile.location ||
+      !companyProfile.companyEmail
     ) {
       alert("Please fill all the fields");
       return;
@@ -39,6 +45,8 @@ export default function CompanyProfilePage() {
       formDataToSend.append("website", companyProfile.website);
       formDataToSend.append("industry", companyProfile.industry);
       formDataToSend.append("companySize", companyProfile.companySize);
+      formDataToSend.append("location", companyProfile.location);
+      formDataToSend.append("companyEmail", companyProfile.companyEmail);
 
       if (companyLogo) {
         formDataToSend.append("logo", companyLogo);
@@ -75,7 +83,7 @@ export default function CompanyProfilePage() {
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "80%",
+          width: "65%",
           border: "1px solid #E5E7EB",
           borderRadius: "8px",
           backgroundColor: "#ffffff",
@@ -247,6 +255,60 @@ export default function CompanyProfilePage() {
                   }}
                 />
               </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  placeholder="Pune, Maharashtra"
+                  value={companyProfile.location}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      location: e.target.value,
+                    })
+                  }
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <label htmlFor="companyEmail">Company Email</label>
+                <input
+                  type="text"
+                  id="companyEmail"
+                  placeholder="support@grr.la"
+                  value={companyProfile.companyEmail}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      companyEmail: e.target.value,
+                    })
+                  }
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "4px",
+                  }}
+                />
+              </div>
             </div>
             <div
               style={{
@@ -364,146 +426,149 @@ export default function CompanyProfilePage() {
           </div>
         </form>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "30%",
-          border: "1px solid #E5E7EB",
-          borderRadius: "8px",
-          backgroundColor: "#ffffff",
-          height: "fit-content",
-        }}
-      >
+
+      {user?.company && (
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "10px",
-            padding: "20px",
+            width: "35%",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff",
+            height: "fit-content",
           }}
         >
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
+              flexDirection: "column",
               gap: "10px",
+              padding: "20px",
             }}
           >
             <div
               style={{
-                backgroundColor: "#ddecff",
-                padding: "20px",
-                borderRadius: "4px",
-                height: "80px",
-                width: "80px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                fontSize: "24px",
-                fontWeight: "600",
-                color: "#0b75ff",
+                flexDirection: "row",
+                gap: "10px",
               }}
             >
-              TM
+              <div
+                style={{
+                  backgroundColor: "#ddecff",
+                  padding: "20px",
+                  borderRadius: "4px",
+                  height: "80px",
+                  width: "80px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "24px",
+                  fontWeight: "600",
+                  color: "#0b75ff",
+                }}
+              >
+                TM
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
+                  Tech Mahindra
+                </h1>
+                <a href="" style={{ color: "#0b75ff" }}>
+                  www.techmahindra.com
+                </a>
+              </div>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+              commodi necessitatibus, fugit cupiditate dolores velit ipsam
+              provident unde aliquam! Non?
+            </p>
+          </div>
+          <hr
+            style={{
+              color: "#E5E7EB",
+              height: "1px",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              padding: "20px",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                gap: "10px",
+              }}
+            >
+              <label htmlFor="" style={{ color: "#666666" }}>
+                Industry
+              </label>
+              <p>IT Services & Consulting</p>
             </div>
             <div
               style={{
+                width: "100%",
                 display: "flex",
-                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                gap: "10px",
               }}
             >
-              <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
-                Tech Mahindra
-              </h1>
-              <a href="" style={{ color: "#0b75ff" }}>
-                www.techmahindra.com
-              </a>
+              <label htmlFor="" style={{ color: "#666666" }}>
+                Company Size
+              </label>
+              <p>1001-5000 employees</p>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                gap: "10px",
+              }}
+            >
+              <label htmlFor="" style={{ color: "#666666" }}>
+                Campus Hiring
+              </label>
+              <p>Internship and Full-time</p>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                gap: "10px",
+              }}
+            >
+              <label htmlFor="" style={{ color: "#666666" }}>
+                Primary Audience
+              </label>
+              <p>Undergraduate and Postgraduate</p>
             </div>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-            commodi necessitatibus, fugit cupiditate dolores velit ipsam
-            provident unde aliquam! Non?
-          </p>
         </div>
-        <hr
-          style={{
-            color: "#E5E7EB",
-            height: "1px",
-          }}
-        />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Industry
-            </label>
-            <p>IT Services & Consulting</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Company Size
-            </label>
-            <p>1001-5000 employees</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Campus Hiring
-            </label>
-            <p>Internship and Full-time</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Primary Audience
-            </label>
-            <p>Undergraduate and Postgraduate</p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

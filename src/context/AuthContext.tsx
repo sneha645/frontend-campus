@@ -43,6 +43,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
+      console.log("me", res.data.user);
+
       setUser(res.data.user);
     } catch (error) {
       console.error("Error fetching user:", error);

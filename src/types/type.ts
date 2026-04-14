@@ -10,9 +10,27 @@ export interface User {
   companyName?: string;
   createdAt?: string;
   updatedAt?: string;
-  studentProjects?: Project[];
-  mentorProjects?: Project[];
-  company?: Company;
+  studentProjects?: any;
+  mentorProjects?: any;
+  company?: any;
+  jobs?: any;
+}
+
+export interface Job {
+  job_id?: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  technologies: string[] | string;
+  githubUrl: string;
+  projectUrl: string;
+  imageUrl: string;
+  status: string;
+  mentor: string;
+  student: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Company {
