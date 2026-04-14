@@ -23,6 +23,7 @@ import {
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
 import {
+  Briefcase,
   FolderOpen,
   LayoutDashboard,
   LogOutIcon,
@@ -37,8 +38,16 @@ const StudentMenuItems = [
     label: "Dashboard",
     icon: LayoutDashboard,
   },
-  { path: "/student/profile", label: "Profile", icon: User },
-  { path: "/student/upload", label: "Upload", icon: Upload },
+  {
+    path: "/student/profile-and-resume",
+    label: "Profile & Resume",
+    icon: User,
+  },
+  {
+    path: "/student/jobs-and-internships",
+    label: "Jobs & Internships",
+    icon: Briefcase,
+  },
   { path: "/student/projects", label: "Projects", icon: FolderOpen },
   { path: "/student/feedback", label: "Feedback", icon: MessageSquare },
 ];
