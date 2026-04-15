@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Raleway } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { StyledComponentsRegistry } from "../lib/StyledComponentRegistry";
 import { AuthProvider } from "@/context/AuthContext";
 
-const poppins = Raleway({
+const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],

@@ -155,6 +155,28 @@ export const Input = styled.input`
   }
 `;
 
+export const Select = styled.select`
+  border: none;
+  outline: none;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+`;
+
+export const Option = styled.option`
+  font-size: 14px;
+`;
+
 export const PasswordInput = styled.div`
   position: relative;
   border: none;

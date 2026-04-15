@@ -18,6 +18,7 @@ import {
   LogoIcon,
   LogoText,
   LogoWrapper,
+  Option,
   PasswordInput,
   QuoteSection,
   QuoteText,
@@ -25,6 +26,7 @@ import {
   RightSection,
   Role,
   RoleContainer,
+  Select,
   SignInButton,
   Subtitle,
   Title,
@@ -33,7 +35,6 @@ import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
-import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -41,7 +42,6 @@ import { useAuth } from "@/context/AuthContext";
 export default function SignUpPage() {
   const { registerStudent, registerMentor, registerRecruiter, success, error } =
     useAuth();
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [role, setRole] = useState("student");
@@ -50,28 +50,44 @@ export default function SignUpPage() {
     email: "",
     password: "",
     role: "student",
+    year: "",
+    branch: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!user.name || !user.email || !user.password || !user.role) {
-      setMessage("Please fill all the fields");
-      return;
-    }
-
     try {
       if (role === "student") {
+        if (
+          !user.name ||
+          !user.email ||
+          !user.password ||
+          !user.role ||
+          !user.year ||
+          !user.branch
+        ) {
+          setMessage("Please fill all the fields");
+          return;
+        }
         await registerStudent(user.email, user.password, user.name, user.role);
         if (success) {
           setMessage(success);
         }
       } else if (role === "mentor") {
+        if (!user.name || !user.email || !user.password || !user.role) {
+          setMessage("Please fill all the fields");
+          return;
+        }
         await registerMentor(user.email, user.password, user.name, user.role);
         if (success) {
           setMessage(success);
         }
       } else if (role === "recruiter") {
+        if (!user.name || !user.email || !user.password || !user.role) {
+          setMessage("Please fill all the fields");
+          return;
+        }
         await registerRecruiter(
           user.email,
           user.password,
@@ -193,6 +209,36 @@ export default function SignUpPage() {
                 </EyeIcon>
               </PasswordInput>
             </InputGroup>
+
+            {role === "student" && (
+              <InputGroup>
+                <Label>Year</Label>
+                <Select name="" id="">
+                  <Option value="1">1st Year</Option>
+                  <Option value="2">2nd Year</Option>
+                  <Option value="3">3rd Year</Option>
+                  <Option value="4">4th Year</Option>
+                </Select>
+              </InputGroup>
+            )}
+
+            {role === "student" && (
+              <InputGroup>
+                <Label>Branch</Label>
+                <Select name="" id="">
+                  <Option value="computer-science">Computer Science</Option>
+                  <Option value="information-technology">
+                    Information Technology
+                  </Option>
+                  <Option value="electronics-and-communication">
+                    Electronics and Communication
+                  </Option>
+                  <Option value="mechanical-engineering">
+                    Mechanical Engineering
+                  </Option>
+                </Select>
+              </InputGroup>
+            )}
 
             <SignInButton type="submit" style={{ marginTop: "10px" }}>
               Sign Up
