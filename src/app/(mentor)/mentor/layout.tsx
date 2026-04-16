@@ -61,6 +61,11 @@ const StudentMenuItems = [
     label: "Settings",
     icon: Settings,
   },
+  {
+    path: "/mentor/assignments",
+    label: "Assignments",
+    icon: MessageSquare,
+  },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
