@@ -1,6 +1,6 @@
 "use client";
 
-import { mentorTableColumns, recruiterTableColumns, User } from "@/types/type";
+import { mentorTableColumns, User } from "@/types/type";
 import {
   Paper,
   TableContainer,
@@ -9,15 +9,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Button,
   Box,
   TablePagination,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Recruiter } from "@/types/type";
 import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
-import { Dot, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   ApproveButton,
   HeadingContainer,
@@ -42,7 +39,7 @@ export default function MentorsPage() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("http://localhost:3000/api/mentor/all", {
+      const response = await axios.get("http://localhost:3000/api/admin/all-mentors", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,6 +87,24 @@ export default function MentorsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      fetchMentor();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/api/admin/reject/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -198,7 +213,7 @@ export default function MentorsPage() {
                           <RejectButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
-                              mentor.user_id && handleApprove(mentor.user_id)
+                              mentor.user_id && handleReject(mentor.user_id)
                             }
                           >
                             Reject

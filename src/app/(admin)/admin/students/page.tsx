@@ -42,7 +42,7 @@ export default function StudentsPage() {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/student/all",
+        "http://localhost:3000/api/admin/all-students",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,6 +92,24 @@ export default function StudentsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      fetchStudents();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/api/admin/reject/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -200,7 +218,7 @@ export default function StudentsPage() {
                           <RejectButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
-                              student.user_id && handleApprove(student.user_id)
+                              student.user_id && handleReject(student.user_id)
                             }
                           >
                             Reject

@@ -55,6 +55,7 @@ export interface Company {
 }
 
 export interface Project {
+  project_id: string;
   title: string;
   description: string;
   startDate: string;
@@ -64,8 +65,8 @@ export interface Project {
   projectUrl: string;
   imageUrl: string;
   status: string;
-  mentor: string;
-  student: string;
+  mentor: User | string;
+  student: User | string;
   createdAt: string;
   updatedAt: string;
 }
@@ -78,8 +79,8 @@ export interface Internship {
   technologies: string[] | string;
   certificateImage: string;
   status: string;
-  mentor: string;
-  student: string;
+  mentor: User | string;
+  student: User | string;
   createdAt: string;
   updatedAt: string;
 }
