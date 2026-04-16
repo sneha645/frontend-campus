@@ -37,6 +37,16 @@ const StudentMenuItems = [
     icon: LayoutDashboard,
   },
   {
+    path: "/mentor/projects",
+    label: "Projects",
+    icon: MessageSquare,
+  },
+  {
+    path: "/mentor/internships",
+    label: "Internships",
+    icon: MessageSquare,
+  },
+  {
     path: "/mentor/feedbacks",
     label: "Feedbacks",
     icon: MessageSquare,
