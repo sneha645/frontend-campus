@@ -127,7 +127,7 @@ export interface AuthContextType {
 }
 
 export interface RecruiterTableColumns {
-  id: "name" | "companyName" | "email" | "createdAt" | "status" | "actions";
+  id: "name" | "email" | "createdAt" | "status" | "actions";
   label: string;
   minWidth: number;
   align: "left" | "right" | "center";
@@ -135,7 +135,6 @@ export interface RecruiterTableColumns {
 
 export const recruiterTableColumns: readonly RecruiterTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
-  { id: "companyName", label: "Company Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
   { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
   { id: "status", label: "Status", minWidth: 100, align: "left" },

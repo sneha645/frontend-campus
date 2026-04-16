@@ -2,11 +2,11 @@
 
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function CompanyProfilePage() {
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
-  const { user } = useAuth();
+  const [profile, setProfile] = useState(null);
 
   const [companyProfile, setCompanyProfile] = useState({
     companyName: "",
@@ -49,7 +49,7 @@ export default function CompanyProfilePage() {
       formDataToSend.append("companyEmail", companyProfile.companyEmail);
 
       if (companyLogo) {
-        formDataToSend.append("logo", companyLogo);
+        formDataToSend.append("companyLogo", companyLogo);
       }
       const response = await axios.post(
         "http://localhost:3000/api/recruiter/createCompanyProfile",
@@ -66,6 +66,30 @@ export default function CompanyProfilePage() {
       console.error(error);
     }
   };
+
+  const getCompanyProfile = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/recruiter/getCompanyProfile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.data) {
+        setProfile(response.data);
+      }
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCompanyProfile();
+  }, []);
 
   return (
     <div
@@ -427,7 +451,7 @@ export default function CompanyProfilePage() {
         </form>
       </div>
 
-      {user?.company === null ? (
+      {/* {user?.company && (
         <div
           style={{
             display: "flex",
@@ -443,148 +467,145 @@ export default function CompanyProfilePage() {
         >
           <p>No profile found</p>
         </div>
-      ) : (
+      ) : ( */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "35%",
+          border: "1px solid #E5E7EB",
+          borderRadius: "8px",
+          backgroundColor: "#ffffff",
+          height: "fit-content",
+        }}
+      >
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            width: "35%",
-            border: "1px solid #E5E7EB",
-            borderRadius: "8px",
-            backgroundColor: "#ffffff",
-            height: "fit-content",
+            gap: "10px",
+            padding: "20px",
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
+              alignItems: "center",
+              flexDirection: "row",
               gap: "10px",
-              padding: "20px",
             }}
           >
             <div
               style={{
+                backgroundColor: "#ddecff",
+                padding: "20px",
+                borderRadius: "4px",
+                height: "80px",
+                width: "80px",
                 display: "flex",
                 alignItems: "center",
-                flexDirection: "row",
-                gap: "10px",
+                justifyContent: "center",
+                fontSize: "24px",
+                fontWeight: "600",
+                color: "#0b75ff",
+                textTransform: "uppercase",
               }}
             >
-              <div
-                style={{
-                  backgroundColor: "#ddecff",
-                  padding: "20px",
-                  borderRadius: "4px",
-                  height: "80px",
-                  width: "80px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "24px",
-                  fontWeight: "600",
-                  color: "#0b75ff",
-                }}
-              >
-                TM
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
-                  Tech Mahindra
-                </h1>
-                <a href="" style={{ color: "#0b75ff" }}>
-                  www.techmahindra.com
-                </a>
-              </div>
+              {profile?.companyName?.charAt(0)}
             </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-              commodi necessitatibus, fugit cupiditate dolores velit ipsam
-              provident unde aliquam! Non?
-            </p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
+                {profile?.companyName}
+              </h1>
+              <a href="" style={{ color: "#0b75ff" }}>
+                {profile?.website}
+              </a>
+            </div>
           </div>
-          <hr
-            style={{
-              color: "#E5E7EB",
-              height: "1px",
-            }}
-          />
+          <p>{profile?.aboutCompany}</p>
+        </div>
+        <hr
+          style={{
+            color: "#E5E7EB",
+            height: "1px",
+          }}
+        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            padding: "20px",
+          }}
+        >
           <div
             style={{
+              width: "100%",
               display: "flex",
-              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
               gap: "10px",
-              padding: "20px",
             }}
           >
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                gap: "10px",
-              }}
-            >
-              <label htmlFor="" style={{ color: "#666666" }}>
-                Industry
-              </label>
-              <p>IT Services & Consulting</p>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                gap: "10px",
-              }}
-            >
-              <label htmlFor="" style={{ color: "#666666" }}>
-                Company Size
-              </label>
-              <p>1001-5000 employees</p>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                gap: "10px",
-              }}
-            >
-              <label htmlFor="" style={{ color: "#666666" }}>
-                Campus Hiring
-              </label>
-              <p>Internship and Full-time</p>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                gap: "10px",
-              }}
-            >
-              <label htmlFor="" style={{ color: "#666666" }}>
-                Primary Audience
-              </label>
-              <p>Undergraduate and Postgraduate</p>
-            </div>
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Industry
+            </label>
+            <p>{profile?.industry}</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Company Size
+            </label>
+            <p>{profile?.companySize}</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Location
+            </label>
+            <p>{profile?.location}</p>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: "10px",
+            }}
+          >
+            <label htmlFor="" style={{ color: "#666666" }}>
+              Email
+            </label>
+            <p>{profile?.companyEmail}</p>
           </div>
         </div>
-      )}
+      </div>
+      {/* )} */}
     </div>
   );
 }

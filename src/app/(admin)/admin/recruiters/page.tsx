@@ -39,10 +39,10 @@ export default function RecruiterPage() {
   console.log("recruiters", recruiters);
 
   const fetchRecruiters = async () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/recruiter/all",
+        "http://localhost:3000/api/admin/all-recruiters",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -88,10 +88,28 @@ export default function RecruiterPage() {
   }, []);
 
   const handleApprove = async (id: string) => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(response);
+      fetchRecruiters();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/api/admin/reject/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -163,9 +181,7 @@ export default function RecruiterPage() {
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       {recruiter.name}
                     </TableCell>
-                    <TableCell style={{ fontFamily: "Poppins" }}>
-                      {recruiter.companyName}
-                    </TableCell>
+
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       {recruiter.email}
                     </TableCell>
@@ -190,7 +206,7 @@ export default function RecruiterPage() {
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
                       {recruiter.status === "pending" ? (
-                        <Box sx={{display: 'flex', gap: '10px'}}>
+                        <Box sx={{ display: "flex", gap: "10px" }}>
                           <ApproveButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
@@ -204,7 +220,7 @@ export default function RecruiterPage() {
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
                               recruiter.user_id &&
-                              handleApprove(recruiter.user_id)
+                              handleReject(recruiter.user_id)
                             }
                           >
                             Reject
