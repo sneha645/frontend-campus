@@ -491,14 +491,38 @@ const ProjectModal = ({
 }) => {
   const [feedback, setFeedback] = useState("");
 
-  const handleAction = async (status: "approved" | "rejected") => {
+  // const handleAction = async (status: "approved" | "rejected") => {
+  //   try {
+  //     await axios.post(
+  //       `http://localhost:3000/api/mentor/${status === "approved" ? "approveProject" : "rejectProject"}/${project?.project_id}`,
+  //       {
+  //         feedback,
+  //         status,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       },
+  //     );
+
+  //     refreshProjects();
+  //     onClose();
+  //     setFeedback("");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const handleAction = async (data: {
+    status: "approved" | "rejected";
+    feedback: string;
+  }) => {
     try {
+      console.log(data);
       await axios.post(
-        `http://localhost:3000/api/mentor/${status === "approved" ? "approveProject" : "rejectProject"}/${project?.project_id}`,
-        {
-          feedback,
-          status,
-        },
+        `http://localhost:3000/api/mentor/approveProject/${project?.project_id}`,
+        data,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -566,11 +590,15 @@ const ProjectModal = ({
             />
 
             <Box sx={{ display: "flex", gap: "10px" }}>
-              <ApproveButton onClick={() => handleAction("approved")}>
+              <ApproveButton
+                onClick={() => handleAction({ status: "approved", feedback })}
+              >
                 Approve
               </ApproveButton>
 
-              <RejectButton onClick={() => handleAction("rejected")}>
+              <RejectButton
+                onClick={() => handleAction({ status: "rejected", feedback })}
+              >
                 Reject
               </RejectButton>
             </Box>
