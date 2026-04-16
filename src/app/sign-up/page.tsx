@@ -36,7 +36,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
@@ -70,7 +69,15 @@ export default function SignUpPage() {
           setMessage("Please fill all the fields");
           return;
         }
-        await registerStudent(user.email, user.password, user.name, user.role);
+        console.log(user);
+        await registerStudent(
+          user.email,
+          user.password,
+          user.name,
+          user.role,
+          user.year,
+          user.branch,
+        );
         if (success) {
           setMessage(success);
         }
@@ -213,7 +220,12 @@ export default function SignUpPage() {
             {role === "student" && (
               <InputGroup>
                 <Label>Year</Label>
-                <Select name="" id="">
+                <Select
+                  name=""
+                  id=""
+                  value={user.year}
+                  onChange={(e) => setUser({ ...user, year: e.target.value })}
+                >
                   <Option value="1">1st Year</Option>
                   <Option value="2">2nd Year</Option>
                   <Option value="3">3rd Year</Option>
@@ -225,7 +237,12 @@ export default function SignUpPage() {
             {role === "student" && (
               <InputGroup>
                 <Label>Branch</Label>
-                <Select name="" id="">
+                <Select
+                  name=""
+                  id=""
+                  value={user.branch}
+                  onChange={(e) => setUser({ ...user, branch: e.target.value })}
+                >
                   <Option value="computer-science">Computer Science</Option>
                   <Option value="information-technology">
                     Information Technology

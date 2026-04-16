@@ -4,16 +4,25 @@ export interface User {
   email: string;
   password: string;
   role: string;
+  year?: string;
+  branch?: string;
+  department?: string;
+  specialization?: string;
+  experience?: string;
+  studentProjects?: any;
+  mentorProjects?: any;
+  studentInternship?: any;
+  mentorInternship?: any;
+  company?: any;
+  applications?: any;
+  assignments?: any;
+  jobs?: any;
   isVerified?: boolean;
   isDeleted?: boolean;
   status?: string;
   companyName?: string;
   createdAt?: string;
   updatedAt?: string;
-  studentProjects?: any;
-  mentorProjects?: any;
-  company?: any;
-  jobs?: any;
 }
 
 export interface Job {
@@ -93,6 +102,8 @@ export interface AuthContextType {
     password: string,
     name: string,
     role: string,
+    year: string,
+    branch: string,
   ) => Promise<void>;
   registerMentor: (
     email: string,

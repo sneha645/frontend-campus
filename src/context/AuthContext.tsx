@@ -43,9 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-      console.log("me", res.data.user);
-
-      setUser(res.data.user);
+      setUser(res.data);
     } catch (error) {
       console.error("Error fetching user:", error);
       localStorage.removeItem("token");
@@ -72,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         router.push(`/${user.role}/dashboard`);
 
-        // setSuccess(res.data.message);
+        setSuccess(res.data.message);
         console.log(res.data.message);
       }
     } catch (error) {
@@ -121,7 +119,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string,
     name: string,
     role: string,
-  ) => register("/auth/register-student", { email, password, name, role });
+    year: string,
+    branch: string,
+  ) =>
+    register("/auth/register-student", {
+      email,
+      password,
+      name,
+      role,
+      year,
+      branch,
+    });
 
   const registerMentor = (
     email: string,
