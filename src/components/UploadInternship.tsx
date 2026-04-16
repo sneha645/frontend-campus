@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 
 import axios from "axios";
+
+import { User } from "@/types/type";
+import { Alert } from "@mui/material";
 import {
   Form,
   FormButton,
@@ -19,9 +22,7 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "../app/(student)/student/upload/styled";
-import { User } from "@/types/type";
-import { Alert } from "@mui/material";
+} from "@/app/(student)/student/projects-and-internships/styled";
 
 export const UploadInternship = ({
   setOpenInternshipModal,
@@ -40,7 +41,6 @@ export const UploadInternship = ({
     endDate: "",
     technologies: "",
     projectUrl: "",
-    certificateImage: "",
     mentorId: "",
   });
 
@@ -77,7 +77,7 @@ export const UploadInternship = ({
       }
 
       const response = await axios.post(
-        "http://localhost:3000/api/student/uploadInternship",
+        "http://localhost:3000/api/student/internship",
         formDataToSend,
         {
           headers: {
@@ -95,7 +95,6 @@ export const UploadInternship = ({
         endDate: "",
         technologies: "",
         projectUrl: "",
-        certificateImage: "",
         mentorId: "",
         company: "",
       });
@@ -112,11 +111,14 @@ export const UploadInternship = ({
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("http://localhost:3000/api/mentor/all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "http://localhost:3000/api/student/mentors",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       console.log(response);
       const data = await response.data;
       setMentors(data);
@@ -263,7 +265,6 @@ export const UploadInternship = ({
                 technologies: "",
                 mentorId: "",
                 projectUrl: "",
-                certificateImage: "",
               });
             }}
           >

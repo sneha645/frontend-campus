@@ -17,7 +17,7 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "../app/(student)/student/upload/styled";
+} from "@/app/(student)/student/projects-and-internships/styled";
 import axios from "axios";
 import { User } from "@/types/type";
 import { Alert } from "@mui/material";
@@ -73,11 +73,13 @@ export const UploadProject = ({
       formDataToSend.append("mentorId", formData.mentorId);
 
       if (image) {
-        formDataToSend.append("image", image);
+        formDataToSend.append("projectImage", image);
       }
 
+      console.log(formDataToSend);
+
       const response = await axios.post(
-        "http://localhost:3000/api/student/uploadProject",
+        "http://localhost:3000/api/student/project",
         formDataToSend,
         {
           headers: {
@@ -110,11 +112,14 @@ export const UploadProject = ({
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("http://localhost:3000/api/mentor/all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "http://localhost:3000/api/student/mentors",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       console.log(response);
       const data = await response.data;
       setMentors(data);

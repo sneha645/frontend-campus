@@ -136,7 +136,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string,
     name: string,
     role: string,
-  ) => register("/auth/register-mentor", { email, password, name, role });
+    department: string,
+    experience: string,
+    specialization: string,
+  ) =>
+    register("/auth/register-mentor", {
+      email,
+      password,
+      name,
+      role,
+      department,
+      experience,
+      specialization,
+    });
 
   const registerRecruiter = (
     email: string,

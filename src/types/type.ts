@@ -110,6 +110,9 @@ export interface AuthContextType {
     password: string,
     name: string,
     role: string,
+    department: string,
+    experience: string,
+    specialization: string,
   ) => Promise<void>;
   registerRecruiter: (
     email: string,

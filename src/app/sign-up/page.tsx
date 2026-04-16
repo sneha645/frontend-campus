@@ -51,6 +51,9 @@ export default function SignUpPage() {
     role: "student",
     year: "",
     branch: "",
+    department: "",
+    specialization: "",
+    experience: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,11 +85,27 @@ export default function SignUpPage() {
           setMessage(success);
         }
       } else if (role === "mentor") {
-        if (!user.name || !user.email || !user.password || !user.role) {
+        if (
+          !user.name ||
+          !user.email ||
+          !user.password ||
+          !user.role ||
+          !user.department ||
+          !user.experience ||
+          !user.specialization
+        ) {
           setMessage("Please fill all the fields");
           return;
         }
-        await registerMentor(user.email, user.password, user.name, user.role);
+        await registerMentor(
+          user.email,
+          user.password,
+          user.name,
+          user.role,
+          user.department,
+          user.experience,
+          user.specialization,
+        );
         if (success) {
           setMessage(success);
         }
@@ -153,7 +172,7 @@ export default function SignUpPage() {
           </HeadingSection>
 
           <RoleContainer>
-            {["student", "faculty", "recruiter"].map((item) => (
+            {["student", "mentor", "recruiter"].map((item) => (
               <Role
                 key={item}
                 onClick={() => {
@@ -216,6 +235,85 @@ export default function SignUpPage() {
                 </EyeIcon>
               </PasswordInput>
             </InputGroup>
+
+            {role === "mentor" && (
+              <InputGroup>
+                <Label>Department</Label>
+                <Select
+                  name=""
+                  id=""
+                  value={user.department}
+                  onChange={(e) =>
+                    setUser({ ...user, department: e.target.value })
+                  }
+                >
+                  <Option value="computer-science">Computer Science</Option>
+                  <Option value="information-technology">
+                    Information Technology
+                  </Option>
+                  <Option value="electronics-and-communication">
+                    Electronics and Communication
+                  </Option>
+                  <Option value="mechanical-engineering">
+                    Mechanical Engineering
+                  </Option>
+                  <Option value="civil-engineering">Civil Engineering</Option>
+                  <Option value="electrical-engineering">
+                    Electrical Engineering
+                  </Option>
+                  <Option value="electronics-and-telecommunication">
+                    Electronics and Telecommunication
+                  </Option>
+                  <Option value="biotechnology">Biotechnology</Option>
+                  <Option value="chemical-engineering">
+                    Chemical Engineering
+                  </Option>
+                  <Option value="computer-science-and-engineering">
+                    Computer Science and Engineering
+                  </Option>
+                </Select>
+              </InputGroup>
+            )}
+
+            {role === "mentor" && (
+              <InputGroup>
+                <Label>Experience</Label>
+                <Select
+                  name=""
+                  id=""
+                  value={user.experience}
+                  onChange={(e) =>
+                    setUser({ ...user, experience: e.target.value })
+                  }
+                >
+                  <Option value="1">1</Option>
+                  <Option value="2">2</Option>
+                  <Option value="3">3</Option>
+                  <Option value="4">4</Option>
+                  <Option value="5">5</Option>
+                  <Option value="6">6</Option>
+                  <Option value="7">7</Option>
+                  <Option value="8">8</Option>
+                  <Option value="9">9</Option>
+                  <Option value="10">10</Option>
+                </Select>
+              </InputGroup>
+            )}
+
+            {role === "mentor" && (
+              <InputGroup>
+                <Label>Specialization</Label>
+                <Input
+                  type="text"
+                  placeholder="Machine Learning"
+                  value={user.specialization}
+                  onChange={(e) =>
+                    setUser({ ...user, specialization: e.target.value })
+                  }
+                  required
+                />
+              </InputGroup>
+            )}
 
             {role === "student" && (
               <InputGroup>
