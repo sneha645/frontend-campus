@@ -66,7 +66,6 @@ export default function ProjectAndInternshipPage() {
       console.log(response1.data);
       console.log(response2.data);
 
-      // ✅ store in state
       setProjects(response1.data || []);
       setInternships(response2.data || []);
     } catch (error) {
