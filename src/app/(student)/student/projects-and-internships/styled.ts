@@ -65,6 +65,7 @@ export const ProjectCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 550px;
 `;
 
 export const ProjectContent = styled.div`
@@ -88,8 +89,6 @@ export const Title = styled.h1`
 export const Status = styled.div`
   font-size: 12px;
   font-weight: 400;
-  background-color: #0b75ff;
-  color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
 `;
@@ -153,15 +152,13 @@ export const CardButton = styled.button`
   cursor: pointer;
 `;
 
-
-
 //modal form style
 
 export const FormModal = styled(Modal)`
   display: flex;
   align-items: center;
   justify-self: center;
-`;  
+`;
 
 export const FormContainer = styled.div`
   width: 700px;

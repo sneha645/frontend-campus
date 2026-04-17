@@ -72,12 +72,14 @@ export interface Project {
 }
 
 export interface Internship {
+  internship_id: string;
+  title: string;
   companyName: string;
   description: string;
   startDate: string;
   endDate: string;
   technologies: string[] | string;
-  certificateImage: string;
+  certificateUrl: string;
   status: string;
   mentor: User | string;
   student: User | string;

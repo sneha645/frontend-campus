@@ -161,6 +161,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     me();
   }, []);
 
+  useEffect(() => {
+    if (!isLoading && user) {
+      const currentPath = window.location.pathname;
+      const dashboardPath = `/${user.role}/dashboard`;
+
+      if (!currentPath.startsWith(dashboardPath)) {
+        router.push(dashboardPath);
+      }
+    }
+  }, [user, isLoading, router]);
+
   return (
     <AuthContext.Provider
       value={{

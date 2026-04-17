@@ -21,8 +21,8 @@ import {
   SideBar,
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import { Box } from "@mui/material";
-import { LayoutDashboard, LogOutIcon, User } from "lucide-react";
+import { Avatar, Box } from "@mui/material";
+import { LayoutDashboard, LogOutIcon, Settings, User } from "lucide-react";
 
 const AdminMenuItems = [
   {
@@ -46,9 +46,9 @@ const AdminMenuItems = [
     icon: User,
   },
   {
-    path: "/admin/profile",
-    label: "Profile",
-    icon: User,
+    path: "/admin/settings",
+    label: "Settings",
+    icon: Settings,
   },
 ];
 
@@ -91,6 +91,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </LeftHeader>
         <RightHeader>
           <PageTitle>Admin Dashboard</PageTitle>
+          <LogoutContainer>
+            <LogoutBtn onClick={handleLogout}>
+              <LogOutIcon size={20} />
+              Logout
+            </LogoutBtn>
+          </LogoutContainer>
         </RightHeader>
       </Header>
       <Main>
@@ -109,12 +115,51 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               ))}
             </Box>
           </Menu>
-          <LogoutContainer>
-            <LogoutBtn onClick={handleLogout}>
-              <LogOutIcon size={20} />
-              Logout
-            </LogoutBtn>
-          </LogoutContainer>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              backgroundColor: "#fff",
+              padding: "16px 30px",
+              borderTop: "1px solid #f0f0f0",
+              position: "absolute",
+              bottom: "0",
+              left: "0",
+              right: "0",
+            }}
+          >
+            <Avatar
+              sx={{
+                width: "40px",
+                height: "40px",
+                fontSize: "16px",
+                bgcolor: "#0b75ff",
+                borderRadius: "14px",
+              }}
+            >
+              {user.name.charAt(0).toUpperCase()}
+            </Avatar>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#000",
+                }}
+              >
+                {user.name}
+              </p>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#848fa2",
+                }}
+              >
+                {user.email}
+              </p>
+            </div>
+          </div>
         </SideBar>
         <MainBar>{children}</MainBar>
       </Main>

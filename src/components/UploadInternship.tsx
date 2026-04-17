@@ -36,7 +36,7 @@ export const UploadInternship = ({
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    company: "",
+    companyName: "",
     startDate: "",
     endDate: "",
     technologies: "",
@@ -71,6 +71,7 @@ export const UploadInternship = ({
       formDataToSend.append("technologies", formData.technologies);
       formDataToSend.append("projectUrl", formData.projectUrl);
       formDataToSend.append("mentorId", formData.mentorId);
+      formDataToSend.append("companyName", formData.companyName);
 
       if (certificateImage) {
         formDataToSend.append("certificateImage", certificateImage);
@@ -96,7 +97,7 @@ export const UploadInternship = ({
         technologies: "",
         projectUrl: "",
         mentorId: "",
-        company: "",
+        companyName: "",
       });
 
       console.log(response);
@@ -174,10 +175,10 @@ export const UploadInternship = ({
         <FormInputContainer>
           <FormLabel>Company Name</FormLabel>
           <FormInput
-            name="company"
-            value={formData.company}
+            name="companyName"
+            value={formData.companyName}
             onChange={(e) =>
-              setFormData({ ...formData, company: e.target.value })
+              setFormData({ ...formData, companyName: e.target.value })
             }
           />
         </FormInputContainer>
@@ -259,7 +260,7 @@ export const UploadInternship = ({
               setFormData({
                 title: "",
                 description: "",
-                company: "",
+                companyName: "",
                 startDate: "",
                 endDate: "",
                 technologies: "",

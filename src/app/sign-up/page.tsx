@@ -7,7 +7,6 @@ import {
   ExtraContainer,
   ExtraText,
   EyeIcon,
-  ForgotButton,
   Form,
   FormWrapper,
   HeadingSection,
@@ -39,8 +38,14 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
-  const { registerStudent, registerMentor, registerRecruiter, success, error } =
-    useAuth();
+  const {
+    registerStudent,
+    registerMentor,
+    registerRecruiter,
+    success,
+    error,
+    isLoading,
+  } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [role, setRole] = useState("student");
@@ -54,6 +59,7 @@ export default function SignUpPage() {
     department: "",
     specialization: "",
     experience: "",
+    confirmPassword: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,6 +67,22 @@ export default function SignUpPage() {
 
     try {
       if (role === "student") {
+        if (user.password !== user.confirmPassword) {
+          setMessage("Passwords do not match");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+          return;
+        }
+
+        if (user.password.length < 6) {
+          setMessage("Password must be at least 6 characters long");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+          return;
+        }
+
         if (
           !user.name ||
           !user.email ||
@@ -70,9 +92,12 @@ export default function SignUpPage() {
           !user.branch
         ) {
           setMessage("Please fill all the fields");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           return;
         }
-        console.log(user);
+
         await registerStudent(
           user.email,
           user.password,
@@ -81,10 +106,30 @@ export default function SignUpPage() {
           user.year,
           user.branch,
         );
+
         if (success) {
           setMessage(success);
         }
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       } else if (role === "mentor") {
+        if (user.password !== user.confirmPassword) {
+          setMessage("Passwords do not match");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+          return;
+        }
+
+        if (user.password.length < 6) {
+          setMessage("Password must be at least 6 characters long");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+          return;
+        }
+
         if (
           !user.name ||
           !user.email ||
@@ -95,6 +140,9 @@ export default function SignUpPage() {
           !user.specialization
         ) {
           setMessage("Please fill all the fields");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           return;
         }
         await registerMentor(
@@ -108,10 +156,16 @@ export default function SignUpPage() {
         );
         if (success) {
           setMessage(success);
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
         }
       } else if (role === "recruiter") {
         if (!user.name || !user.email || !user.password || !user.role) {
           setMessage("Please fill all the fields");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           return;
         }
         await registerRecruiter(
@@ -122,6 +176,9 @@ export default function SignUpPage() {
         );
         if (success) {
           setMessage(success);
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
         }
       }
     } catch (error) {
@@ -155,10 +212,33 @@ export default function SignUpPage() {
       </LeftSection>
 
       <RightSection>
+        {error && (
+          <Alert
+            severity="error"
+            sx={{
+              mb: 2,
+              position: "absolute",
+              top: "20px",
+              left: "0",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
+          >
+            {error}
+          </Alert>
+        )}
+
         {message && (
           <Alert
             severity="success"
-            sx={{ mb: 2, position: "absolute", top: "20px" }}
+            sx={{
+              mb: 2,
+              position: "absolute",
+              top: "20px",
+              left: "0",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
           >
             {message}
           </Alert>
@@ -214,11 +294,27 @@ export default function SignUpPage() {
 
               <PasswordInput>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type="password"
                   placeholder="••••••••••"
                   value={user.password}
                   onChange={(e) =>
                     setUser({ ...user, password: e.target.value })
+                  }
+                  required
+                />
+              </PasswordInput>
+            </InputGroup>
+
+            <InputGroup>
+              <Label>Confirm Password</Label>
+
+              <PasswordInput>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••••"
+                  value={user.confirmPassword}
+                  onChange={(e) =>
+                    setUser({ ...user, confirmPassword: e.target.value })
                   }
                   required
                 />
@@ -355,8 +451,12 @@ export default function SignUpPage() {
               </InputGroup>
             )}
 
-            <SignInButton type="submit" style={{ marginTop: "10px" }}>
-              Sign Up
+            <SignInButton
+              type="submit"
+              style={{ marginTop: "10px" }}
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing Up..." : "Sign Up"}
             </SignInButton>
 
             <ExtraContainer>

@@ -219,6 +219,7 @@
 "use client";
 
 import {
+  ApproveButton,
   HeadingContainer,
   PaperContainer,
   SearchContainer,
@@ -309,7 +310,18 @@ export default function AssignmentsPage() {
   );
 
   return (
-    <div style={{ padding: "20px", width: "100%", height: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        padding: "20px",
+        gap: "20px",
+        height: "100%",
+        width: "100%",
+        overflow: "auto",
+        overflowY: "hidden",
+      }}
+    >
       <Paper style={{ width: "100%", height: "100%" }}>
         <PaperContainer>
           <HeadingContainer>
@@ -329,37 +341,100 @@ export default function AssignmentsPage() {
           </SearchContainer>
         </PaperContainer>
 
-        <TableContainer>
+        <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
-            <TableHead>
+            <TableHead style={{ backgroundColor: "#f7f8fa" }}>
               <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Submission Type</TableCell>
-                <TableCell>Assigned To</TableCell>
-                <TableCell>Deadline</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: "600",
+                    fontFamily: "Poppins",
+                  }}
+                >
+                  Title
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: "600",
+                    fontFamily: "Poppins",
+                  }}
+                >
+                  Submission Type
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: "600",
+                    fontFamily: "Poppins",
+                  }}
+                >
+                  Assigned To
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: "600",
+                    fontFamily: "Poppins",
+                  }}
+                >
+                  Deadline
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: "600",
+                    fontFamily: "Poppins",
+                  }}
+                >
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {paginatedAssignments.map((assignment, index) => (
                 <TableRow key={index}>
-                  <TableCell>{assignment.assignment_title}</TableCell>
-                  <TableCell>{assignment.submissiontype}</TableCell>
-                  <TableCell>{assignment.assignment_assignto}</TableCell>
-                  <TableCell>{assignment.assignment_deadline}</TableCell>
-                  <TableCell>{assignment.status}</TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "Poppins",
+                    }}
+                  >
+                    {assignment.assignment_title}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "Poppins",
+                    }}
+                  >
+                    {assignment.submissiontype}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "Poppins",
+                    }}
+                  >
+                    {assignment.assignment_assignto}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      fontFamily: "Poppins",
+                    }}
+                  >
+                    {assignment.assignment_deadline}
+                  </TableCell>
 
-                  <TableCell>
-                    <ViewProfile
+                  <TableCell
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                    }}
+                  >
+                    <ApproveButton
+                      style={{ width: "fit-content" }}
                       onClick={() => {
                         setUploadAssignmentModal(true);
                         setSelectedAssignmentId(assignment.assignment_id);
                       }}
                     >
                       Upload File
-                    </ViewProfile>
+                    </ApproveButton>
                     <ViewProfile
                       onClick={() => setSelectedAssignment(assignment)}
                     >

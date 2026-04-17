@@ -28,24 +28,20 @@ import {
   Title,
 } from "./styled";
 import { useState } from "react";
-import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SignInPage() {
-  const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const { login } = useAuth();
+  const { login, error, success, isLoading } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,14 +70,37 @@ export default function SignInPage() {
       </LeftSection>
 
       <RightSection>
-        {message && (
+        {error && (
           <Alert
-            severity="success"
-            sx={{ mb: 2, position: "absolute", top: "20px" }}
+            severity="error"
+            sx={{
+              mb: 2,
+              position: "absolute",
+              top: "20px",
+              left: "0",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
           >
-            {message}
+            {error}
           </Alert>
         )}
+        {success && (
+          <Alert
+            severity="success"
+            sx={{
+              mb: 2,
+              position: "absolute",
+              top: "20px",
+              left: "0",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
+          >
+            {success}
+          </Alert>
+        )}
+
         <FormWrapper>
           <HeadingSection>
             <Title>Welcome Back</Title>
@@ -129,7 +148,9 @@ export default function SignInPage() {
 
             <ForgotButton type="button">Forgot password?</ForgotButton>
 
-            <SignInButton type="submit">Sign In</SignInButton>
+            <SignInButton type="submit" disabled={isLoading}>
+              {isLoading ? "Signing In..." : "Sign In"}
+            </SignInButton>
 
             <ExtraContainer>
               <ExtraText>

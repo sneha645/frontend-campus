@@ -52,6 +52,7 @@ export const RightHeader = styled.div`
   width: 84%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 14px;
   background-color: #f7f8fa;
   border-bottom: 1px solid #f0f0f0;
@@ -77,6 +78,7 @@ export const SideBar = styled.div`
   background-color: #fff;
   border-right: 1px solid #f0f0f0;
   padding: 14px;
+  position: relative;
 `;
 
 export const Menu = styled.div`
@@ -121,7 +123,6 @@ export const MainBar = styled.div`
 `;
 
 export const LogoutContainer = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,14 +130,14 @@ export const LogoutContainer = styled.div`
 
 export const LogoutBtn = styled.button`
   cursor: pointer;
-  width: 100%;
+  width: fit-content;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
   padding: 14px;
-  color: #000;
-  background-color: transparent;
+  color: #fff;
+  background-color: #e11d48;
   font-size: 16px;
   border-radius: 4px;
 `;
