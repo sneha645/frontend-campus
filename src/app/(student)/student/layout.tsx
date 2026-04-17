@@ -39,11 +39,6 @@ const StudentMenuItems = [
     icon: LayoutDashboard,
   },
   {
-    path: "/student/profile-and-resume",
-    label: "Profile & Resume",
-    icon: User,
-  },
-  {
     path: "/student/projects-and-internships",
     label: "Projects & Internships",
     icon: FolderOpen,
@@ -55,6 +50,11 @@ const StudentMenuItems = [
   },
   { path: "/student/feedbacks", label: "Feedbacks", icon: MessageSquare },
   { path: "/student/assignments", label: "Assignments", icon: BookOpenText },
+  // {
+  //   path: "/student/profile-and-resume",
+  //   label: "Profile & Resume",
+  //   icon: User,
+  // },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

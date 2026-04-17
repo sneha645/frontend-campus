@@ -52,6 +52,7 @@ export const RightHeader = styled.div`
   width: 84%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 14px;
   background-color: #f7f8fa;
   border-bottom: 1px solid #f0f0f0;
@@ -77,6 +78,7 @@ export const SideBar = styled.div`
   background-color: #fff;
   border-right: 1px solid #f0f0f0;
   padding: 14px;
+  position: relative;
 `;
 
 export const Menu = styled.div`

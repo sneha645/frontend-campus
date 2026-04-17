@@ -45,11 +45,11 @@ const AdminMenuItems = [
     label: "Students",
     icon: User,
   },
-  {
-    path: "/admin/settings",
-    label: "Settings",
-    icon: Settings,
-  },
+  // {
+  //   path: "/admin/settings",
+  //   label: "Settings",
+  //   icon: Settings,
+  // },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
