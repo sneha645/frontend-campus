@@ -283,3 +283,16 @@ export const Role = styled.button<{ $active: boolean }>(
   cursor: pointer;
 `,
 );
+
+export const ForgotPasswordContainer = styled.div`
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px;
+  border-radius: 4px;
+  background: #fff;
+  position: relative;
+`;

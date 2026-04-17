@@ -1,6 +1,10 @@
 "use client";
 
+import axios from "axios";
 import SchoolIcon from "@mui/icons-material/School";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import {
   BackgroundImage,
   Container,
@@ -30,11 +34,9 @@ import {
   Subtitle,
   Title,
 } from "../sign-in/styled";
+
 import { useState } from "react";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert } from "@mui/material";
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
@@ -47,8 +49,7 @@ export default function SignUpPage() {
     isLoading,
   } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
-  const [role, setRole] = useState("student");
+  const [validation, setValidation] = useState("");
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -66,19 +67,19 @@ export default function SignUpPage() {
     e.preventDefault();
 
     try {
-      if (role === "student") {
+      if (user.role === "student") {
         if (user.password !== user.confirmPassword) {
-          setMessage("Passwords do not match");
+          setValidation("Passwords do not match");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
 
         if (user.password.length < 6) {
-          setMessage("Password must be at least 6 characters long");
+          setValidation("Password must be at least 6 characters long");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
@@ -91,9 +92,9 @@ export default function SignUpPage() {
           !user.year ||
           !user.branch
         ) {
-          setMessage("Please fill all the fields");
+          setValidation("Please fill all the fields");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
@@ -107,25 +108,19 @@ export default function SignUpPage() {
           user.branch,
         );
 
-        if (success) {
-          setMessage(success);
-        }
-        setTimeout(() => {
-          setMessage("");
-        }, 2000);
-      } else if (role === "mentor") {
+      } else if (user.role === "mentor") {
         if (user.password !== user.confirmPassword) {
-          setMessage("Passwords do not match");
+          setValidation("Passwords do not match");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
 
         if (user.password.length < 6) {
-          setMessage("Password must be at least 6 characters long");
+          setValidation("Password must be at least 6 characters long");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
@@ -139,9 +134,9 @@ export default function SignUpPage() {
           !user.experience ||
           !user.specialization
         ) {
-          setMessage("Please fill all the fields");
+          setValidation("Please fill all the fields");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
@@ -154,17 +149,12 @@ export default function SignUpPage() {
           user.experience,
           user.specialization,
         );
-        if (success) {
-          setMessage(success);
-          setTimeout(() => {
-            setMessage("");
-          }, 2000);
-        }
-      } else if (role === "recruiter") {
+
+      } else if (user.role === "recruiter") {
         if (!user.name || !user.email || !user.password || !user.role) {
-          setMessage("Please fill all the fields");
+          setValidation("Please fill all the fields");
           setTimeout(() => {
-            setMessage("");
+            setValidation("");
           }, 2000);
           return;
         }
@@ -174,19 +164,10 @@ export default function SignUpPage() {
           user.name,
           user.role,
         );
-        if (success) {
-          setMessage(success);
-          setTimeout(() => {
-            setMessage("");
-          }, 2000);
-        }
+
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setMessage(error.response?.data.message || "An error occurred");
-      } else {
-        setMessage("An unexpected error occurred");
-      }
+      console.log(error);
     }
   };
 
@@ -204,9 +185,7 @@ export default function SignUpPage() {
 
         <QuoteSection>
           <QuoteText>
-            This platform completely transformed our campus placement drive.
-            Connecting students with recruiters and tracking projects is now
-            completely seamless and centralized.
+            This platform has made mentoring more effective and structured than ever before. Tracking student progress, reviewing projects, and providing guidance is now completely seamless and centralized. It allows me to focus more on helping students grow rather than managing scattered information.
           </QuoteText>
         </QuoteSection>
       </LeftSection>
@@ -228,7 +207,7 @@ export default function SignUpPage() {
           </Alert>
         )}
 
-        {message && (
+        {success && (
           <Alert
             severity="success"
             sx={{
@@ -240,14 +219,30 @@ export default function SignUpPage() {
               zIndex: 1000,
             }}
           >
-            {message}
+            {success}
+          </Alert>
+        )}
+
+        {validation && (
+          <Alert
+            severity="warning"
+            sx={{
+              mb: 2,
+              position: "absolute",
+              top: "20px",
+              left: "0",
+              transform: "translateX(-50%)",
+              zIndex: 1000,
+            }}
+          >
+            {validation}
           </Alert>
         )}
         <FormWrapper>
           <HeadingSection>
-            <Title>Build your future</Title>
+            <Title>{user.role === "student" ? "Build your future" : user.role === "mentor" ? "Guide the next generation" : "Hire smarter, faster"}</Title>
             <Subtitle>
-              One account to manage placements, projects, and opportunities
+              {user.role === "student" ? "One account to manage your placements, projects, and opportunities" : user.role === "mentor" ? "One platform to mentor, track progress, and shape careers" : "Streamline hiring with access to verified student profiles and proj"}
             </Subtitle>
           </HeadingSection>
 
@@ -256,10 +251,10 @@ export default function SignUpPage() {
               <Role
                 key={item}
                 onClick={() => {
-                  setRole(item);
+
                   setUser({ ...user, role: item });
                 }}
-                $active={item === role}
+                $active={item === user.role}
               >
                 {item}
               </Role>
@@ -332,7 +327,7 @@ export default function SignUpPage() {
               </PasswordInput>
             </InputGroup>
 
-            {role === "mentor" && (
+            {user.role === "mentor" && (
               <InputGroup>
                 <Label>Department</Label>
                 <Select
@@ -371,7 +366,7 @@ export default function SignUpPage() {
               </InputGroup>
             )}
 
-            {role === "mentor" && (
+            {user.role === "mentor" && (
               <InputGroup>
                 <Label>Experience</Label>
                 <Select
@@ -396,7 +391,7 @@ export default function SignUpPage() {
               </InputGroup>
             )}
 
-            {role === "mentor" && (
+            {user.role === "mentor" && (
               <InputGroup>
                 <Label>Specialization</Label>
                 <Input
@@ -411,7 +406,7 @@ export default function SignUpPage() {
               </InputGroup>
             )}
 
-            {role === "student" && (
+            {user.role === "student" && (
               <InputGroup>
                 <Label>Year</Label>
                 <Select
@@ -420,6 +415,7 @@ export default function SignUpPage() {
                   value={user.year}
                   onChange={(e) => setUser({ ...user, year: e.target.value })}
                 >
+                  <Option value="">Select Year</Option>
                   <Option value="1">1st Year</Option>
                   <Option value="2">2nd Year</Option>
                   <Option value="3">3rd Year</Option>
@@ -428,7 +424,7 @@ export default function SignUpPage() {
               </InputGroup>
             )}
 
-            {role === "student" && (
+            {user.role === "student" && (
               <InputGroup>
                 <Label>Branch</Label>
                 <Select
@@ -437,6 +433,7 @@ export default function SignUpPage() {
                   value={user.branch}
                   onChange={(e) => setUser({ ...user, branch: e.target.value })}
                 >
+                  <Option value="">Select Branch</Option>
                   <Option value="computer-science">Computer Science</Option>
                   <Option value="information-technology">
                     Information Technology

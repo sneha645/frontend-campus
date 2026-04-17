@@ -9,12 +9,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => {},
-  login: async () => {},
-  logout: () => {},
-  registerStudent: async () => {},
-  registerMentor: async () => {},
-  registerRecruiter: async () => {},
+  setUser: () => { },
+  login: async () => { },
+  logout: () => { },
+  registerStudent: async () => { },
+  registerMentor: async () => { },
+  registerRecruiter: async () => { },
   isLoading: false,
   success: "",
   error: "",
@@ -100,15 +100,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (res.status === 201) {
         setUser(res.data.user);
-        setSuccess("Registration successful!");
-
+        setSuccess(res.data.message);
         setTimeout(() => {
           router.push("/sign-in");
         }, 3000);
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setError("Registration failed!");
+      const backendMessage = error?.response?.data?.message || error?.message || 'Error sending invite';
+      const message = Array.isArray(backendMessage) ? backendMessage.join(', ') : backendMessage;
+      setError(message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     } finally {
       setIsLoading(false);
     }
@@ -156,6 +159,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     name: string,
     role: string,
   ) => register("/auth/register-recruiter", { email, password, name, role });
+
+
 
   useEffect(() => {
     me();
