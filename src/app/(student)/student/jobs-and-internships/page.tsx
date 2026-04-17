@@ -253,115 +253,6 @@ export default function JobsAndInternshipsPage() {
         onClose={() => setOpenJobModal(false)}
         style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
       >
-        {/* <div
-          style={{
-            width: "500px",
-            margin: "20px auto",
-            padding: "20px",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-            backgroundColor: "#ffffff",
-            fontFamily: "Arial, sans-serif",
-          }}
-        >
-          <h2 style={{ marginBottom: "10px", color: "#333" }}>
-            {jobs.find((job) => job.job_id === selectedJobId)?.title}
-          </h2>
-
-          <p style={{ margin: "6px 0", color: "#555", width: "100%" }}>
-            <strong>Company:</strong>{" "}
-            {
-              jobs.find((job) => job.job_id === selectedJobId)?.company
-                ?.companyName
-            }
-          </p>
-
-          <p style={{ margin: "6px 0", color: "#555" }}>
-            <strong>Job Type:</strong>{" "}
-            {jobs.find((job) => job.job_id === selectedJobId)?.jobType}
-          </p>
-
-          <p style={{ margin: "6px 0", color: "#555" }}>
-            <strong>Experience:</strong>{" "}
-            {jobs.find((job) => job.job_id === selectedJobId)?.experience} years
-          </p>
-
-          <p style={{ margin: "6px 0", color: "#555" }}>
-            <strong>Salary:</strong> ₹
-            {jobs.find((job) => job.job_id === selectedJobId)?.salary}
-          </p>
-
-          <p style={{ margin: "6px 0", color: "#555" }}>
-            <strong>Location:</strong>{" "}
-            {
-              jobs.find((job) => job.job_id === selectedJobId)?.company
-                ?.location
-            }
-          </p>
-
-          <p style={{ margin: "6px 0", color: "#555" }}>
-            <strong>Status:</strong>{" "}
-            <span
-              style={{
-                color:
-                  jobs.find((job) => job.job_id === selectedJobId)?.status ===
-                  "open"
-                    ? "green"
-                    : "red",
-                fontWeight: "bold",
-              }}
-            >
-              {jobs.find((job) => job.job_id === selectedJobId)?.status}
-            </span>
-          </p>
-
-          <hr style={{ margin: "15px 0" }} />
-
-          <p style={{ color: "#444" }}>
-            <strong>Description:</strong>{" "}
-            {jobs.find((job) => job.job_id === selectedJobId)?.description}
-          </p>
-
-          <div style={{ marginTop: "10px" }}>
-            <strong>Requirements:</strong>
-            <ul style={{ paddingLeft: "18px" }}>
-              {jobs
-                .find((job) => job.job_id === selectedJobId)
-                ?.requirements.map((req: any, index: any) => (
-                  <li key={index}>{req.trim()}</li>
-                ))}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: "10px" }}>
-            <strong>Responsibilities:</strong>
-            <ul style={{ paddingLeft: "18px" }}>
-              {jobs
-                .find((job) => job.job_id === selectedJobId)
-                ?.responsibilities.map((res: any, index: any) => (
-                  <li key={index}>{res}</li>
-                ))}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: "10px" }}>
-            <strong>Benefits:</strong>
-            <ul style={{ paddingLeft: "18px" }}>
-              {jobs
-                .find((job) => job.job_id === selectedJobId)
-                ?.benefits.map((ben: any, index: any) => (
-                  <li key={index}>{ben}</li>
-                ))}
-            </ul>
-          </div>
-
-          <p style={{ marginTop: "15px", fontSize: "12px", color: "#888" }}>
-            Created At:{" "}
-            {new Date(
-              jobs.find((job) => job.job_id === selectedJobId)?.createdAt || "",
-            ).toLocaleString()}
-          </p>
-        </div> */}
         <div
           style={{
             maxWidth: "600px",
@@ -379,8 +270,10 @@ export default function JobsAndInternshipsPage() {
               {jobs.find((job) => job.job_id === selectedJobId)?.title}
             </h2>
             <p style={{ margin: "4px 0", color: "#666" }}>
-              {jobs.find((job) => job.job_id === selectedJobId)?.company
-                ?.companyName}
+              {
+                jobs.find((job) => job.job_id === selectedJobId)?.company
+                  ?.companyName
+              }
             </p>
           </div>
 
@@ -397,55 +290,79 @@ export default function JobsAndInternshipsPage() {
               {jobs.find((job) => job.job_id === selectedJobId)?.jobType}
             </span>
             <span style={badgeStyle("#f3e5f5", "#7b1fa2")}>
-              {jobs.find((job) => job.job_id === selectedJobId)?.experience} yrs exp
+              {jobs.find((job) => job.job_id === selectedJobId)?.experience} yrs
+              exp
             </span>
             <span style={badgeStyle("#e8f5e9", "#2e7d32")}>
               ₹{jobs.find((job) => job.job_id === selectedJobId)?.salary}
             </span>
             <span
               style={badgeStyle(
-                jobs.find((job) => job.job_id === selectedJobId)?.status === "open" ? "#e8f5e9" : "#ffebee",
-                jobs.find((job) => job.job_id === selectedJobId)?.status === "open" ? "#2e7d32" : "#c62828",
+                jobs.find((job) => job.job_id === selectedJobId)?.status ===
+                  "open"
+                  ? "#e8f5e9"
+                  : "#ffebee",
+                jobs.find((job) => job.job_id === selectedJobId)?.status ===
+                  "open"
+                  ? "#2e7d32"
+                  : "#c62828",
               )}
             >
-              {jobs.find((job) => job.job_id === selectedJobId)?.status.toUpperCase()}
+              {jobs
+                .find((job) => job.job_id === selectedJobId)
+                ?.status.toUpperCase()}
             </span>
           </div>
 
           {/* Info */}
           <p style={{ margin: "6px 0", color: "#555" }}>
-            📍 {jobs.find((job) => job.job_id === selectedJobId)?.company?.location}
+            📍{" "}
+            {
+              jobs.find((job) => job.job_id === selectedJobId)?.company
+                ?.location
+            }
           </p>
 
           <hr style={{ margin: "20px 0", borderColor: "#eee" }} />
 
           {/* Description */}
-          <Section title="Description">{jobs.find((job) => job.job_id === selectedJobId)?.description}</Section>
+          <Section title="Description">
+            {jobs.find((job) => job.job_id === selectedJobId)?.description}
+          </Section>
 
           {/* Requirements */}
           <Section title="Requirements">
-            {jobs.find((job) => job.job_id === selectedJobId)?.requirements?.map((req: string, i: number) => (
-              <li key={i}>{req.trim()}</li>
-            ))}
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.requirements?.map((req: string, i: number) => (
+                <li key={i}>{req.trim()}</li>
+              ))}
           </Section>
 
           {/* Responsibilities */}
           <Section title="Responsibilities">
-            {jobs.find((job) => job.job_id === selectedJobId)?.responsibilities?.map((res: string, i: number) => (
-              <li key={i}>{res}</li>
-            ))}
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.responsibilities?.map((res: string, i: number) => (
+                <li key={i}>{res}</li>
+              ))}
           </Section>
 
           {/* Benefits */}
           <Section title="Benefits">
-            {jobs.find((job) => job.job_id === selectedJobId)?.benefits?.map((ben: string, i: number) => (
-              <li key={i}>{ben}</li>
-            ))}
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.benefits?.map((ben: string, i: number) => (
+                <li key={i}>{ben}</li>
+              ))}
           </Section>
 
           {/* Footer */}
           <p style={{ marginTop: "20px", fontSize: "12px", color: "#999" }}>
-            Posted on: {new Date(jobs.find((job) => job.job_id === selectedJobId)?.createdAt || "").toLocaleDateString()}
+            Posted on:{" "}
+            {new Date(
+              jobs.find((job) => job.job_id === selectedJobId)?.createdAt || "",
+            ).toLocaleDateString()}
           </p>
         </div>
       </FormModal>

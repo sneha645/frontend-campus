@@ -1,5 +1,22 @@
+"use client";
+
+import { ApproveButton } from "@/app/(admin)/admin/recruiters/styled";
+import { useAuth } from "@/context/AuthContext";
+import {
+  BookOpen,
+  Briefcase,
+  Building,
+  Search,
+  TableProperties,
+  Upload,
+  User,
+} from "lucide-react";
+import WavingHandIcon from "@mui/icons-material/WavingHand";
+import { Task } from "@mui/icons-material";
+
 export default function DashboardPage() {
-  return     <div
+  return (
+    <div
       style={{
         width: "100%",
         height: "100%",
@@ -36,7 +53,7 @@ export default function DashboardPage() {
         style={{
           width: "100%",
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: "10px",
         }}
       >
@@ -63,7 +80,7 @@ export default function DashboardPage() {
             }}
           >
             <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
-              Student Registered
+              Project Assigned
             </h1>
             <div
               style={{
@@ -76,7 +93,7 @@ export default function DashboardPage() {
                 borderRadius: "8px",
               }}
             >
-              <User color="#fff" size={24} />
+              <TableProperties color="#fff" size={24} />
             </div>
           </div>
           <div
@@ -120,7 +137,7 @@ export default function DashboardPage() {
             }}
           >
             <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
-              Mentor Registered
+              Internship Assigned
             </h1>
             <div
               style={{
@@ -133,7 +150,7 @@ export default function DashboardPage() {
                 borderRadius: "8px",
               }}
             >
-              <User color="#fff" size={24} />
+              <TableProperties color="#fff" size={24} />
             </div>
           </div>
           <div
@@ -177,7 +194,7 @@ export default function DashboardPage() {
             }}
           >
             <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
-              Recruiter Registered
+              Assigned Assignment
             </h1>
             <div
               style={{
@@ -190,7 +207,7 @@ export default function DashboardPage() {
                 borderRadius: "8px",
               }}
             >
-              <User color="#fff" size={24} />
+              <BookOpen color="#fff" size={24} />
             </div>
           </div>
           <div
@@ -211,68 +228,7 @@ export default function DashboardPage() {
             </p>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            width: "100%",
-            backgroundColor: "#fff",
-            border: "1px solid #aaaaaa23",
-            borderRadius: "8px",
-            height: "200px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
-              Companies Registered
-            </h1>
-            <div
-              style={{
-                height: "50px",
-                width: "50px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#0b75ffb9",
-                borderRadius: "8px",
-              }}
-            >
-              <Building
-                style={{
-                  color: "#fff",
-                  fontSize: "24px",
-                }}
-              />
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "auto",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "40px",
-                fontWeight: "500",
-                marginRight: "6px",
-              }}
-            >
-              20
-            </p>
-          </div>
-        </div>
       </div>
-    </div>;
+    </div>
+  );
 }

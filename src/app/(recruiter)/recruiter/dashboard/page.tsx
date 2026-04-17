@@ -1,148 +1,289 @@
 "use client";
 
-import { UploadCompany } from "@/components/UploadCompany";
+import { ApproveButton } from "@/app/(admin)/admin/recruiters/styled";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { Briefcase, Building, MessageSquareText, Search, Upload, User } from "lucide-react";
+import WavingHandIcon from "@mui/icons-material/WavingHand";
+import { Task } from "@mui/icons-material";
 
 export default function RecruiterDashboardPage() {
-  // const { user } = useAuth();
-  // const [companyProfile, setCompanyProfile] = useState<any>(null);
-  // const getCompanyProfile = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.get(
-  //       "http://localhost:3000/api/recruiter/company-profile",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     );
-  //     setCompanyProfile(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   getCompanyProfile();
-  // }, []);
-
-  return (
-    // <div
-    //   style={{
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     padding: "20px",
-    //     gap: "20px",
-    //     height: "100%",
-    //     width: "100%",
-    //     overflow: "auto",
-    //     overflowY: "hidden",
-    //   }}
-    // >
-    //   {companyProfile ? (
-    //     <div style={{
-    //       maxWidth: "800px",
-    //       width: "100%",
-    //       margin: "0 auto",
-    //       background: "#ffffff",
-    //       borderRadius: "24px",
-    //       boxShadow: "0 20px 40px rgba(0, 0, 0, 0.08)",
-    //       overflow: "hidden",
-    //       border: "1px solid rgba(226, 232, 240, 0.8)",
-    //       fontFamily: "'Inter', sans-serif"
-    //     }}>
-    //       {/* Header Section with Background */}
-    //       <div style={{
-    //         background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
-    //         height: "160px",
-    //         position: "relative"
-    //       }}>
-    //         {/* Logo */}
-    //         <div style={{
-    //           position: "absolute",
-    //           bottom: "-40px",
-    //           left: "40px",
-    //           width: "100px",
-    //           height: "100px",
-    //           borderRadius: "50%",
-    //           background: "#fff",
-    //           padding: "4px",
-    //           boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-    //           display: "flex",
-    //           alignItems: "center",
-    //           justifyContent: "center",
-    //           overflow: "hidden",
-    //           zIndex: 10
-    //         }}>
-    //           {companyProfile.logo ? (
-    //             <img
-    //               src={companyProfile.logo?.startsWith("http") ? companyProfile.logo : `http://localhost:3000${companyProfile.logo}`}
-    //               alt={companyProfile.companyName}
-    //               style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "50%" }}
-    //             />
-    //           ) : (
-    //             <div style={{ width: "100%", height: "100%", backgroundColor: "#e2e8f0", borderRadius: "50%" }} />
-    //           )}
-    //         </div>
-    //       </div>
-
-    //       {/* Content Section */}
-    //       <div style={{ padding: "60px 40px 40px 40px" }}>
-    //         <h1 style={{
-    //           margin: 0,
-    //           fontSize: "32px",
-    //           fontWeight: 800,
-    //           color: "#0f172a",
-    //           letterSpacing: "-0.5px"
-    //         }}>
-    //           {companyProfile.companyName}
-    //         </h1>
-
-    //         <div style={{
-    //           margin: "12px 0 32px 0",
-    //           color: "#64748b",
-    //           fontSize: "15px",
-    //           display: "flex",
-    //           flexWrap: "wrap",
-    //           alignItems: "center",
-    //           gap: "24px"
-    //         }}>
-    //           <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-    //             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-    //             {companyProfile.location}
-    //           </span>
-    //           <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-    //             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-    //             {companyProfile.companyEmail}
-    //           </span>
-    //           <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-    //             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-    //             <a href={companyProfile.website} target="_blank" rel="noopener noreferrer" style={{ color: "#64748b", textDecoration: "underline", textUnderlineOffset: "4px" }}>{companyProfile.website}</a>
-    //           </span>
-    //         </div>
-
-    //         <div style={{
-    //           background: "#f8fafc",
-    //           padding: "24px 32px",
-    //           borderRadius: "16px",
-    //           border: "1px solid #e2e8f0"
-    //         }}>
-    //           <h2 style={{ margin: "0 0 12px 0", fontSize: "18px", color: "#334155", fontWeight: 700 }}>About the Company</h2>
-    //           <p style={{ margin: 0, color: "#475569", lineHeight: "1.7", fontSize: "16px" }}>
-    //             {companyProfile.companyDescription}
-    //           </p>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   ) : (
-    //     <UploadCompany />
-    //   )}
-    // </div>
-    <div>
-      <h1>Recruiter Dashboard</h1>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <h1 style={{ fontSize: "30px", fontWeight: "500" }}>
+            Welcome to {user?.name} <WavingHandIcon sx={{ fontSize: "30px" }} />
+          </h1>
+          <p style={{ fontSize: "16px", fontWeight: "400" }}>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque,
+            tempore?
+          </p>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "10px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
+            backgroundColor: "#fff",
+            border: "1px solid #aaaaaa23",
+            borderRadius: "8px",
+            height: "200px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+              Uploaded Jobs
+            </h1>
+            <div
+              style={{
+                height: "50px",
+                width: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#0b75ffb9",
+                borderRadius: "8px",
+              }}
+            >
+              <Briefcase color="#fff" size={24} />
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "auto",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "40px",
+                fontWeight: "500",
+                marginRight: "6px",
+              }}
+            >
+              10
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
+            backgroundColor: "#fff",
+            border: "1px solid #aaaaaa23",
+            borderRadius: "8px",
+            height: "200px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+              Job applications
+            </h1>
+            <div
+              style={{
+                height: "50px",
+                width: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#0b75ffb9",
+                borderRadius: "8px",
+              }}
+            >
+              
+              <MessageSquareText color="#fff" size={24}/>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "auto",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "40px",
+                fontWeight: "500",
+                marginRight: "6px",
+              }}
+            >
+              3
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
+            backgroundColor: "#fff",
+            border: "1px solid #aaaaaa23",
+            borderRadius: "8px",
+            height: "200px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+              Shortlisted Students
+            </h1>
+            <div
+              style={{
+                height: "50px",
+                width: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#0b75ffb9",
+                borderRadius: "8px",
+              }}
+            >
+              <User color="#fff" size={24} />
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "auto",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "40px",
+                fontWeight: "500",
+                marginRight: "6px",
+              }}
+            >
+              5
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
+            backgroundColor: "#fff",
+            border: "1px solid #aaaaaa23",
+            borderRadius: "8px",
+            height: "200px",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
+            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+              Companies Registered
+            </h1>
+            <div
+              style={{
+                height: "50px",
+                width: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#0b75ffb9",
+                borderRadius: "8px",
+              }}
+            >
+              <Building
+                style={{
+                  color: "#fff",
+                  fontSize: "24px",
+                }}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "auto",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "40px",
+                fontWeight: "500",
+                marginRight: "6px",
+              }}
+            >
+              20
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

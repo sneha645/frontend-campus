@@ -23,6 +23,8 @@ import {
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Avatar, Box } from "@mui/material";
 import {
+  BookOpenText,
+  FolderOpen,
   LayoutDashboard,
   LogOutIcon,
   MessageSquare,
@@ -39,12 +41,12 @@ const StudentMenuItems = [
   {
     path: "/mentor/projects",
     label: "Projects",
-    icon: MessageSquare,
+    icon: FolderOpen,
   },
   {
     path: "/mentor/internships",
     label: "Internships",
-    icon: MessageSquare,
+    icon: FolderOpen,
   },
   {
     path: "/mentor/feedbacks",
@@ -56,15 +58,15 @@ const StudentMenuItems = [
     label: "Students",
     icon: User,
   },
-  {
-    path: "/student/settings",
-    label: "Settings",
-    icon: Settings,
-  },
+  // {
+  //   path: "/student/settings",
+  //   label: "Settings",
+  //   icon: Settings,
+  // },
   {
     path: "/mentor/assignments",
     label: "Assignments",
-    icon: MessageSquare,
+    icon: BookOpenText,
   },
 ];
 

@@ -18,7 +18,9 @@ import { useEffect, useState } from "react";
 
 export default function JobPostingsPage() {
   const [openJobModal, setOpenJobModal] = useState(false);
+  const [openJobViewModal, setOpenJobViewModal] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [jobs, setJobs] = useState([]);
   const router = useRouter();
 
@@ -285,26 +287,134 @@ export default function JobPostingsPage() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  router.push(`/recruiter/applications/${job.job_id}`);
+                  setSelectedJobId(job.job_id);
+                  setOpenJobViewModal(true);
                 }}
               >
-                View Applicants
-              </button>
-              <button
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  border: "1px solid #e5e7eb",
-                  color: "#000000",
-                  cursor: "pointer",
-                }}
-              >
-                <EllipsisVertical />
+                View Job
               </button>
             </div>
           </div>
         ))}
       </div>
+      <FormModal
+        open={openJobViewModal}
+        onClose={() => setOpenJobViewModal(false)}
+        style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
+      >
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "30px auto",
+            padding: "24px",
+            borderRadius: "16px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+            backgroundColor: "#fff",
+            fontFamily: "Arial, sans-serif",
+          }}
+        >
+          {/* Header */}
+          <div style={{ marginBottom: "16px" }}>
+            <h2 style={{ margin: 0, color: "#222" }}>
+              {jobs.find((job) => job.job_id === selectedJobId)?.title}
+            </h2>
+            <p style={{ margin: "4px 0", color: "#666" }}>
+              {
+                jobs.find((job) => job.job_id === selectedJobId)?.company
+                  ?.companyName
+              }
+            </p>
+          </div>
+
+          {/* Tags */}
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              marginBottom: "16px",
+            }}
+          >
+            <span style={badgeStyle("#e3f2fd", "#1976d2")}>
+              {jobs.find((job) => job.job_id === selectedJobId)?.jobType}
+            </span>
+            <span style={badgeStyle("#f3e5f5", "#7b1fa2")}>
+              {jobs.find((job) => job.job_id === selectedJobId)?.experience} yrs
+              exp
+            </span>
+            <span style={badgeStyle("#e8f5e9", "#2e7d32")}>
+              ₹{jobs.find((job) => job.job_id === selectedJobId)?.salary}
+            </span>
+            <span
+              style={badgeStyle(
+                jobs.find((job) => job.job_id === selectedJobId)?.status ===
+                  "open"
+                  ? "#e8f5e9"
+                  : "#ffebee",
+                jobs.find((job) => job.job_id === selectedJobId)?.status ===
+                  "open"
+                  ? "#2e7d32"
+                  : "#c62828",
+              )}
+            >
+              {jobs
+                .find((job) => job.job_id === selectedJobId)
+                ?.status.toUpperCase()}
+            </span>
+          </div>
+
+          {/* Info */}
+          <p style={{ margin: "6px 0", color: "#555" }}>
+            📍{" "}
+            {
+              jobs.find((job) => job.job_id === selectedJobId)?.company
+                ?.location
+            }
+          </p>
+
+          <hr style={{ margin: "20px 0", borderColor: "#eee" }} />
+
+          {/* Description */}
+          <Section title="Description">
+            {jobs.find((job) => job.job_id === selectedJobId)?.description}
+          </Section>
+
+          {/* Requirements */}
+          <Section title="Requirements">
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.requirements?.map((req: string, i: number) => (
+                <li key={i}>{req.trim()}</li>
+              ))}
+          </Section>
+
+          {/* Responsibilities */}
+          <Section title="Responsibilities">
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.responsibilities?.map((res: string, i: number) => (
+                <li key={i}>{res}</li>
+              ))}
+          </Section>
+
+          {/* Benefits */}
+          <Section title="Benefits">
+            {jobs
+              .find((job) => job.job_id === selectedJobId)
+              ?.benefits?.map((ben: string, i: number) => (
+                <li key={i}>{ben}</li>
+              ))}
+          </Section>
+
+          {/* Footer */}
+          <p style={{ marginTop: "20px", fontSize: "12px", color: "#999" }}>
+            Posted on:{" "}
+            {new Date(
+              jobs.find((job) => job.job_id === selectedJobId)?.createdAt || "",
+            ).toLocaleDateString()}
+          </p>
+        </div>
+      </FormModal>
       <FormModal
         open={openJobModal}
         onClose={() => setOpenJobModal(false)}
@@ -318,3 +428,21 @@ export default function JobPostingsPage() {
     </div>
   );
 }
+
+const badgeStyle = (bg: string, color: string) => ({
+  backgroundColor: bg,
+  color,
+  padding: "6px 10px",
+  borderRadius: "20px",
+  fontSize: "12px",
+  fontWeight: 600,
+});
+
+const Section = ({ title, children }: any) => (
+  <div style={{ marginBottom: "16px" }}>
+    <h4 style={{ marginBottom: "6px", color: "#333" }}>{title}</h4>
+    <ul style={{ paddingLeft: "18px", color: "#555", margin: 0 }}>
+      {children}
+    </ul>
+  </div>
+);

@@ -51,16 +51,16 @@ const RecruiterMenuItems = [
     label: "Applications",
     icon: User,
   },
-  {
-    path: "/recruiter/interviews",
-    label: "Interviews",
-    icon: User,
-  },
-  {
-    path: "/recruiter/settings",
-    label: "Settings",
-    icon: User,
-  },
+  // {
+  //   path: "/recruiter/interviews",
+  //   label: "Interviews",
+  //   icon: User,
+  // },
+  // {
+  //   path: "/recruiter/settings",
+  //   label: "Settings",
+  //   icon: User,
+  // },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
