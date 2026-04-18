@@ -33,12 +33,12 @@ export default function StudentDashboardPage() {
             flexDirection: "column",
           }}
         >
-          <h1 style={{ fontSize: "30px", fontWeight: "500" }}>
-            Welcome to {user?.name} <WavingHandIcon sx={{ fontSize: "30px" }} />
+          <h1 style={{ fontSize: "30px", fontWeight: "600" }}>
+            Welcome back, {user?.name}{" "}
+            <WavingHandIcon sx={{ fontSize: "30px", color: "yellow" }} />
           </h1>
           <p style={{ fontSize: "16px", fontWeight: "400" }}>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque,
-            tempore?
+            Here's what's happening with your job search today.
           </p>
         </div>
         <ApproveButton

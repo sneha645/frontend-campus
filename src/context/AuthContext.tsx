@@ -9,12 +9,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => { },
-  login: async () => { },
-  logout: () => { },
-  registerStudent: async () => { },
-  registerMentor: async () => { },
-  registerRecruiter: async () => { },
+  setUser: () => {},
+  login: async () => {},
+  logout: () => {},
+  registerStudent: async () => {},
+  registerMentor: async () => {},
+  registerRecruiter: async () => {},
   isLoading: false,
   success: "",
   error: "",
@@ -74,12 +74,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log(res.data.message);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error signing in:", error.response?.data.message);
-        setError(error.response?.data.message);
-      } else {
-        console.error("Error signing in:", error);
-      }
+      const backendMessage =
+        error?.response?.data?.message || error?.message || "Error signing in";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -103,11 +103,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSuccess(res.data.message);
         setTimeout(() => {
           router.push("/sign-in");
+          setSuccess("");
         }, 3000);
       }
     } catch (error) {
-      const backendMessage = error?.response?.data?.message || error?.message || 'Error sending invite';
-      const message = Array.isArray(backendMessage) ? backendMessage.join(', ') : backendMessage;
+      const backendMessage =
+        error?.response?.data?.message || error?.message || "Error registering";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
       setError(message);
       setTimeout(() => {
         setError("");
@@ -159,8 +163,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     name: string,
     role: string,
   ) => register("/auth/register-recruiter", { email, password, name, role });
-
-
 
   useEffect(() => {
     me();

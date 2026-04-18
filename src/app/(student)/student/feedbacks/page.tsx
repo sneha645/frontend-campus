@@ -111,7 +111,7 @@ export default function FeedbacksPage() {
           //         height={"100%"}
           //         width={"100%"}
           //       />
-          //     </div>
+          //     </div
           //   </div>
           //   <div
           //     style={{
@@ -190,6 +190,7 @@ export default function FeedbacksPage() {
               boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
               border: "1px solid #f1f5f9",
               transition: "0.3s ease",
+              marginBottom: "20px",
             }}
           >
             {/* Image */}

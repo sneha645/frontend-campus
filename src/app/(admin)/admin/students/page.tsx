@@ -92,6 +92,7 @@ export default function StudentsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
