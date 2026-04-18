@@ -138,9 +138,14 @@ export interface RecruiterTableColumns {
 export const recruiterTableColumns: readonly RecruiterTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
-  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
-  { id: "status", label: "Status", minWidth: 100, align: "left" },
-  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+  {
+    id: "createdAt",
+    label: "Registration Date",
+    minWidth: 100,
+    align: "center",
+  },
+  { id: "status", label: "Status", minWidth: 100, align: "center" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
 
 export interface MentorTableColumns {
@@ -153,9 +158,14 @@ export interface MentorTableColumns {
 export const mentorTableColumns: readonly MentorTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
-  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
-  { id: "status", label: "Status", minWidth: 100, align: "left" },
-  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+  {
+    id: "createdAt",
+    label: "Registration Date",
+    minWidth: 100,
+    align: "center",
+  },
+  { id: "status", label: "Status", minWidth: 100, align: "center" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
 
 export interface StudentTableColumns {
@@ -168,7 +178,7 @@ export interface StudentTableColumns {
 export const studentTableColumns: readonly StudentTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
-  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "left" },
-  { id: "status", label: "Status", minWidth: 100, align: "left" },
-  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "center" },
+  { id: "status", label: "Status", minWidth: 100, align: "center" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];

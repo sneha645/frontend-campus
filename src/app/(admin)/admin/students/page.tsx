@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   TablePagination,
+  Alert,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Recruiter } from "@/types/type";
@@ -20,6 +21,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Dot, Search } from "lucide-react";
 import {
   ApproveButton,
+  HeaderSubContainer,
   HeadingContainer,
   PaperContainer,
   RejectButton,
@@ -29,14 +31,18 @@ import {
   TableSubHeading,
   ViewProfile,
 } from "../recruiters/styled";
+import { StudentContainer } from "./styled";
+import { useRouter } from "next/navigation";
 
 export default function StudentsPage() {
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchRecruiter, setSearchRecruiter] = useState("");
+  const [searchStudent, setSearchStudent] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const [students, setStudents] = useState<User[]>([]);
-  console.log("students", students);
 
   const fetchStudents = async () => {
     const token = localStorage.getItem("token");
@@ -59,9 +65,9 @@ export default function StudentsPage() {
 
   const filteredStudents = useMemo(() => {
     return students.filter((r) =>
-      r.name.toLowerCase().includes(searchRecruiter.toLowerCase()),
+      r.name.toLowerCase().includes(searchStudent.toLowerCase()),
     );
-  }, [students, searchRecruiter]);
+  }, [students, searchStudent]);
 
   const paginatiedStudents = useMemo(() => {
     const start = page * rowsPerPage;
@@ -99,9 +105,19 @@ export default function StudentsPage() {
           },
         },
       );
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+      }
       console.log(response);
       fetchStudents();
     } catch (error) {
+      setError("Failed to approve student");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
@@ -111,6 +127,7 @@ export default function StudentsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/reject/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -125,35 +142,50 @@ export default function StudentsPage() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        gap: "20px",
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
-      }}
-    >
-      <Paper style={{ width: "100%", height: "100%" }}>
+    <StudentContainer>
+      {success && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="success"
+        >
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="error"
+        >
+          {error}
+        </Alert>
+      )}
+      <Paper
+        style={{
+          width: "100%",
+          height: "100%",
+          boxShadow: "none",
+          border: "1px solid #e5e7eb",
+        }}
+      >
         <PaperContainer>
           <HeadingContainer>
             <TableHeading>New Student Requests</TableHeading>
-            <TableSubHeading>
-              Pending requests list with manual moderation for approvals,
-              rejects and compliance review.
-            </TableSubHeading>
+            <HeaderSubContainer>
+              <TableSubHeading>
+                Review newly registered students, moderate approvals, and keep
+                student
+                <br /> data accurate across departments.
+              </TableSubHeading>
+              <SearchContainer>
+                <Search size={16} color="#666" />
+                <SearchInput
+                  placeholder="Search student"
+                  value={searchStudent}
+                  onChange={(e) => setSearchStudent(e.target.value)}
+                />
+              </SearchContainer>
+            </HeaderSubContainer>
           </HeadingContainer>
-          <SearchContainer>
-            <Search size={20} />
-            <SearchInput
-              placeholder="Search student"
-              value={searchRecruiter}
-              onChange={(e) => setSearchRecruiter(e.target.value)}
-            />
-          </SearchContainer>
         </PaperContainer>
         <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
@@ -187,47 +219,68 @@ export default function StudentsPage() {
                       {student.email}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {student.createdAt}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        {student.createdAt?.split("T")[0]}
+                      </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      <Box
-                        sx={{
-                          backgroundColor: `${student.status === "approved" ? "#def2e6" : student.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                          padding: "10px 20px",
-                          borderRadius: "30px",
-                          display: "flex",
-                          alignItems: "center",
-                          width: "fit-content",
-                          color: `${student.status === "approved" ? "#16a34a" : student.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                          fontSize: "12px",
-                        }}
-                      >
-                        {student.status}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Box
+                          sx={{
+                            backgroundColor: `${student.status === "approved" ? "#def2e6" : student.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "fit-content",
+                            color: `${student.status === "approved" ? "#16a34a" : student.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {student.status}
+                        </Box>
                       </Box>
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
-                      {student.status === "pending" ? (
-                        <Box sx={{ display: "flex", gap: "10px" }}>
-                          <ApproveButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              student.user_id && handleApprove(student.user_id)
-                            }
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        {student.status === "pending" ? (
+                          <Box sx={{ display: "flex", gap: "10px" }}>
+                            <ApproveButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                student.user_id &&
+                                handleApprove(student.user_id)
+                              }
+                            >
+                              Approve
+                            </ApproveButton>
+                            <RejectButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                student.user_id && handleReject(student.user_id)
+                              }
+                            >
+                              Reject
+                            </RejectButton>
+                          </Box>
+                        ) : student.status === "approved" ? (
+                          <ViewProfile
+                            onClick={() => {
+                              router.push(`/admin/students/${student.user_id}`);
+                            }}
                           >
-                            Approve
-                          </ApproveButton>
-                          <RejectButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              student.user_id && handleReject(student.user_id)
-                            }
-                          >
-                            Reject
-                          </RejectButton>
-                        </Box>
-                      ) : (
-                        <ViewProfile>View Profile</ViewProfile>
-                      )}
+                            View Profile
+                          </ViewProfile>
+                        ) : (
+                          ""
+                        )}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -245,6 +298,6 @@ export default function StudentsPage() {
           />
         </TableContainer>
       </Paper>
-    </div>
+    </StudentContainer>
   );
 }

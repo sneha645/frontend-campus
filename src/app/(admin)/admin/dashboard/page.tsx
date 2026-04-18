@@ -230,42 +230,6 @@ export default function AdminDashboardPage() {
                 value={99.9}
               />
             </ProgressSubContainer>
-            <ProgressSubContainer>
-              <ProgressHeadingContainer>
-                <ProgressHeading>Authentication Service</ProgressHeading>
-                <ProgressSubHeading>99.9%</ProgressSubHeading>
-              </ProgressHeadingContainer>
-              <LinearProgress
-                variant="determinate"
-                color="success"
-                style={{ height: "10px", borderRadius: "10px" }}
-                value={99.9}
-              />
-            </ProgressSubContainer>
-            <ProgressSubContainer>
-              <ProgressHeadingContainer>
-                <ProgressHeading>Authentication Service</ProgressHeading>
-                <ProgressSubHeading>99.9%</ProgressSubHeading>
-              </ProgressHeadingContainer>
-              <LinearProgress
-                variant="determinate"
-                color="success"
-                style={{ height: "10px", borderRadius: "10px" }}
-                value={99.9}
-              />
-            </ProgressSubContainer>
-            <ProgressSubContainer>
-              <ProgressHeadingContainer>
-                <ProgressHeading>Authentication Service</ProgressHeading>
-                <ProgressSubHeading>99.9%</ProgressSubHeading>
-              </ProgressHeadingContainer>
-              <LinearProgress
-                variant="determinate"
-                color="success"
-                style={{ height: "10px", borderRadius: "10px" }}
-                value={99.9}
-              />
-            </ProgressSubContainer>
           </ProgressContainer>
         </PlatformOverview>
       </ActivityContainer>

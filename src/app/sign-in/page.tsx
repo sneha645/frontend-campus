@@ -48,14 +48,13 @@ export default function SignInPage() {
     email: "",
     password: "",
     confirmPassword: "",
-  })
+  });
 
-  const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false)
+  const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [successPasswordReset, setSuccessPasswordReset] = useState("")
-  const [errorPasswordReset, setErrorPasswordReset] = useState("")
-  const [validation, setValidation] = useState("")
-
+  const [successPasswordReset, setSuccessPasswordReset] = useState("");
+  const [errorPasswordReset, setErrorPasswordReset] = useState("");
+  const [validation, setValidation] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +78,11 @@ export default function SignInPage() {
       return;
     }
 
-    if (!resetPassword.email || !resetPassword.password || !resetPassword.confirmPassword) {
+    if (
+      !resetPassword.email ||
+      !resetPassword.password ||
+      !resetPassword.confirmPassword
+    ) {
       setValidation("Please fill all the fields");
       setTimeout(() => {
         setValidation("");
@@ -88,14 +91,18 @@ export default function SignInPage() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/reset-password", {
-        email: resetPassword.email,
-        password: resetPassword.password,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/reset-password",
+        {
+          email: resetPassword.email,
+          password: resetPassword.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       setSuccessPasswordReset(response.data.message);
       setTimeout(() => {
@@ -103,14 +110,19 @@ export default function SignInPage() {
         setOpenResetPasswordModal(false);
       }, 2000);
     } catch (error) {
-      const backendMessage = error?.response?.data?.message || error?.message || 'Error resetting password';
-      const message = Array.isArray(backendMessage) ? backendMessage.join(', ') : backendMessage;
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error resetting password";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
       setErrorPasswordReset(message);
       setTimeout(() => {
         setErrorPasswordReset("");
       }, 2000);
     }
-  }
+  };
 
   return (
     <Container>
@@ -126,9 +138,11 @@ export default function SignInPage() {
 
         <QuoteSection>
           <QuoteText>
-            This platform completely transformed our campus placement drive.
-            Connecting students with recruiters and tracking projects is now
-            completely seamless and centralized.
+            This platform has made mentoring more effective and structured than
+            ever before. Tracking student progress, reviewing projects, and
+            providing guidance is now completely seamless and centralized. It
+            allows me to focus more on helping students grow rather than
+            managing scattered information.
           </QuoteText>
         </QuoteSection>
       </LeftSection>
@@ -211,7 +225,12 @@ export default function SignInPage() {
               </PasswordInput>
             </InputGroup>
 
-            <ForgotButton type="button" onClick={() => setOpenResetPasswordModal(true)}>Forgot password?</ForgotButton>
+            <ForgotButton
+              type="button"
+              onClick={() => setOpenResetPasswordModal(true)}
+            >
+              Forgot password?
+            </ForgotButton>
 
             <SignInButton type="submit" disabled={isLoading}>
               {isLoading ? "Signing In..." : "Sign In"}
@@ -226,8 +245,10 @@ export default function SignInPage() {
           </Form>
         </FormWrapper>
       </RightSection>
-      <FormModal open={openResetPasswordModal} onClose={() => setOpenResetPasswordModal(false)}>
-
+      <FormModal
+        open={openResetPasswordModal}
+        onClose={() => setOpenResetPasswordModal(false)}
+      >
         <ForgotPasswordContainer>
           {successPasswordReset && (
             <Alert
@@ -257,7 +278,6 @@ export default function SignInPage() {
             </Alert>
           )}
 
-
           {validation && (
             <Alert
               severity="warning"
@@ -272,18 +292,22 @@ export default function SignInPage() {
             </Alert>
           )}
 
-          <HeadingSection style={{ width: '100%', alignItems: 'flex-start' }}>
+          <HeadingSection style={{ width: "100%", alignItems: "flex-start" }}>
             <Title>Reset your password</Title>
-            <Subtitle>Just set a new password to get back into your account.</Subtitle>
+            <Subtitle>
+              Just set a new password to get back into your account.
+            </Subtitle>
           </HeadingSection>
-          <Form onSubmit={handleResetPassword} style={{ width: '100%' }}>
+          <Form onSubmit={handleResetPassword} style={{ width: "100%" }}>
             <InputGroup>
               <Label>Email</Label>
               <Input
                 type="email"
                 placeholder="name@university.edu"
                 value={resetPassword.email}
-                onChange={(e) => setResetPassword({ ...resetPassword, email: e.target.value })}
+                onChange={(e) =>
+                  setResetPassword({ ...resetPassword, email: e.target.value })
+                }
                 required
               />
             </InputGroup>
@@ -297,7 +321,10 @@ export default function SignInPage() {
                   placeholder="••••••••••"
                   value={resetPassword.password}
                   onChange={(e) =>
-                    setResetPassword({ ...resetPassword, password: e.target.value })
+                    setResetPassword({
+                      ...resetPassword,
+                      password: e.target.value,
+                    })
                   }
                   required
                 />
@@ -313,7 +340,10 @@ export default function SignInPage() {
                   placeholder="••••••••••"
                   value={resetPassword.confirmPassword}
                   onChange={(e) =>
-                    setResetPassword({ ...resetPassword, confirmPassword: e.target.value })
+                    setResetPassword({
+                      ...resetPassword,
+                      confirmPassword: e.target.value,
+                    })
                   }
                   required
                 />
@@ -331,9 +361,7 @@ export default function SignInPage() {
               </PasswordInput>
             </InputGroup>
             <Box></Box>
-            <SignInButton type="submit" >
-              Update Password
-            </SignInButton>
+            <SignInButton type="submit">Update Password</SignInButton>
           </Form>
         </ForgotPasswordContainer>
       </FormModal>

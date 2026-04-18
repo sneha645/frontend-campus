@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   TablePagination,
+  Alert,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Recruiter } from "@/types/type";
@@ -20,8 +21,10 @@ import { useAuth } from "@/context/AuthContext";
 import { Dot, Search } from "lucide-react";
 import {
   ApproveButton,
+  HeaderSubContainer,
   HeadingContainer,
   PaperContainer,
+  RecruiterContainer,
   RejectButton,
   SearchContainer,
   SearchInput,
@@ -29,11 +32,15 @@ import {
   TableSubHeading,
   ViewProfile,
 } from "./styled";
+import { useRouter } from "next/navigation";
 
 export default function RecruiterPage() {
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchRecruiter, setSearchRecruiter] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const [recruiters, setRecruiters] = useState<User[]>([]);
   console.log("recruiters", recruiters);
@@ -92,15 +99,26 @@ export default function RecruiterPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
       );
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+      }
       console.log(response);
       fetchRecruiters();
     } catch (error) {
+      setError("Failed to approve recruiter");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
@@ -110,49 +128,76 @@ export default function RecruiterPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/reject/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
       );
+
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+      }
       console.log(response);
       fetchRecruiters();
     } catch (error) {
+      setError("Failed to reject recruiter");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        gap: "20px",
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
-      }}
-    >
-      <Paper style={{ width: "100%", height: "100%" }}>
+    <RecruiterContainer>
+      {success && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="success"
+        >
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="error"
+        >
+          {error}
+        </Alert>
+      )}
+      <Paper
+        style={{
+          width: "100%",
+          height: "100%",
+          boxShadow: "none",
+          border: "1px solid #e5e7eb",
+        }}
+      >
         <PaperContainer>
           <HeadingContainer>
             <TableHeading>New Recruiter Requests</TableHeading>
-            <TableSubHeading>
-              Pending requests list with manual moderation for approvals,
-              rejects and compliance review.
-            </TableSubHeading>
+            <HeaderSubContainer>
+              <TableSubHeading>
+                Review newly registered recruiters, moderate approvals, and keep
+                employer
+                <br /> data accurate across departments.
+              </TableSubHeading>
+              <SearchContainer>
+                <Search size={16} color="#666" />
+                <SearchInput
+                  placeholder="Search recruiter"
+                  value={searchRecruiter}
+                  onChange={(e) => setSearchRecruiter(e.target.value)}
+                />
+              </SearchContainer>
+            </HeaderSubContainer>
           </HeadingContainer>
-          <SearchContainer>
-            <Search size={20} />
-            <SearchInput
-              placeholder="Search recruiter"
-              value={searchRecruiter}
-              onChange={(e) => setSearchRecruiter(e.target.value)}
-            />
-          </SearchContainer>
         </PaperContainer>
         <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
@@ -186,49 +231,71 @@ export default function RecruiterPage() {
                       {recruiter.email}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {recruiter.createdAt}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        {recruiter.createdAt?.split("T")[0]}
+                      </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      <Box
-                        sx={{
-                          backgroundColor: `${recruiter.status === "approved" ? "#def2e6" : recruiter.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                          padding: "10px 20px",
-                          borderRadius: "30px",
-                          display: "flex",
-                          alignItems: "center",
-                          width: "fit-content",
-                          color: `${recruiter.status === "approved" ? "#16a34a" : recruiter.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                          fontSize: "12px",
-                        }}
-                      >
-                        {recruiter.status}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Box
+                          sx={{
+                            backgroundColor: `${recruiter.status === "approved" ? "#def2e6" : recruiter.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "fit-content",
+                            color: `${recruiter.status === "approved" ? "#16a34a" : recruiter.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {recruiter.status}
+                        </Box>
                       </Box>
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
-                      {recruiter.status === "pending" ? (
-                        <Box sx={{ display: "flex", gap: "10px" }}>
-                          <ApproveButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              recruiter.user_id &&
-                              handleApprove(recruiter.user_id)
-                            }
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        {recruiter.status === "pending" ? (
+                          <Box sx={{ display: "flex", gap: "10px" }}>
+                            <ApproveButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                recruiter.user_id &&
+                                handleApprove(recruiter.user_id)
+                              }
+                            >
+                              Approve
+                            </ApproveButton>
+                            <RejectButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                recruiter.user_id &&
+                                handleReject(recruiter.user_id)
+                              }
+                            >
+                              Reject
+                            </RejectButton>
+                          </Box>
+                        ) : recruiter.status === "approved" ? (
+                          <ViewProfile
+                            onClick={() => {
+                              router.push(
+                                `/admin/recruiters/${recruiter.user_id}`,
+                              );
+                            }}
                           >
-                            Approve
-                          </ApproveButton>
-                          <RejectButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              recruiter.user_id &&
-                              handleReject(recruiter.user_id)
-                            }
-                          >
-                            Reject
-                          </RejectButton>
-                        </Box>
-                      ) : (
-                        <ViewProfile>View Profile</ViewProfile>
-                      )}
+                            View Profile
+                          </ViewProfile>
+                        ) : (
+                          ""
+                        )}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -246,6 +313,6 @@ export default function RecruiterPage() {
           />
         </TableContainer>
       </Paper>
-    </div>
+    </RecruiterContainer>
   );
 }

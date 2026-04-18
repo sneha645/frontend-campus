@@ -4,8 +4,13 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Header = styled.div`
@@ -121,6 +126,11 @@ export const MainBar = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #f7f8fa;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const AvatarContainer = styled.div`

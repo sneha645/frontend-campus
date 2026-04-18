@@ -15,6 +15,7 @@ import WavingHandIcon from "@mui/icons-material/WavingHand";
 import { Task } from "@mui/icons-material";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   return (
     <div
       style={{

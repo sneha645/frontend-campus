@@ -58,11 +58,7 @@ const StudentMenuItems = [
     label: "Students",
     icon: User,
   },
-  // {
-  //   path: "/student/settings",
-  //   label: "Settings",
-  //   icon: Settings,
-  // },
+
   {
     path: "/mentor/assignments",
     label: "Assignments",

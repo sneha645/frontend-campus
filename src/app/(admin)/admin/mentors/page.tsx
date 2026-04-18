@@ -11,12 +11,14 @@ import {
   TableBody,
   Box,
   TablePagination,
+  Alert,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Search } from "lucide-react";
 import {
   ApproveButton,
+  HeaderSubContainer,
   HeadingContainer,
   PaperContainer,
   RejectButton,
@@ -26,24 +28,31 @@ import {
   TableSubHeading,
   ViewProfile,
 } from "../recruiters/styled";
+import { MentorContainer } from "./styled";
+import { useRouter } from "next/navigation";
 
 export default function MentorsPage() {
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchRecruiter, setSearchRecruiter] = useState("");
+  const [searchMentor, setSearchMentor] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const [mentors, setMentors] = useState<User[]>([]);
-  console.log("mentors", mentors);
 
   const fetchMentor = async () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("http://localhost:3000/api/admin/all-mentors", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        "http://localhost:3000/api/admin/all-mentors",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       console.log(response);
       const data = await response.data;
       setMentors(data);
@@ -54,9 +63,9 @@ export default function MentorsPage() {
 
   const filteredMentors = useMemo(() => {
     return mentors.filter((r) =>
-      r.name.toLowerCase().includes(searchRecruiter.toLowerCase()),
+      r.name.toLowerCase().includes(searchMentor.toLowerCase()),
     );
-  }, [mentors, searchRecruiter]);
+  }, [mentors, searchMentor]);
 
   const paginatiedMentors = useMemo(() => {
     const start = page * rowsPerPage;
@@ -87,15 +96,26 @@ export default function MentorsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/approve/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
       );
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+      }
       console.log(response);
       fetchMentor();
     } catch (error) {
+      setError("Failed to approve mentor");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
@@ -105,51 +125,77 @@ export default function MentorsPage() {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/admin/reject/${id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
       );
+      if (response.status === 200) {
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 2000);
+      }
       console.log(response);
       fetchMentor();
     } catch (error) {
+      setError("Failed to reject mentor");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        gap: "20px",
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
-      }}
-    >
-      <Paper style={{ width: "100%", height: "100%" }}>
+    <MentorContainer>
+      {success && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="success"
+        >
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "100px" }}
+          severity="error"
+        >
+          {error}
+        </Alert>
+      )}
+      <Paper
+        style={{
+          width: "100%",
+          height: "100%",
+          boxShadow: "none",
+          border: "1px solid #e5e7eb",
+        }}
+      >
         <PaperContainer>
           <HeadingContainer>
             <TableHeading>New Mentor Requests</TableHeading>
-            <TableSubHeading>
-              Pending requests list with manual moderation for approvals,
-              rejects and compliance review.
-            </TableSubHeading>
+            <HeaderSubContainer>
+              <TableSubHeading>
+                Review newly registered mentors, moderate approvals, and keep
+                mentor
+                <br /> data accurate across departments.
+              </TableSubHeading>
+              <SearchContainer>
+                <Search size={16} color="#666" />
+                <SearchInput
+                  placeholder="Search mentor"
+                  value={searchMentor}
+                  onChange={(e) => setSearchMentor(e.target.value)}
+                />
+              </SearchContainer>
+            </HeaderSubContainer>
           </HeadingContainer>
-          <SearchContainer>
-            <Search size={20} />
-            <SearchInput
-              placeholder="Search mentor"
-              value={searchRecruiter}
-              onChange={(e) => setSearchRecruiter(e.target.value)}
-            />
-          </SearchContainer>
         </PaperContainer>
-        
+
         <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
             <TableHead style={{ backgroundColor: "#f7f8fa" }}>
@@ -182,47 +228,67 @@ export default function MentorsPage() {
                       {mentor.email}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {mentor.createdAt}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        {mentor.createdAt?.split("T")[0]}
+                      </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      <Box
-                        sx={{
-                          backgroundColor: `${mentor.status === "approved" ? "#def2e6" : mentor.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                          padding: "10px 20px",
-                          borderRadius: "30px",
-                          display: "flex",
-                          alignItems: "center",
-                          width: "fit-content",
-                          color: `${mentor.status === "approved" ? "#16a34a" : mentor.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                          fontSize: "12px",
-                        }}
-                      >
-                        {mentor.status}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Box
+                          sx={{
+                            backgroundColor: `${mentor.status === "approved" ? "#def2e6" : mentor.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "fit-content",
+                            color: `${mentor.status === "approved" ? "#16a34a" : mentor.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {mentor.status}
+                        </Box>
                       </Box>
                     </TableCell>
                     <TableCell style={{ display: "flex", gap: "10px" }}>
-                      {mentor.status === "pending" ? (
-                        <Box sx={{ display: "flex", gap: "10px" }}>
-                          <ApproveButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              mentor.user_id && handleApprove(mentor.user_id)
-                            }
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        {mentor.status === "pending" ? (
+                          <Box sx={{ display: "flex", gap: "10px" }}>
+                            <ApproveButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                mentor.user_id && handleApprove(mentor.user_id)
+                              }
+                            >
+                              Approve
+                            </ApproveButton>
+                            <RejectButton
+                              style={{ fontFamily: "Poppins" }}
+                              onClick={() =>
+                                mentor.user_id && handleReject(mentor.user_id)
+                              }
+                            >
+                              Reject
+                            </RejectButton>
+                          </Box>
+                        ) : mentor.status === "approved" ? (
+                          <ViewProfile
+                            onClick={() => {
+                              router.push(`/admin/mentors/${mentor.user_id}`);
+                            }}
                           >
-                            Approve
-                          </ApproveButton>
-                          <RejectButton
-                            style={{ fontFamily: "Poppins" }}
-                            onClick={() =>
-                              mentor.user_id && handleReject(mentor.user_id)
-                            }
-                          >
-                            Reject
-                          </RejectButton>
-                        </Box>
-                      ) : (
-                        <ViewProfile>View Profile</ViewProfile>
-                      )}
+                            View Profile
+                          </ViewProfile>
+                        ) : (
+                          ""
+                        )}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -240,6 +306,6 @@ export default function MentorsPage() {
           />
         </TableContainer>
       </Paper>
-    </div>
+    </MentorContainer>
   );
 }

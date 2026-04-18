@@ -7,11 +7,6 @@ export const DashboardContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -45,7 +40,6 @@ export const SubHeading = styled.h2`
   font-size: 16px;
   font-weight: 400;
   color: #666;
-  width: 70%;
 `;
 
 export const Button = styled.button`

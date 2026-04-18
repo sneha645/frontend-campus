@@ -9,9 +9,8 @@
 
 html,
 body {
-  min-height: 100vh;
-  max-height: 100%;
-  width: 100vw;
+  height: 100dvh;
+  width: 100dvw;
   display: flex;
   align-items: center;
   justify-content: center;
