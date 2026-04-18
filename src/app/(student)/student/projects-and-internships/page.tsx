@@ -106,8 +106,8 @@ export default function ProjectAndInternshipPage() {
       </ButtonContainer>
 
       <ProjectGrid>
-        {viewType === "project" && (
-          projects.length > 0 ? (
+        {viewType === "project" &&
+          (projects.length > 0 ? (
             projects.map((item, index) => (
               <ProjectCard key={`project-${index}`}>
                 <div style={{ height: "70%", overflow: "hidden" }}>
@@ -168,11 +168,10 @@ export default function ProjectAndInternshipPage() {
             ))
           ) : (
             <p>No projects found</p>
-          )
-        )}
+          ))}
 
-        {viewType === "internship" && (
-          internships.length > 0 ? (
+        {viewType === "internship" &&
+          (internships.length > 0 ? (
             internships.map((item, index) => (
               <ProjectCard key={`internship-${index}`}>
                 <div style={{ height: "70%", overflow: "hidden" }}>
@@ -234,8 +233,7 @@ export default function ProjectAndInternshipPage() {
             ))
           ) : (
             <p>No internships found</p>
-          )
-        )}
+          ))}
       </ProjectGrid>
 
       <FormModal
