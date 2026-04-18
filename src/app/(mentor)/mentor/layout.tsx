@@ -58,11 +58,15 @@ const StudentMenuItems = [
     label: "Students",
     icon: User,
   },
-
   {
     path: "/mentor/assignments",
     label: "Assignments",
     icon: BookOpenText,
+  },
+  {
+    path: "/mentor/logout",
+    label: "Logout",
+    icon: LogOutIcon,
   },
 ];
 
