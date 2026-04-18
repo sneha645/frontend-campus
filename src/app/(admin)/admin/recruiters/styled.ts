@@ -8,6 +8,10 @@ export const ApproveButton = styled.button`
   cursor: pointer;
   border: none;
   width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 
   transition: all 0.3s ease;
 

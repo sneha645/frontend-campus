@@ -4,14 +4,17 @@ import { useAuth } from "@/context/AuthContext";
 import { redirect, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import {
+  AvatarContainer,
+  AvatarEmail,
+  AvatarImage,
+  AvatarInfoContainer,
+  AvatarName,
   Container,
   Header,
   IconContainer,
   LeftHeader,
   LogoContainer,
   LogoTitle,
-  LogoutBtn,
-  LogoutContainer,
   Main,
   MainBar,
   Menu,
@@ -21,8 +24,8 @@ import {
   SideBar,
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import { Avatar, Box } from "@mui/material";
-import { LayoutDashboard, LogOutIcon, Settings, User } from "lucide-react";
+import { Box } from "@mui/material";
+import { LayoutDashboard, LogOutIcon, User } from "lucide-react";
 
 const AdminMenuItems = [
   {
@@ -45,16 +48,16 @@ const AdminMenuItems = [
     label: "Students",
     icon: User,
   },
-  // {
-  //   path: "/admin/settings",
-  //   label: "Settings",
-  //   icon: Settings,
-  // },
+  {
+    path: "/admin/logout",
+    label: "Logout",
+    icon: LogOutIcon,
+  },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { user, logout, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
   if (isLoading) {
@@ -66,10 +69,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (user.role !== "admin") {
     redirect(`/${user.role}/dashboard`);
   }
-
-  const handleLogout = () => {
-    logout();
-  };
 
   const handleMenuClick = (label: string, path: string) => {
     setActiveMenu(label);
@@ -90,13 +89,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </LogoContainer>
         </LeftHeader>
         <RightHeader>
-          <PageTitle>Admin Dashboard</PageTitle>
-          <LogoutContainer>
-            <LogoutBtn onClick={handleLogout}>
-              <LogOutIcon size={20} />
-              Logout
-            </LogoutBtn>
-          </LogoutContainer>
+          <PageTitle>{activeMenu}</PageTitle>
         </RightHeader>
       </Header>
       <Main>
@@ -115,51 +108,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               ))}
             </Box>
           </Menu>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              backgroundColor: "#fff",
-              padding: "16px 30px",
-              borderTop: "1px solid #f0f0f0",
-              position: "absolute",
-              bottom: "0",
-              left: "0",
-              right: "0",
-            }}
-          >
-            <Avatar
-              sx={{
-                width: "40px",
-                height: "40px",
-                fontSize: "16px",
-                bgcolor: "#0b75ff",
-                borderRadius: "14px",
-              }}
-            >
-              {user.name.charAt(0).toUpperCase()}
-            </Avatar>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  color: "#000",
-                }}
-              >
-                {user.name}
-              </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "#848fa2",
-                }}
-              >
-                {user.email}
-              </p>
-            </div>
-          </div>
+          <AvatarContainer>
+            <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
+            <AvatarInfoContainer>
+              <AvatarName>{user.name}</AvatarName>
+              <AvatarEmail>{user.email}</AvatarEmail>
+            </AvatarInfoContainer>
+          </AvatarContainer>
         </SideBar>
         <MainBar>{children}</MainBar>
       </Main>

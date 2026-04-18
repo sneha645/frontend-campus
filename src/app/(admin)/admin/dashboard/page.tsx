@@ -1,10 +1,8 @@
 "use client";
 
-import { ApproveButton } from "@/app/(admin)/admin/recruiters/styled";
 import { useAuth } from "@/context/AuthContext";
-import { Briefcase, Building, Search, Upload, User } from "lucide-react";
+import { Building, User } from "lucide-react";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
-import { Task } from "@mui/icons-material";
 
 export default function AdminDashboardPage() {
   const { user } = useAuth();

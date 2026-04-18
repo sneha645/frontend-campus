@@ -1,3 +1,4 @@
+import { Avatar } from "@mui/material";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -122,22 +123,42 @@ export const MainBar = styled.div`
   background-color: #f7f8fa;
 `;
 
-export const LogoutContainer = styled.div`
+export const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 30px;
+  background-color: #fff;
+  border-top: 1px solid #f0f0f0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
-export const LogoutBtn = styled.button`
-  cursor: pointer;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 14px;
-  color: #fff;
-  background-color: #e11d48;
+export const AvatarImage = styled(Avatar)(
+  () => `
+  width: 40px;
+  height: 40px;
   font-size: 16px;
-  border-radius: 4px;
+  background-color: #0b75ff;
+  border-radius: 30px;
+`,
+);
+
+export const AvatarInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const AvatarName = styled.p`
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+`;
+
+export const AvatarEmail = styled.p`
+  font-size: 12px;
+  color: #848fa2;
 `;

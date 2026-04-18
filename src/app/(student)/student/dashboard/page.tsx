@@ -23,7 +23,7 @@ export default function StudentDashboardPage() {
         style={{
           width: "100%",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-end",
           justifyContent: "space-between",
         }}
       >
@@ -31,21 +31,30 @@ export default function StudentDashboardPage() {
           style={{
             display: "flex",
             flexDirection: "column",
+            gap: "4px",
           }}
         >
           <h1 style={{ fontSize: "30px", fontWeight: "600" }}>
-            Welcome back, {user?.name}{" "}
-            <WavingHandIcon sx={{ fontSize: "30px", color: "yellow" }} />
+            Welcome back, {user?.name}!{" "}
+            <span role="img" aria-label="smile">
+              👋
+            </span>
           </h1>
-          <p style={{ fontSize: "16px", fontWeight: "400" }}>
-            Here's what's happening with your job search today.
+          <p style={{ fontSize: "16px", fontWeight: "400", color: "#797f8d" }}>
+            Here's a summary of your academic and placement activities.
           </p>
         </div>
         <ApproveButton
-          style={{ width: "fit-content", display: "flex", gap: "6px" }}
+          style={{
+            width: "fit-content",
+            display: "flex",
+            gap: "6px",
+            fontSize: "16px",
+            fontWeight: "400",
+          }}
         >
-          <Search />
-          Find New Jobs
+          <Search size={20} />
+          Explore New Jobs
         </ApproveButton>
       </div>
       <div
@@ -78,7 +87,7 @@ export default function StudentDashboardPage() {
               alignItems: "flex-start",
             }}
           >
-            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
               Project Uploaded
             </h1>
             <div
@@ -88,11 +97,11 @@ export default function StudentDashboardPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#0b75ffb9",
+                backgroundColor: "#aaaaaa23",
                 borderRadius: "8px",
               }}
             >
-              <Upload color="#fff" size={24} />
+              <Upload color="#0b75ffff" size={20} />
             </div>
           </div>
           <div
@@ -105,7 +114,7 @@ export default function StudentDashboardPage() {
             <p
               style={{
                 fontSize: "40px",
-                fontWeight: "500",
+                fontWeight: "700",
                 marginRight: "6px",
               }}
             >
@@ -135,8 +144,8 @@ export default function StudentDashboardPage() {
               alignItems: "flex-start",
             }}
           >
-            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
-              Internship Upload
+            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
+              Internship Uploaded
             </h1>
             <div
               style={{
@@ -145,11 +154,11 @@ export default function StudentDashboardPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#0b75ffb9",
+                backgroundColor: "#aaaaaa23",
                 borderRadius: "8px",
               }}
             >
-              <Upload color="#fff" size={24} />
+              <Upload color="#0b75ffff" size={20} />
             </div>
           </div>
           <div
@@ -162,7 +171,7 @@ export default function StudentDashboardPage() {
             <p
               style={{
                 fontSize: "40px",
-                fontWeight: "500",
+                fontWeight: "700",
                 marginRight: "6px",
               }}
             >
@@ -192,7 +201,7 @@ export default function StudentDashboardPage() {
               alignItems: "flex-start",
             }}
           >
-            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>Job Applied</h1>
+            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>Job Applied</h1>
             <div
               style={{
                 height: "50px",
@@ -200,11 +209,11 @@ export default function StudentDashboardPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#0b75ffb9",
+                backgroundColor: "#aaaaaa23",
                 borderRadius: "8px",
               }}
             >
-              <Briefcase color="#fff" size={24} />
+              <Briefcase color="#0b75ffff" size={20} />
             </div>
           </div>
           <div
@@ -217,7 +226,7 @@ export default function StudentDashboardPage() {
             <p
               style={{
                 fontSize: "40px",
-                fontWeight: "500",
+                fontWeight: "700",
                 marginRight: "6px",
               }}
             >
@@ -247,7 +256,7 @@ export default function StudentDashboardPage() {
               alignItems: "flex-start",
             }}
           >
-            <h1 style={{ fontSize: "20px", fontWeight: "500" }}>
+            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
               Assignment Completed
             </h1>
             <div
@@ -257,14 +266,14 @@ export default function StudentDashboardPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#0b75ffb9",
+                backgroundColor: "#aaaaaa23",
                 borderRadius: "8px",
               }}
             >
               <Task
                 style={{
-                  color: "#fff",
-                  fontSize: "24px",
+                  color: "#0b75ffff",
+                  fontSize: "20px",
                 }}
               />
             </div>
@@ -279,7 +288,7 @@ export default function StudentDashboardPage() {
             <p
               style={{
                 fontSize: "40px",
-                fontWeight: "500",
+                fontWeight: "700",
                 marginRight: "6px",
               }}
             >

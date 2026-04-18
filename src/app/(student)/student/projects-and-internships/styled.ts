@@ -26,13 +26,16 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const UploadButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background-color: #0b75ff;
   color: white;
   padding: 10px 14px;
   border-radius: 4px;
   cursor: pointer;
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   width: fit-content;
 
