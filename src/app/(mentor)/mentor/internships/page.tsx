@@ -51,22 +51,22 @@ import {
   ProjectModalTitle,
   ProjectStatus,
   RejectButton,
-} from "./styled";
+} from "../projects/styled";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "next/link";
 
-export default function ProjectsPage() {
-  const [assignedProjects, setAssignedProjects] = useState<Project[]>([]);
-  const [openProjectModal, setOpenProjectModal] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+export default function InternshipsPage() {
+  const [assignedInternships, setAssignedInternships] = useState<Project[]>([]);
+  const [openInternshipModal, setOpenInternshipModal] = useState(false);
+  const [selectedInternship, setSelectedInternship] = useState<Project | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchProject, setSearchProject] = useState("");
+  const [searchInternship, setSearchInternship] = useState("");
 
-  const fetchAssignedProjects = async () => {
+  const fetchAssignedInternships = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/api/mentor/assigned-projects",
+        "http://localhost:3000/api/mentor/assigned-internships",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -74,26 +74,26 @@ export default function ProjectsPage() {
         },
       );
 
-      setAssignedProjects(res.data);
+      setAssignedInternships(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchAssignedProjects();
+    fetchAssignedInternships();
   }, []);
 
-  const filteredProjects = useMemo(() => {
-    return assignedProjects.filter((p) =>
-      p.title.toLowerCase().includes(searchProject.toLowerCase()),
+  const filteredInternships = useMemo(() => {
+    return assignedInternships.filter((p) =>
+      p.title.toLowerCase().includes(searchInternship.toLowerCase()),
     );
-  }, [assignedProjects, searchProject]);
+  }, [assignedInternships, searchInternship]);
 
-  const paginatedProjects = useMemo(() => {
+  const paginatedInternships = useMemo(() => {
     const start = page * rowsPerPage;
-    return filteredProjects.slice(start, start + rowsPerPage);
-  }, [filteredProjects, page, rowsPerPage]);
+    return filteredInternships.slice(start, start + rowsPerPage);
+  }, [filteredInternships, page, rowsPerPage]);
 
   const handleChangePage = useCallback((_: unknown, newPage: number) => {
     setPage(newPage);
@@ -119,19 +119,19 @@ export default function ProjectsPage() {
       >
         <PaperContainer>
           <HeadingContainer>
-            <TableHeading>Assigned Projects</TableHeading>
+            <TableHeading>Assigned Internships</TableHeading>
             <HeaderSubContainer>
               <TableSubHeading>
-                Review and moderate assigned projects, track progress, and
+                Review and moderate assigned internships, track progress, and
                 <br />
                 provide feedback to students.
               </TableSubHeading>
               <SearchContainer>
                 <Search size={16} color="#666" />
                 <SearchInput
-                  placeholder="Search project"
-                  value={searchProject}
-                  onChange={(e) => setSearchProject(e.target.value)}
+                  placeholder="Search internship"
+                  value={searchInternship}
+                  onChange={(e) => setSearchInternship(e.target.value)}
                 />
               </SearchContainer>
             </HeaderSubContainer>
@@ -159,31 +159,31 @@ export default function ProjectsPage() {
             </TableHead>
 
             <TableBody>
-              {paginatedProjects.length === 0 ? (
+              {paginatedInternships.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} align="left">
-                    No projects found
+                    No internships found
                   </TableCell>
                 </TableRow>
               ) : (
-                paginatedProjects.map((project, index) => (
+                paginatedInternships.map((internship, index) => (
                   <TableRow key={index}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {project.title}
+                      {internship.title}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {typeof project.student === "object"
-                        ? project.student?.name
-                        : project.student}
+                      {typeof internship.student === "object"
+                        ? internship.student?.name
+                        : internship.student}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {project.startDate}
+                        {internship.startDate}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {project.endDate}
+                        {internship.endDate}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
@@ -191,17 +191,17 @@ export default function ProjectsPage() {
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <Box
                           sx={{
-                            backgroundColor: `${project.status === "approved" ? "#def2e6" : project.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            backgroundColor: `${internship.status === "approved" ? "#def2e6" : internship.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
                             padding: "10px 20px",
                             borderRadius: "30px",
                             display: "flex",
                             alignItems: "center",
                             width: "fit-content",
-                            color: `${project.status === "approved" ? "#16a34a" : project.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            color: `${internship.status === "approved" ? "#16a34a" : internship.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
                             fontSize: "12px",
                           }}
                         >
-                          {project.status}
+                          {internship.status}
                         </Box>
                       </Box>
                     </TableCell>
@@ -215,11 +215,11 @@ export default function ProjectsPage() {
                       >
                         <ViewProfile
                           onClick={() => {
-                            setSelectedProject(project);
-                            setOpenProjectModal(true);
+                            setSelectedInternship(internship);
+                            setOpenInternshipModal(true);
                           }}
                         >
-                          View Project
+                          View Internship
                         </ViewProfile>
                       </Box>
                     </TableCell>
@@ -231,7 +231,7 @@ export default function ProjectsPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredProjects.length}
+            count={filteredInternships.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -240,31 +240,31 @@ export default function ProjectsPage() {
         </TableContainer>
       </Paper>
 
-      <ProjectModal
-        open={openProjectModal}
-        onClose={() => setOpenProjectModal(false)}
-        project={selectedProject}
-        refreshProjects={fetchAssignedProjects}
+      <InternshipModal
+        open={openInternshipModal}
+        onClose={() => setOpenInternshipModal(false)}
+        internship={selectedInternship}
+        refreshInternships={fetchAssignedInternships}
       />
     </ProjectContainer>
   );
 }
 
-export const ProjectModal = ({
+export const InternshipModal = ({
   open,
   onClose,
-  project,
-  refreshProjects,
+  internship,
+  refreshInternships,
 }: {
   open: boolean;
   onClose: () => void;
-  project: Project | null;
-  refreshProjects: () => void;
+  internship: Project | null;
+  refreshInternships: () => void;
 }) => {
   const [feedback, setFeedback] = useState("");
   const [validationError, setValidationError] = useState("");
 
-  const handleApproveProject = async () => {
+  const handleApproveInternship = async () => {
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -275,7 +275,7 @@ export const ProjectModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/mentor/approveProject/${project?.project_id}`,
+        `http://localhost:3000/api/mentor/approveInternship/${internship?.project_id}`,
         {
           status: "approved",
           feedback,
@@ -288,14 +288,14 @@ export const ProjectModal = ({
         },
       );
       console.log(response.data);
-      refreshProjects();
+      refreshInternships();
       onClose();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleRejectProject = async () => {
+  const handleRejectInternship = async () => {
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -306,7 +306,7 @@ export const ProjectModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/mentor/rejectProject/${project?.project_id}`,
+        `http://localhost:3000/api/mentor/rejectInternship/${internship?.project_id}`,
         {
           status: "rejected",
           feedback,
@@ -319,7 +319,7 @@ export const ProjectModal = ({
         },
       );
       console.log(response.data);
-      refreshProjects();
+      refreshInternships();
       onClose();
     } catch (error) {
       console.log(error);
@@ -334,7 +334,7 @@ export const ProjectModal = ({
           </Alert>
         )}
         <ProjectModalHeader>
-          <ProjectModalTitle>{project?.title}</ProjectModalTitle>
+          <ProjectModalTitle>{internship?.title}</ProjectModalTitle>
         </ProjectModalHeader>
         <HrLine />
         <ProjectModalSubContainer>
@@ -342,42 +342,42 @@ export const ProjectModal = ({
             <ProjectInfoSubContainer>
               <ProjectInfoLabel>Student</ProjectInfoLabel>
               <ProjectInfoValue>
-                {typeof project?.student === "object"
-                  ? project?.student?.name
-                  : project?.student}
+                {typeof internship?.student === "object"
+                  ? internship?.student?.name
+                  : internship?.student}
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
               <ProjectInfoLabel>Status</ProjectInfoLabel>
               <ProjectStatus
                 style={{
-                  color: `${project?.status === "approved" ? "#16a34a" : project?.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                  backgroundColor: `${project?.status === "approved" ? "#def2e6" : project?.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                  color: `${internship?.status === "approved" ? "#16a34a" : internship?.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                  backgroundColor: `${internship?.status === "approved" ? "#def2e6" : internship?.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
                 }}
               >
-                {project?.status} review
+                {internship?.status} review
               </ProjectStatus>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
               <ProjectInfoLabel>Start Date</ProjectInfoLabel>
               <ProjectInfoValue>
                 <Calendar size={18} color="#00000099" />
-                {project?.startDate}
+                {internship?.startDate}
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
               <ProjectInfoLabel>End Date</ProjectInfoLabel>
               <ProjectInfoValue>
                 <Calendar size={18} color="#00000099" />
-                {project?.endDate}
+                {internship?.endDate}
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
               <ProjectInfoLabel>Github Repository</ProjectInfoLabel>
               <ProjectInfoValue style={{ color: "#0b75ff" }}>
                 <GitHubIcon style={{ color: "#0b75ff", fontSize: "18px" }} />
-                <Link href={project?.githubUrl} target="_blank">
-                  {project?.githubUrl}
+                <Link href={internship?.githubUrl} target="_blank">
+                  {internship?.githubUrl}
                 </Link>
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
@@ -385,8 +385,8 @@ export const ProjectModal = ({
               <ProjectInfoLabel>Live Link</ProjectInfoLabel>
               <ProjectInfoValue style={{ color: "#0b75ff" }}>
                 <SquareArrowOutUpRight size={18} color="#0b75ff" />
-                <Link href={project?.projectUrl} target="_blank">
-                  {project?.projectUrl}
+                <Link href={internship?.projectUrl} target="_blank">
+                  {internship?.projectUrl}
                 </Link>
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
@@ -394,7 +394,7 @@ export const ProjectModal = ({
           <ProjectInfoSubContainer>
             <ProjectInfoLabel>Description</ProjectInfoLabel>
             <ProjectDescriptionContainer>
-              <ProjectDescription>{project?.description}</ProjectDescription>
+              <ProjectDescription>{internship?.description}</ProjectDescription>
             </ProjectDescriptionContainer>
           </ProjectInfoSubContainer>
           <ProjectInfoSubContainer>
@@ -406,11 +406,11 @@ export const ProjectModal = ({
             />
           </ProjectInfoSubContainer>
           <ActionButtonContainer>
-            <ApproveButton onClick={handleApproveProject}>
+            <ApproveButton onClick={handleApproveInternship}>
               <CircleCheckBig size={18} />
               Approve Project
             </ApproveButton>
-            <RejectButton onClick={handleRejectProject}>
+            <RejectButton onClick={handleRejectInternship}>
               <CircleX size={18} />
               Reject Project
             </RejectButton>

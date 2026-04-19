@@ -213,3 +213,61 @@ export const projectTableColumns: readonly ProjectTableColumns[] = [
   { id: "status", label: "Status", minWidth: 100, align: "center" },
   { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
+
+export interface AssignmentTableColumns {
+  id: "title" | "assignto" | "deadline" | "submissiontype" | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const assignmentTableColumns: readonly AssignmentTableColumns[] = [
+  { id: "title", label: "Title", minWidth: 100, align: "left" },
+  { id: "assignto", label: "Assigned To", minWidth: 100, align: "center" },
+  {
+    id: "deadline",
+    label: "Deadline",
+    minWidth: 100,
+    align: "center",
+  },
+  {
+    id: "submissiontype",
+    label: "Submission Type",
+    minWidth: 100,
+    align: "center",
+  },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
+];
+
+export interface SubmittedAssignmentTableColumns {
+  id:
+    | "title"
+    | "student"
+    | "submissionDate"
+    | "deadline"
+    | "status"
+    | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const submittedAssignmentTableColumns: readonly SubmittedAssignmentTableColumns[] =
+  [
+    { id: "title", label: "Title", minWidth: 100, align: "left" },
+    { id: "student", label: "Student", minWidth: 100, align: "left" },
+    {
+      id: "submissionDate",
+      label: "Submission Date",
+      minWidth: 100,
+      align: "center",
+    },
+    {
+      id: "deadline",
+      label: "Deadline",
+      minWidth: 100,
+      align: "center",
+    },
+    { id: "status", label: "Status", minWidth: 100, align: "center" },
+    { id: "actions", label: "Actions", minWidth: 100, align: "center" },
+  ];

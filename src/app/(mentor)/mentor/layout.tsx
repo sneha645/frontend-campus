@@ -49,16 +49,6 @@ const StudentMenuItems = [
     icon: FolderOpen,
   },
   {
-    path: "/mentor/feedbacks",
-    label: "Feedbacks",
-    icon: MessageSquare,
-  },
-  {
-    path: "/mentor/students",
-    label: "Students",
-    icon: User,
-  },
-  {
     path: "/mentor/assignments",
     label: "Assignments",
     icon: BookOpenText,
@@ -110,12 +100,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </LeftHeader>
         <RightHeader>
           <PageTitle>{activeMenu}</PageTitle>
-          <LogoutContainer>
-            <LogoutBtn onClick={handleLogout}>
-              <LogOutIcon size={20} />
-              Logout
-            </LogoutBtn>
-          </LogoutContainer>
         </RightHeader>
       </Header>
       <Main>
