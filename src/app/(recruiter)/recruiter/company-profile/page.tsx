@@ -1,12 +1,54 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import {
+  ButtonContainer,
+  CompanyProfile,
+  CompanyProfileContainer,
+  CompanyProfileForm,
+  CompanyProfileHeader,
+  CompanyProfileSubContainer,
+  CompanyProfileSubHeader,
+  Description,
+  Form,
+  FormContainer,
+  FormHeading,
+  FormSubHeading,
+  Hrline,
+  InfoContainer,
+  InfoLabel,
+  InfoValue,
+  Input,
+  InputContainer,
+  InputGrid,
+  InputSubTitle,
+  InputTitle,
+  Label,
+  Logo,
+  LogoInput,
+  LogoInputContainer,
+  NotFound,
+  ProfileHeader,
+  ProfileInfo,
+  ProfileLogo,
+  ProfileSubHeader,
+  ResetButton,
+  SubmitButton,
+  TextArea,
+  Title,
+  TitleContainer,
+  Website,
+} from "./styled";
+import { Company } from "@/types/type";
+import { Alert } from "@mui/material";
 
 export default function CompanyProfilePage() {
+  const [profile, setProfile] = useState<Company | null>(null);
   const [companyLogo, setCompanyLogo] = useState<File | null>(null);
-  const [profile, setProfile] = useState(null);
+  const [validation, setValidation] = useState("");
+  const [sucess, setSucess] = useState("");
+  const [error, setError] = useState("");
 
   const [companyProfile, setCompanyProfile] = useState({
     companyName: "",
@@ -31,7 +73,10 @@ export default function CompanyProfilePage() {
       !companyProfile.location ||
       !companyProfile.companyEmail
     ) {
-      alert("Please fill all the fields");
+      setValidation("Please fill all the fields");
+      setTimeout(() => {
+        setValidation("");
+      }, 2000);
       return;
     }
 
@@ -51,7 +96,7 @@ export default function CompanyProfilePage() {
       if (companyLogo) {
         formDataToSend.append("companyLogo", companyLogo);
       }
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/api/recruiter/createCompanyProfile",
         formDataToSend,
         {
@@ -61,9 +106,27 @@ export default function CompanyProfilePage() {
           },
         },
       );
-      console.log(response.data);
+      setSucess("Company profile created successfully");
+      setTimeout(() => {
+        setSucess("");
+      }, 2000);
+      setCompanyProfile({
+        companyName: "",
+        website: "",
+        industry: "",
+        companySize: "",
+        aboutCompany: "",
+        location: "",
+        companyEmail: "",
+      });
+      setCompanyLogo(null);
+      getCompanyProfile();
     } catch (error) {
       console.error(error);
+      setError("Failed to create company profile");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
 
@@ -92,520 +155,218 @@ export default function CompanyProfilePage() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        padding: "20px",
-        gap: "20px",
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "65%",
-          border: "1px solid #E5E7EB",
-          borderRadius: "8px",
-          backgroundColor: "#ffffff",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: "20px",
-          }}
+    <CompanyProfileContainer>
+      {sucess && (
+        <Alert
+          severity="success"
+          style={{ position: "absolute", top: "10px", right: "20px" }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "6px",
-            }}
-          >
-            <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
-              Basic Company Details
-            </h1>
-            <p style={{ fontSize: "14px", color: "#666666" }}>
-              Start with the essentials recruiters typically need before posting
-              <br />
-              campus opportunities.
-            </p>
-          </div>
-          <div>
-            <div
-              style={{
-                backgroundColor: "#e3e8edff",
-                padding: "10px",
-                borderRadius: "8px",
-              }}
-            >
-              <p style={{ fontSize: "14px", color: "#000000" }}>
-                Draft saved 2 min ago
-              </p>
-            </div>
-          </div>
-        </div>
-        <hr style={{ color: "#E5E7EB" }} />
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          {sucess}
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          severity="error"
+          style={{ position: "absolute", top: "10px", right: "20px" }}
         >
-          <div
-            style={{
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-            }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="companyName">Company Name</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="Tech Mahindra Pvt Ltd"
-                  value={companyProfile.companyName}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      companyName: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="companyName">Website</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="www.techmahindra.com"
-                  value={companyProfile.website}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      website: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>{" "}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="companyName">Industry</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="IT Services & Consulting"
-                  value={companyProfile.industry}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      industry: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>{" "}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="companyName">Company Size</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="1001-5000 employees"
-                  value={companyProfile.companySize}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      companySize: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="location">Location</label>
-                <input
-                  type="text"
-                  id="location"
-                  placeholder="Pune, Maharashtra"
-                  value={companyProfile.location}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      location: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
-                <label htmlFor="companyEmail">Company Email</label>
-                <input
-                  type="text"
-                  id="companyEmail"
-                  placeholder="support@grr.la"
-                  value={companyProfile.companyEmail}
-                  onChange={(e) =>
-                    setCompanyProfile({
-                      ...companyProfile,
-                      companyEmail: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "4px",
-                  }}
-                />
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <label htmlFor="companyName">About Company</label>
-              <textarea
-                id="companyName"
-                placeholder="Write a short description of your company"
-                value={companyProfile.aboutCompany}
-                onChange={(e) =>
-                  setCompanyProfile({
-                    ...companyProfile,
-                    aboutCompany: e.target.value,
-                  })
-                }
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #E5E7EB",
-                  borderRadius: "4px",
-                  resize: "none",
-                }}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <label htmlFor="companyName">Company Logo</label>
-              <div
-                style={{
-                  backgroundColor: "#e3e8edff",
-                  display: "flex",
-                  alignItems: "flex-start",
-                  flexDirection: "column",
-                  gap: "6px",
-                  padding: "20px",
-                  borderRadius: "4px",
-                  border: "1px dashed #0000003d",
-                }}
-              >
-                <h1 style={{ fontSize: "16px", fontWeight: "600" }}>
-                  Upload Logo
-                </h1>
-                <p style={{ fontSize: "14px", color: "#666666" }}>
-                  SVG, PNG or JPG Recommended 512x512px Used across job listings
-                  and candidate search.
-                </p>
-                <input
-                  type="file"
-                  id="companyLogo"
-                  style={{ cursor: "pointer" }}
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setCompanyLogo(e.target.files[0]);
+          {error}
+        </Alert>
+      )}
+      {validation && (
+        <Alert
+          severity="warning"
+          style={{ position: "absolute", top: "10px", right: "20px" }}
+        >
+          {validation}
+        </Alert>
+      )}
+      <CompanyProfileSubContainer>
+        <CompanyProfileForm>
+          <CompanyProfileHeader>
+            <CompanyProfileSubHeader>
+              <FormHeading>Basic Company Details</FormHeading>
+              <FormSubHeading>
+                Start with the essentials recruiters typically need before
+                posting
+                <br />
+                campus opportunities.
+              </FormSubHeading>
+            </CompanyProfileSubHeader>
+          </CompanyProfileHeader>
+          <Hrline />
+          <FormContainer>
+            <Form onSubmit={handleSubmit}>
+              <InputGrid>
+                <InputContainer>
+                  <Label htmlFor="">Company Name</Label>
+                  <Input
+                    type="text"
+                    placeholder="Tech Solutions Pvt. Ltd."
+                    value={companyProfile.companyName}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        companyName: e.target.value,
+                      })
                     }
-                  }}
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="">Company Website</Label>
+                  <Input
+                    type="text"
+                    placeholder="https://www.example.com"
+                    value={companyProfile.website}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        website: e.target.value,
+                      })
+                    }
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="">Industry</Label>
+                  <Input
+                    type="text"
+                    placeholder="e.g. Information Technology"
+                    value={companyProfile.industry}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        industry: e.target.value,
+                      })
+                    }
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="">Company Size</Label>
+                  <Input
+                    type="text"
+                    placeholder="e.g. 501-1000 employees"
+                    value={companyProfile.companySize}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        companySize: e.target.value,
+                      })
+                    }
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="">Location</Label>
+                  <Input
+                    type="text"
+                    placeholder="e.g. New York, NY"
+                    value={companyProfile.location}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        location: e.target.value,
+                      })
+                    }
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="">Company Email</Label>
+                  <Input
+                    type="text"
+                    placeholder="example@grr.la"
+                    value={companyProfile.companyEmail}
+                    onChange={(e) =>
+                      setCompanyProfile({
+                        ...companyProfile,
+                        companyEmail: e.target.value,
+                      })
+                    }
+                  />
+                </InputContainer>
+              </InputGrid>
+              <InputContainer style={{ width: "100%" }}>
+                <Label htmlFor="">About Company</Label>
+                <TextArea
+                  rows={4}
+                  placeholder="Write a short description of your company"
+                  value={companyProfile.aboutCompany}
+                  onChange={(e) =>
+                    setCompanyProfile({
+                      ...companyProfile,
+                      aboutCompany: e.target.value,
+                    })
+                  }
                 />
-              </div>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              gap: "10px",
-              padding: "20px",
-            }}
-          >
-            <button
-              style={{
-                backgroundColor: "#0b75ff",
-                color: "#ffffff",
-                padding: "10px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              Submit
-            </button>
-            <button
-              style={{
-                backgroundColor: "#e5e7eb",
-                color: "#000000",
-                padding: "10px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              Reset
-            </button>
-            <button
-              style={{
-                backgroundColor: "#0b75ff",
-                color: "#ffffff",
-                padding: "10px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              Update
-            </button>
-          </div>
-        </form>
-      </div>
+              </InputContainer>
+              <InputContainer style={{ width: "100%" }}>
+                <InputContainer>
+                  <Label htmlFor="">Company Logo</Label>
+                  <LogoInputContainer>
+                    <InputTitle>Upload Company Logo</InputTitle>
+                    <InputSubTitle>
+                      SVG, PNG or JPG Recommended 512x512px Used across job
+                      listings
+                    </InputSubTitle>
+                    <LogoInput
+                      type="file"
+                      accept=".svg,.png,.jpg"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setCompanyLogo(e.target.files[0]);
+                        }
+                      }}
+                    />
+                  </LogoInputContainer>
+                </InputContainer>
+              </InputContainer>
+            </Form>
+            <ButtonContainer>
+              <SubmitButton type="submit">Submit</SubmitButton>
+              <ResetButton type="reset">Reset</ResetButton>
+            </ButtonContainer>
+          </FormContainer>
+        </CompanyProfileForm>
 
-      {/* {user?.company && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "35%",
-            height: "100%",
-            border: "1px solid #E5E7EB",
-            borderRadius: "8px",
-            backgroundColor: "#ffffff",
-          }}
-        >
-          <p>No profile found</p>
-        </div>
-      ) : ( */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "35%",
-          border: "1px solid #E5E7EB",
-          borderRadius: "8px",
-          backgroundColor: "#ffffff",
-          height: "fit-content",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: "#ddecff",
-                padding: "20px",
-                borderRadius: "4px",
-                height: "80px",
-                width: "80px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "24px",
-                fontWeight: "600",
-                color: "#0b75ff",
-                textTransform: "uppercase",
-              }}
-            >
-              {profile?.companyName?.charAt(0)}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <h1 style={{ fontSize: "24px", fontWeight: "600" }}>
-                {profile?.companyName}
-              </h1>
-              <a href="" style={{ color: "#0b75ff" }}>
-                {profile?.website}
-              </a>
-            </div>
-          </div>
-          <p>{profile?.aboutCompany}</p>
-        </div>
-        <hr
-          style={{
-            color: "#E5E7EB",
-            height: "1px",
-          }}
-        />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Industry
-            </label>
-            <p>{profile?.industry}</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Company Size
-            </label>
-            <p>{profile?.companySize}</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Location
-            </label>
-            <p>{profile?.location}</p>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: "10px",
-            }}
-          >
-            <label htmlFor="" style={{ color: "#666666" }}>
-              Email
-            </label>
-            <p>{profile?.companyEmail}</p>
-          </div>
-        </div>
-      </div>
-      {/* )} */}
-    </div>
+        {profile === null && <NotFound>No Profile Found</NotFound>}
+
+        {profile && (
+          <CompanyProfile>
+            <ProfileHeader>
+              <ProfileSubHeader>
+                <ProfileLogo>
+                  <Logo
+                    alt="companyLogo"
+                    src={`http://localhost:3000${profile?.logoUrl}`}
+                  />
+                </ProfileLogo>
+                <TitleContainer>
+                  <Title>{profile?.companyName}</Title>
+                  <Website>{profile?.website}</Website>
+                </TitleContainer>
+              </ProfileSubHeader>
+
+              <Hrline />
+              <ProfileInfo>
+                <InfoContainer>
+                  <InfoLabel>Industry</InfoLabel>
+                  <InfoValue>{profile?.industry}</InfoValue>
+                </InfoContainer>
+                <InfoContainer>
+                  <InfoLabel>Company Size</InfoLabel>
+                  <InfoValue>{profile?.companySize}</InfoValue>
+                </InfoContainer>
+                <InfoContainer>
+                  <InfoLabel>Location</InfoLabel>
+                  <InfoValue>{profile?.location}</InfoValue>
+                </InfoContainer>
+                <InfoContainer>
+                  <InfoLabel>Company Email</InfoLabel>
+                  <InfoValue>{profile?.companyEmail}</InfoValue>
+                </InfoContainer>
+                <Description>{profile?.aboutCompany}</Description>
+              </ProfileInfo>
+            </ProfileHeader>
+          </CompanyProfile>
+        )}
+      </CompanyProfileSubContainer>
+    </CompanyProfileContainer>
   );
 }

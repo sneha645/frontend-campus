@@ -10,8 +10,6 @@ import {
   LeftHeader,
   LogoContainer,
   LogoTitle,
-  LogoutBtn,
-  LogoutContainer,
   Main,
   MainBar,
   Menu,
@@ -21,14 +19,8 @@ import {
   SideBar,
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import { Avatar, Box } from "@mui/material";
-import {
-  Briefcase,
-  Building2,
-  LayoutDashboard,
-  LogOutIcon,
-  User,
-} from "lucide-react";
+import { Box } from "@mui/material";
+import { Briefcase, Building2 } from "lucide-react";
 import {
   AvatarContainer,
   AvatarEmail,
@@ -39,11 +31,6 @@ import {
 
 const RecruiterMenuItems = [
   {
-    path: "/recruiter/dashboard",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
     path: "/recruiter/company-profile",
     label: "Company Profile",
     icon: Building2,
@@ -53,16 +40,16 @@ const RecruiterMenuItems = [
     label: "Job Postings",
     icon: Briefcase,
   },
-  {
-    path: "/recruiter/applications",
-    label: "Applications",
-    icon: User,
-  },
+  // {
+  //   path: "/recruiter/applications",
+  //   label: "Applications",
+  //   icon: User,
+  // },
 ];
 
 export default function RecruiterLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { user, logout, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
   if (isLoading) {
@@ -71,6 +58,7 @@ export default function RecruiterLayout({ children }: { children: ReactNode }) {
   if (!user) {
     redirect("/sign-in");
   }
+
   if (user.role !== "recruiter") {
     redirect(`/${user.role}/dashboard`);
   }

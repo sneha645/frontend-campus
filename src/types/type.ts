@@ -26,7 +26,7 @@ export interface User {
 }
 
 export interface Job {
-  job_id?: string;
+  job_id: string;
   title: string;
   description: string;
   startDate: string;
@@ -43,13 +43,15 @@ export interface Job {
 }
 
 export interface Company {
-  company_id?: string;
+  company_id: string;
   companyName: string;
-  companyDescription: string;
+  aboutCompany: string;
+  industry: string;
+  companySize: string;
   website: string;
   location: string;
   companyEmail: string;
-  logo: string;
+  logoUrl: string;
   createdAt: string;
   updatedAt: string;
 }

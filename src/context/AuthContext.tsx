@@ -173,9 +173,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const currentPath = window.location.pathname;
       const dashboardPath = `/${user.role}/dashboard`;
 
-      if (!currentPath.startsWith(dashboardPath)) {
-        router.push(dashboardPath);
-      }
+      // if (!currentPath.startsWith(dashboardPath)) {
+      //   router.push(dashboardPath);
+      // }
     }
   }, [user, isLoading, router]);
 

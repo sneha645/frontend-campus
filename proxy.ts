@@ -6,8 +6,7 @@ export function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute =
-    pathname === "/sign-in" || pathname === "/sign-up";
+  const isPublicRoute = pathname === "/sign-in" || pathname === "/sign-up";
 
   const isProtectedRoute =
     pathname.startsWith("/student") ||
