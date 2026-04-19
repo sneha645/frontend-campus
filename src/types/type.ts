@@ -28,6 +28,7 @@ export interface User {
 export interface Job {
   job_id: string;
   title: string;
+  jobType: string;
   description: string;
   startDate: string;
   endDate: string;
@@ -40,6 +41,12 @@ export interface Job {
   student: string;
   createdAt: string;
   updatedAt: string;
+  company: Company;
+  salary: string;
+  experience: string;
+  responsibilities: string;
+  requirements: string;
+  benefits: string;
 }
 
 export interface Company {

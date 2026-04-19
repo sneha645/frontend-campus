@@ -49,6 +49,8 @@ export const LogoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 12px;
 `;
 
 export const JobInfoContainer = styled.div`
@@ -90,8 +92,9 @@ export const JobDetailSubContainer = styled.div`
 
 
 export const JobDetailText = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
+  font-weight: 400;
 `;
 
 export const ButtonContainer = styled.div`
@@ -110,22 +113,23 @@ export const ButtonContainer = styled.div`
 
 export const ApplyButton = styled.button`
   padding: 10px 20px;
+  width: 150px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 export const ViewDetailsButton = styled.button`
+width: 150px;
   padding: 10px 20px;
-  background-color: #e5e7eb;
+  border: 1px solid #e5e7eb;
   color: #000000;
-  border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 `;

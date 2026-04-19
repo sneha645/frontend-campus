@@ -225,7 +225,7 @@ export default function StudentsPage() {
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {student.createdAt?.split("T")[0]}
+                        {student.createdAt?.split("T")[0].split("-").reverse().join("-")}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>

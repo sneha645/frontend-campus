@@ -117,7 +117,7 @@ export default function JobsPage() {
                   </JobDetailSubContainer>
                   <JobDetailSubContainer>
                     <MapPin size={16} color="#666" />
-                    <JobDetailText>{job.location}</JobDetailText>
+                    <JobDetailText>{job.company.location}</JobDetailText>
                   </JobDetailSubContainer>
                   <JobDetailSubContainer>
                     <IndianRupee size={16} color="#666" />
@@ -125,7 +125,7 @@ export default function JobsPage() {
                   </JobDetailSubContainer>
                   <JobDetailSubContainer>
                     <Clock8 size={16} color="#666" />
-                    <JobDetailText>{job.createdAt}</JobDetailText>
+                    <JobDetailText>{job.createdAt.split("T")[0].split("-").reverse().join("-")}</JobDetailText>
                   </JobDetailSubContainer>
                 </JobDetailsContainer>
               </JobInfoContainer>

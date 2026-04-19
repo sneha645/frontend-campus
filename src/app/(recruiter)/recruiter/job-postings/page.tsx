@@ -147,7 +147,7 @@ export default function JobPostingsPage() {
               </JobDetailsSubContainer>
               <JobDetailsSubContainer>
                 <Clock8 size={16} color="#666" />
-                <JobText>Posted {job.createdAt.split("T")[0]}</JobText>
+                <JobText>Posted {job.createdAt.split("T")[0].split("-").reverse().join("-")}</JobText>
               </JobDetailsSubContainer>
               <JobDetailsSubContainer>
                 <IndianRupee size={16} color="#666" />

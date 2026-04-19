@@ -237,7 +237,7 @@ export default function RecruiterPage() {
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {recruiter.createdAt?.split("T")[0]}
+                        {recruiter.createdAt?.split("T")[0].split("-").reverse().join("-")}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
