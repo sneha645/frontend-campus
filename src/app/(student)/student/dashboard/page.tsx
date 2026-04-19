@@ -1,302 +1,302 @@
 "use client";
 
-import { ApproveButton } from "@/app/(admin)/admin/recruiters/styled";
 import { useAuth } from "@/context/AuthContext";
-import { Briefcase, Search, Upload } from "lucide-react";
-import WavingHandIcon from "@mui/icons-material/WavingHand";
-import { Task } from "@mui/icons-material";
+import {
+  ArrowUpRight,
+  Bookmark,
+  Briefcase,
+  Eye,
+  Search,
+  Sparkle,
+  Upload,
+} from "lucide-react";
+import {
+  ProgressContainer,
+  RecentActivityContainer,
+  RecentActivityContent,
+  RecentActivityContentSubTitle,
+  RecentActivityContentTitle,
+  RecentActivitySubContainer,
+  StudentDashboardContainer,
+} from "./styled";
+import {
+  ActivityContainer,
+  Button,
+  HeaderContainer,
+  HeaderContent,
+  HeaderSubContent,
+  Heading,
+  HrLine,
+  PlatformOverview,
+  PlatformOverviewChart,
+  PlatformOverviewHeading,
+  PlatformOverviewHeadingContainer,
+  PlatformOverviewSubHeading,
+  StatCard,
+  StatHeading,
+  StatHeadingContainer,
+  StatLogoContainer,
+  StatsContainer,
+  StatSubHeading,
+  StatValue,
+  SubHeading,
+} from "@/app/(admin)/admin/dashboard/styled";
+
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { recentApplicationsTableColumns } from "@/types/type";
 
 export default function StudentDashboardPage() {
   const { user } = useAuth();
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "4px",
-          }}
-        >
-          <h1 style={{ fontSize: "30px", fontWeight: "600" }}>
-            Welcome back, {user?.name}!{" "}
-            <span role="img" aria-label="smile">
-              👋
-            </span>
-          </h1>
-          <p style={{ fontSize: "16px", fontWeight: "400", color: "#797f8d" }}>
-            Here's a summary of your academic and placement activities.
-          </p>
-        </div>
-        <ApproveButton
-          style={{
-            width: "fit-content",
-            display: "flex",
-            gap: "6px",
-            fontSize: "16px",
-            fontWeight: "400",
-          }}
-        >
-          <Search size={20} />
-          Explore New Jobs
-        </ApproveButton>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "10px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            width: "100%",
-            backgroundColor: "#fff",
-            border: "1px solid #aaaaaa23",
-            borderRadius: "8px",
-            height: "200px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
+    <StudentDashboardContainer>
+      <HeaderContainer>
+        <HeaderContent>
+          <Heading>Welcome back, {user?.name}!</Heading>
+          <HeaderSubContent>
+            <SubHeading>
+              Here's a summary of your academic
+              <br /> and placement activities.
+            </SubHeading>
+            <Button>
+              <Search size={16} />
+              Find Jobs
+            </Button>
+          </HeaderSubContent>
+        </HeaderContent>
+      </HeaderContainer>
+      <StatsContainer>
+        <StatCard>
+          <StatHeadingContainer>
+            <StatHeading>Project Uploaded</StatHeading>
+            <StatLogoContainer>
+              <Upload size={24} color="#0b75ff" />
+            </StatLogoContainer>
+          </StatHeadingContainer>
+          <StatValue>10</StatValue>
+          <StatSubHeading>
+            <ArrowUpRight size={16} color="#0b75ff" />
+            +2 this month
+          </StatSubHeading>
+        </StatCard>
+        <StatCard>
+          <StatHeadingContainer>
+            <StatHeading>Job Applied</StatHeading>
+            <StatLogoContainer>
+              <Briefcase size={24} color="#0b75ff" />
+            </StatLogoContainer>
+          </StatHeadingContainer>
+          <StatValue>10</StatValue>
+          <StatSubHeading>
+            <ArrowUpRight size={16} color="#0b75ff" />
+            +2 this month
+          </StatSubHeading>
+        </StatCard>
+        <StatCard>
+          <StatHeadingContainer>
+            <StatHeading>Saved Internships</StatHeading>
+            <StatLogoContainer>
+              <Bookmark size={24} color="#0b75ff" />
+            </StatLogoContainer>
+          </StatHeadingContainer>
+          <StatValue>8</StatValue>
+          <StatSubHeading>
+            <Bookmark size={16} color="#0b75ff" />
+            -No change
+          </StatSubHeading>
+        </StatCard>
+        <StatCard>
+          <StatHeadingContainer>
+            <StatHeading>Profile Views</StatHeading>
+            <StatLogoContainer>
+              <Eye size={24} color="#0b75ff" />
+            </StatLogoContainer>
+          </StatHeadingContainer>
+          <StatValue>10</StatValue>
+          <StatSubHeading>
+            <ArrowUpRight size={16} color="#0b75ff" />
+            +10% from last month
+          </StatSubHeading>
+        </StatCard>
+      </StatsContainer>
+      <ActivityContainer>
+        <PlatformOverview style={{ width: "30%" }}>
+          <PlatformOverviewHeadingContainer>
+            <PlatformOverviewHeading>
+              Placement Readiness
+            </PlatformOverviewHeading>
+          </PlatformOverviewHeadingContainer>
+          <HrLine />
+          <PlatformOverviewChart
+            style={{ flexDirection: "column", gap: "20px" }}
           >
-            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
-              Project Uploaded
-            </h1>
-            <div
-              style={{
-                height: "50px",
-                width: "50px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#aaaaaa23",
-                borderRadius: "8px",
-              }}
-            >
-              <Upload color="#0b75ffff" size={20} />
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "auto",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "40px",
-                fontWeight: "700",
-                marginRight: "6px",
-              }}
-            >
-              10
-            </p>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            width: "100%",
-            backgroundColor: "#fff",
-            border: "1px solid #aaaaaa23",
-            borderRadius: "8px",
-            height: "200px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
-              Internship Uploaded
-            </h1>
-            <div
-              style={{
-                height: "50px",
-                width: "50px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#aaaaaa23",
-                borderRadius: "8px",
-              }}
-            >
-              <Upload color="#0b75ffff" size={20} />
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "auto",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "40px",
-                fontWeight: "700",
-                marginRight: "6px",
-              }}
-            >
-              3
-            </p>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            width: "100%",
-            backgroundColor: "#fff",
-            border: "1px solid #aaaaaa23",
-            borderRadius: "8px",
-            height: "200px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>Job Applied</h1>
-            <div
-              style={{
-                height: "50px",
-                width: "50px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#aaaaaa23",
-                borderRadius: "8px",
-              }}
-            >
-              <Briefcase color="#0b75ffff" size={20} />
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "auto",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "40px",
-                fontWeight: "700",
-                marginRight: "6px",
-              }}
-            >
-              5
-            </p>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            width: "100%",
-            backgroundColor: "#fff",
-            border: "1px solid #aaaaaa23",
-            borderRadius: "8px",
-            height: "200px",
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
-              Assignment Completed
-            </h1>
-            <div
-              style={{
-                height: "50px",
-                width: "50px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#aaaaaa23",
-                borderRadius: "8px",
-              }}
-            >
-              <Task
-                style={{
-                  color: "#0b75ffff",
-                  fontSize: "20px",
+            <ProgressContainer>
+              <CircularProgressbar
+                value={75}
+                text={`${75}%`}
+                styles={{
+                  path: {
+                    stroke: "#0b75ff",
+                  },
+                  text: {
+                    fill: "#333",
+                    fontSize: "20px",
+                    fontWeight: "600",
+                  },
                 }}
               />
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "auto",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "40px",
-                fontWeight: "700",
-                marginRight: "6px",
-              }}
-            >
-              20
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+            </ProgressContainer>
+            <RecentActivityContainer>
+              <RecentActivitySubContainer>
+                <Sparkle color="#0b75ff" size={24} />
+                <RecentActivityContent>
+                  <RecentActivityContentTitle>
+                    Complete React Assesment
+                  </RecentActivityContentTitle>
+                  <RecentActivityContentSubTitle>
+                    +5% to score
+                  </RecentActivityContentSubTitle>
+                </RecentActivityContent>
+              </RecentActivitySubContainer>
+            </RecentActivityContainer>
+            <RecentActivityContainer>
+              <RecentActivitySubContainer>
+                <Sparkle color="#0b75ff" size={24} />
+                <RecentActivityContent>
+                  <RecentActivityContentTitle>
+                    Complete React Assesment
+                  </RecentActivityContentTitle>
+                  <RecentActivityContentSubTitle>
+                    +5% to score
+                  </RecentActivityContentSubTitle>
+                </RecentActivityContent>
+              </RecentActivitySubContainer>
+            </RecentActivityContainer>
+          </PlatformOverviewChart>
+        </PlatformOverview>
+        <PlatformOverview style={{ width: "70%" }}>
+          <PlatformOverviewHeadingContainer>
+            <PlatformOverviewHeading>
+              Recent Applications
+            </PlatformOverviewHeading>
+          </PlatformOverviewHeadingContainer>
+          <HrLine />
+          <TableContainer style={{ height: "100%", position: "relative" }}>
+            <Table>
+              <TableHead style={{ backgroundColor: "#f7f8fa" }}>
+                <TableRow>
+                  {recentApplicationsTableColumns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{
+                        minWidth: column.minWidth,
+                        fontWeight: "600",
+                        fontFamily: "Poppins",
+                      }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* {paginatiedMentors?.length < 1 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} align="left">
+                      No mentors found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  paginatiedMentors?.map((mentor) => (
+                    <TableRow key={mentor.email}>
+                      <TableCell style={{ fontFamily: "Poppins" }}>
+                        {mentor.name}
+                      </TableCell>
+
+                      <TableCell style={{ fontFamily: "Poppins" }}>
+                        {mentor.email}
+                      </TableCell>
+                      <TableCell style={{ fontFamily: "Poppins" }}>
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
+                          {mentor.createdAt?.split("T")[0]}
+                        </Box>
+                      </TableCell>
+                      <TableCell style={{ fontFamily: "Poppins" }}>
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
+                          <Box
+                            sx={{
+                              backgroundColor: `${mentor.status === "approved" ? "#def2e6" : mentor.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                              padding: "10px 20px",
+                              borderRadius: "30px",
+                              display: "flex",
+                              alignItems: "center",
+                              width: "fit-content",
+                              color: `${mentor.status === "approved" ? "#16a34a" : mentor.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                              fontSize: "12px",
+                            }}
+                          >
+                            {mentor.status}
+                          </Box>
+                        </Box>
+                      </TableCell>
+                      <TableCell style={{ display: "flex", gap: "10px" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            width: "100%",
+                          }}
+                        >
+                          {mentor.status === "pending" ? (
+                            <Box sx={{ display: "flex", gap: "10px" }}>
+                              <ApproveButton
+                                style={{ fontFamily: "Poppins" }}
+                                onClick={() =>
+                                  mentor.user_id &&
+                                  handleApprove(mentor.user_id)
+                                }
+                              >
+                                Approve
+                              </ApproveButton>
+                              <RejectButton
+                                style={{ fontFamily: "Poppins" }}
+                                onClick={() =>
+                                  mentor.user_id && handleReject(mentor.user_id)
+                                }
+                              >
+                                Reject
+                              </RejectButton>
+                            </Box>
+                          ) : mentor.status === "approved" ? (
+                            <ViewProfile
+                              onClick={() => {
+                                router.push(`/admin/mentors/${mentor.user_id}`);
+                              }}
+                            >
+                              View Profile
+                            </ViewProfile>
+                          ) : (
+                            ""
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )} */}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </PlatformOverview>
+      </ActivityContainer>
+    </StudentDashboardContainer>
   );
 }

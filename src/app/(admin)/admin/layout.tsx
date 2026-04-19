@@ -60,8 +60,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const { user, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
-
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

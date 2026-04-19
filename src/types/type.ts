@@ -271,3 +271,28 @@ export const submittedAssignmentTableColumns: readonly SubmittedAssignmentTableC
     { id: "status", label: "Status", minWidth: 100, align: "center" },
     { id: "actions", label: "Actions", minWidth: 100, align: "center" },
   ];
+
+export interface RecentApplicationsTableColumns {
+  id: "company" | "role" | "applyDate" | "status";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const recentApplicationsTableColumns: readonly RecentApplicationsTableColumns[] =
+  [
+    { id: "company", label: "Company", minWidth: 100, align: "left" },
+    { id: "role", label: "Role", minWidth: 100, align: "left" },
+    {
+      id: "applyDate",
+      label: "Apply Date",
+      minWidth: 100,
+      align: "center",
+    },
+    {
+      id: "status",
+      label: "Status",
+      minWidth: 100,
+      align: "center",
+    },
+  ];
