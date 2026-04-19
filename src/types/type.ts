@@ -296,3 +296,28 @@ export const recentApplicationsTableColumns: readonly RecentApplicationsTableCol
       align: "center",
     },
   ];
+
+export interface RecentAssignmentsTableColumns {
+  id: "title" | "deadline" | "submissiontype" | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const recentAssignmentsTableColumns: readonly RecentAssignmentsTableColumns[] =
+  [
+    { id: "title", label: "Title", minWidth: 100, align: "left" },
+    { id: "deadline", label: "Deadline", minWidth: 100, align: "left" },
+    {
+      id: "submissiontype",
+      label: "Submission Type",
+      minWidth: 100,
+      align: "center",
+    },
+    {
+      id: "actions",
+      label: "Actions",
+      minWidth: 100,
+      align: "center",
+    },
+  ];

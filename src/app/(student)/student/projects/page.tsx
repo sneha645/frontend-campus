@@ -2,7 +2,6 @@
 
 import { Box } from "@mui/material";
 import {
-  
   CardButton,
   CardButtonContainer,
   DateContainer,
@@ -83,7 +82,7 @@ export default function ProjectsPage() {
 
   return (
     <StudentProjectsContainer>
-      <HeaderContainer>
+      {/* <HeaderContainer>
         <HeaderContent>
           <Heading>Upload Your Projects</Heading>
           <HeaderSubContent>
@@ -178,7 +177,7 @@ export default function ProjectsPage() {
           setOpenProjectModal={setOpenProjectModal}
           onProjectUploaded={fetchProjects}
         />
-      </FormModal>
+      </FormModal> */}
     </StudentProjectsContainer>
   );
 }
