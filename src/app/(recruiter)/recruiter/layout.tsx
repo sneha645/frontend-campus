@@ -29,6 +29,13 @@ import {
   LogOutIcon,
   User,
 } from "lucide-react";
+import {
+  AvatarContainer,
+  AvatarEmail,
+  AvatarImage,
+  AvatarInfoContainer,
+  AvatarName,
+} from "@/app/(admin)/admin/styled";
 
 const RecruiterMenuItems = [
   {
@@ -51,19 +58,9 @@ const RecruiterMenuItems = [
     label: "Applications",
     icon: User,
   },
-  // {
-  //   path: "/recruiter/interviews",
-  //   label: "Interviews",
-  //   icon: User,
-  // },
-  // {
-  //   path: "/recruiter/settings",
-  //   label: "Settings",
-  //   icon: User,
-  // },
 ];
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function RecruiterLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, logout, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
@@ -77,10 +74,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (user.role !== "recruiter") {
     redirect(`/${user.role}/dashboard`);
   }
-
-  const handleLogout = () => {
-    logout();
-  };
 
   const handleMenuClick = (label: string, path: string) => {
     setActiveMenu(label);
@@ -101,13 +94,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </LogoContainer>
         </LeftHeader>
         <RightHeader>
-          <PageTitle>Admin Dashboard</PageTitle>
-          <LogoutContainer>
-            <LogoutBtn onClick={handleLogout}>
-              <LogOutIcon size={20} />
-              Logout
-            </LogoutBtn>
-          </LogoutContainer>
+          <PageTitle>{activeMenu}</PageTitle>
         </RightHeader>
       </Header>
       <Main>
@@ -126,41 +113,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               ))}
             </Box>
           </Menu>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              backgroundColor: "#fff",
-              padding: "16px 30px",
-              borderTop: "1px solid #f0f0f0",
-              position: "absolute",
-              bottom: "0",
-              left: "0",
-              right: "0",
-            }}
-          >
-            <Avatar>{user.name.charAt(0).toUpperCase()}</Avatar>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  color: "#000",
-                }}
-              >
-                {user.name}
-              </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "#848fa2",
-                }}
-              >
-                {user.email}
-              </p>
-            </div>
-          </div>
+          <AvatarContainer>
+            <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
+            <AvatarInfoContainer>
+              <AvatarName>{user.name}</AvatarName>
+              <AvatarEmail>{user.email}</AvatarEmail>
+            </AvatarInfoContainer>
+          </AvatarContainer>
         </SideBar>
         <MainBar>{children}</MainBar>
       </Main>

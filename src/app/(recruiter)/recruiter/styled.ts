@@ -52,7 +52,6 @@ export const RightHeader = styled.div`
   width: 84%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 14px;
   background-color: #f7f8fa;
   border-bottom: 1px solid #f0f0f0;
