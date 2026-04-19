@@ -216,8 +216,13 @@ export default function MentorsPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatiedMentors &&
-                paginatiedMentors?.length > 0 &&
+              {paginatiedMentors?.length < 1 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="left">
+                    No mentors found
+                  </TableCell>
+                </TableRow>
+              ) : (
                 paginatiedMentors?.map((mentor) => (
                   <TableRow key={mentor.email}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
@@ -291,7 +296,8 @@ export default function MentorsPage() {
                       </Box>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              )}
             </TableBody>
           </Table>
           <TablePagination
@@ -302,7 +308,6 @@ export default function MentorsPage() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{ fontFamily: "Poppins" }}
           />
         </TableContainer>
       </Paper>

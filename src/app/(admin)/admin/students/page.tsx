@@ -207,8 +207,13 @@ export default function StudentsPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatiedStudents &&
-                paginatiedStudents?.length > 0 &&
+              {paginatiedStudents?.length < 1 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="left">
+                    No students found
+                  </TableCell>
+                </TableRow>
+              ) : (
                 paginatiedStudents?.map((student) => (
                   <TableRow key={student.email}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
@@ -283,7 +288,8 @@ export default function StudentsPage() {
                       </Box>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              )}
             </TableBody>
           </Table>
           <TablePagination

@@ -219,8 +219,13 @@ export default function RecruiterPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatiedRecruiter &&
-                paginatiedRecruiter?.length > 0 &&
+              {paginatiedRecruiter?.length < 1 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="left">
+                    No recruiters found
+                  </TableCell>
+                </TableRow>
+              ) : (
                 paginatiedRecruiter?.map((recruiter) => (
                   <TableRow key={recruiter.email}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
@@ -298,7 +303,7 @@ export default function RecruiterPage() {
                       </Box>
                     </TableCell>
                   </TableRow>
-                ))}
+                )))}
             </TableBody>
           </Table>
           <TablePagination

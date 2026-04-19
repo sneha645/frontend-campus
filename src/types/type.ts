@@ -178,7 +178,38 @@ export interface StudentTableColumns {
 export const studentTableColumns: readonly StudentTableColumns[] = [
   { id: "name", label: "Name", minWidth: 100, align: "left" },
   { id: "email", label: "Email", minWidth: 100, align: "left" },
-  { id: "createdAt", label: "Registration Date", minWidth: 100, align: "center" },
+  {
+    id: "createdAt",
+    label: "Registration Date",
+    minWidth: 100,
+    align: "center",
+  },
+  { id: "status", label: "Status", minWidth: 100, align: "center" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
+];
+
+export interface ProjectTableColumns {
+  id: "title" | "student" | "startDate" | "endDate" | "status" | "actions";
+  label: string;
+  minWidth: number;
+  align: "left" | "right" | "center";
+}
+
+export const projectTableColumns: readonly ProjectTableColumns[] = [
+  { id: "title", label: "Title", minWidth: 100, align: "left" },
+  { id: "student", label: "Student", minWidth: 100, align: "left" },
+  {
+    id: "startDate",
+    label: "Start Date",
+    minWidth: 100,
+    align: "center",
+  },
+  {
+    id: "endDate",
+    label: "End Date",
+    minWidth: 100,
+    align: "center",
+  },
   { id: "status", label: "Status", minWidth: 100, align: "center" },
   { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
