@@ -22,17 +22,21 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "@/app/(student)/student/projects-and-internships/styled";
+} from "@/app/(student)/student/projects/styled";
 
 export const UploadInternship = ({
   setOpenInternshipModal,
+  onInternshipUploaded,
 }: {
   setOpenInternshipModal: (open: boolean) => void;
+  onInternshipUploaded: () => void;
 }) => {
   const [certificateImage, setCertificateImage] = useState<File | null>(null);
   const [mentors, setMentors] = useState<User[]>([]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [validationError, setValidationError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -46,7 +50,7 @@ export const UploadInternship = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setLoading(true);
     if (
       !formData.title ||
       !formData.description ||
@@ -56,6 +60,10 @@ export const UploadInternship = ({
       !formData.projectUrl ||
       !formData.mentorId
     ) {
+      setValidationError("All fields are required");
+      setTimeout(() => {
+        setValidationError("");
+      }, 3000);
       return;
     }
 
@@ -87,7 +95,12 @@ export const UploadInternship = ({
           },
         },
       );
-
+      setLoading(false);
+      setSuccess(response.data.message);
+      onInternshipUploaded();
+      setTimeout(() => {
+        setSuccess("");
+      }, 3000);
       setOpenInternshipModal(false);
       setFormData({
         title: "",
@@ -99,12 +112,13 @@ export const UploadInternship = ({
         mentorId: "",
         companyName: "",
       });
-
-      console.log(response);
-      setSuccess(response.data.message);
     } catch (error: any) {
       console.log(error.response?.data?.message);
       setError(error.response?.data?.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      setLoading(false);
     }
   };
 
@@ -131,6 +145,7 @@ export const UploadInternship = ({
   useEffect(() => {
     fetchMentor();
   }, []);
+
   return (
     <FormContainer>
       <Form onSubmit={handleSubmit}>
@@ -252,7 +267,7 @@ export const UploadInternship = ({
         </FormInputContainer>
 
         <FormButtonContainer>
-          <FormButton type="submit">Submit</FormButton>
+          <FormButton type="submit">{loading ? "Submitting..." : "Submit"}</FormButton>
 
           <ResetButton
             type="button"
@@ -282,6 +297,14 @@ export const UploadInternship = ({
           {error && (
             <Alert severity="error" style={{ position: "absolute", right: 0 }}>
               {error}
+            </Alert>
+          )}
+          {validationError && (
+            <Alert
+              severity="warning"
+              style={{ position: "absolute", right: 0 }}
+            >
+              {validationError}
             </Alert>
           )}
         </FormButtonContainer>

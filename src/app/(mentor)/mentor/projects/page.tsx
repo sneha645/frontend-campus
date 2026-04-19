@@ -10,7 +10,7 @@ import {
   TableSubHeading,
   HeaderSubContainer,
 } from "@/app/(admin)/admin/recruiters/styled";
-import { FormModal } from "@/app/(student)/student/projects-and-internships/styled";
+import { FormModal } from "@/app/(student)/student/projects/styled";
 import { Project, projectTableColumns } from "@/types/type";
 import {
   Alert,

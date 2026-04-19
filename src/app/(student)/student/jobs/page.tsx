@@ -1,19 +1,50 @@
 "use client";
 
 import axios from "axios";
-import { Briefcase, Clock8, Code, IndianRupee, MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
-import { FormModal } from "../projects-and-internships/styled";
+import {
+  Briefcase,
+  Clock8,
+  Code,
+  IndianRupee,
+  MapPin,
+  Search,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { FormModal } from "../projects/styled";
 import { Alert } from "@mui/material";
+import {
+  ApplyButton,
+  ButtonContainer,
+  JobCard,
+  JobCompany,
+  JobDetailsContainer,
+  JobDetailSubContainer,
+  JobDetailText,
+  JobInfoContainer,
+  JobsContainer,
+  JobTitle,
+  JobTitleContainer,
+  LogoContainer,
+  NotFoundContainer,
+  NotFoundText,
+  StudentJobsContainer,
+  ViewDetailsButton,
+} from "./styled";
+import {
+  HeaderSubContainer,
+  HeadingContainer,
+  SearchContainer,
+  SearchInput,
+  TableHeading,
+  TableSubHeading,
+} from "@/app/(admin)/admin/recruiters/styled";
 
-export default function JobsAndInternshipsPage() {
+export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [openApplyModal, setOpenApplyModal] = useState(false);
   const [openJobModal, setOpenJobModal] = useState(false);
-  // const selectedJob = jobs.find((job) => job.job_id === selectedJobId);
-
-  // if (!selectedJob) return null;
+  const [searchJob, setSearchJob] = useState("");
 
   const fetchJobs = async () => {
     try {
@@ -33,211 +64,94 @@ export default function JobsAndInternshipsPage() {
     }
   };
 
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((r) =>
+      r.title.toLowerCase().includes(searchJob.toLowerCase()),
+    );
+  }, [jobs, searchJob]);
+
   useEffect(() => {
     fetchJobs();
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        gap: "20px",
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "4px",
-        }}
-      >
-        <h1 style={{ fontSize: "28px", fontWeight: "600" }}>
-          Find your next career opportunity
-        </h1>
-        <p style={{ fontSize: "16px", color: "#666" }}>
-          Browse through the latest jobs and internships posted by top
-          companies.
-        </p>
-      </div>
-      <div>
-        {jobs.map((job, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: "#fff",
-              width: "100%",
-              height: "fit-content",
-              borderRadius: "12px",
-              padding: "20px",
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              marginBottom: "20px",
-              position: "relative",
-            }}
-          >
-            <div
-              style={{
-                height: "100%",
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  height: "120px",
-                  width: "120px",
-                  backgroundColor: "#f5f5f5",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "12px",
-                }}
-              >
+    <StudentJobsContainer>
+      <HeadingContainer>
+        <TableHeading>Find your next career opportunity</TableHeading>
+        <HeaderSubContainer>
+          <TableSubHeading>
+            Browse through the latest jobs and internships posted by
+            <br />
+            top companies.
+          </TableSubHeading>
+          <SearchContainer>
+            <Search size={16} color="#666" />
+            <SearchInput
+              placeholder="Search job"
+              value={searchJob}
+              onChange={(e) => setSearchJob(e.target.value)}
+            />
+          </SearchContainer>
+        </HeaderSubContainer>
+      </HeadingContainer>
+      <JobsContainer>
+        {filteredJobs.length < 1 ? (
+          <NotFoundContainer>
+            <NotFoundText>No jobs found</NotFoundText>
+          </NotFoundContainer>
+        ) : (
+          filteredJobs.map((job, index) => (
+            <JobCard key={index}>
+              <LogoContainer>
                 <Briefcase size={48} color="#007bff" />
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                }}
-              >
-                <h1 style={{ fontSize: "20px", fontWeight: "600" }}>
-                  {job.title}
-                </h1>
-                <p style={{ fontSize: "16px", color: "#666" }}>
-                  {job.company.companyName}
-                </p>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "20px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    backgroundColor: "#f5f5f5",
-                    padding: "5px 10px",
-                    borderRadius: "8px",
+              </LogoContainer>
+              <JobInfoContainer>
+                <JobTitleContainer>
+                  <JobTitle>{job.title}</JobTitle>
+                  <JobCompany>{job.company.companyName}</JobCompany>
+                </JobTitleContainer>
+                <JobDetailsContainer>
+                  <JobDetailSubContainer>
+                    <Briefcase size={16} color="#666" />
+                    <JobDetailText>{job.jobType}</JobDetailText>
+                  </JobDetailSubContainer>
+                  <JobDetailSubContainer>
+                    <MapPin size={16} color="#666" />
+                    <JobDetailText>{job.location}</JobDetailText>
+                  </JobDetailSubContainer>
+                  <JobDetailSubContainer>
+                    <IndianRupee size={16} color="#666" />
+                    <JobDetailText>{job.salary}</JobDetailText>
+                  </JobDetailSubContainer>
+                  <JobDetailSubContainer>
+                    <Clock8 size={16} color="#666" />
+                    <JobDetailText>{job.createdAt}</JobDetailText>
+                  </JobDetailSubContainer>
+                </JobDetailsContainer>
+              </JobInfoContainer>
+              <ButtonContainer>
+                <ViewDetailsButton
+                  onClick={() => {
+                    setSelectedJobId(job.job_id);
+                    setOpenJobModal(true);
                   }}
                 >
-                  <Briefcase size={16} color="#666" />
-                  <p>{job.jobType}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    backgroundColor: "#f5f5f5",
-                    padding: "5px 10px",
-                    borderRadius: "8px",
+                  View Details
+                </ViewDetailsButton>
+                <ApplyButton
+                  onClick={() => {
+                    setSelectedJobId(job.job_id);
+                    setOpenApplyModal(true);
                   }}
                 >
-                  <MapPin size={16} color="#666" />
-                  <p>{job.location}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    backgroundColor: "#f5f5f5",
-                    padding: "5px 10px",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <IndianRupee size={16} color="#666" />
-                  <p>{job.salary}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    backgroundColor: "#f5f5f5",
-                    padding: "5px 10px",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <Clock8 size={16} color="#666" />
-                  <p>{job.createdAt}</p>
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                paddingLeft: "20px",
-                height: "100%",
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            >
-              <button
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  border: "1px solid #e5e7eb",
-                  color: "#000000",
-                  cursor: "pointer",
-                  width: "150px",
-                }}
-                onClick={() => {
-                  setSelectedJobId(job.job_id);
-                  setOpenJobModal(true);
-                }}
-              >
-                View Details
-              </button>
-              <button
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  border: "none",
-                  backgroundColor: "#007bff",
-                  color: "#fff",
-                  cursor: "pointer",
-                  width: "150px",
-                }}
-                onClick={() => {
-                  setSelectedJobId(job.job_id);
-                  setOpenApplyModal(true);
-                }}
-              >
-                Apply Now
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+                  Apply Now
+                </ApplyButton>
+              </ButtonContainer>
+            </JobCard>
+          ))
+        )}
+      </JobsContainer>
+
       <FormModal
         open={openApplyModal}
         onClose={() => setOpenApplyModal(false)}
@@ -248,6 +162,7 @@ export default function JobsAndInternshipsPage() {
           setOpenApplyModal={() => setOpenApplyModal(false)}
         />
       </FormModal>
+
       <FormModal
         open={openJobModal}
         onClose={() => setOpenJobModal(false)}
@@ -366,7 +281,7 @@ export default function JobsAndInternshipsPage() {
           </p>
         </div>
       </FormModal>
-    </div>
+    </StudentJobsContainer>
   );
 }
 

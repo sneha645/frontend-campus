@@ -1,6 +1,6 @@
 "use client";
 
-import { FormModal } from "@/app/(student)/student/projects-and-internships/styled";
+import { FormModal } from "@/app/(student)/student/projects/styled";
 import { UploadJob } from "@/components/UploadJob";
 import axios from "axios";
 import {

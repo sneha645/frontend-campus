@@ -58,7 +58,7 @@ export default function StudentDashboardPage() {
   const { user } = useAuth();
   return (
     <StudentDashboardContainer>
-      <HeaderContainer>
+      {/* <HeaderContainer>
         <HeaderContent>
           <Heading>Welcome back, {user?.name}!</Heading>
           <HeaderSubContent>
@@ -209,94 +209,12 @@ export default function StudentDashboardPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {paginatiedMentors?.length < 1 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} align="left">
-                      No mentors found
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  paginatiedMentors?.map((mentor) => (
-                    <TableRow key={mentor.email}>
-                      <TableCell style={{ fontFamily: "Poppins" }}>
-                        {mentor.name}
-                      </TableCell>
-
-                      <TableCell style={{ fontFamily: "Poppins" }}>
-                        {mentor.email}
-                      </TableCell>
-                      <TableCell style={{ fontFamily: "Poppins" }}>
-                        <Box sx={{ display: "flex", justifyContent: "center" }}>
-                          {mentor.createdAt?.split("T")[0]}
-                        </Box>
-                      </TableCell>
-                      <TableCell style={{ fontFamily: "Poppins" }}>
-                        <Box sx={{ display: "flex", justifyContent: "center" }}>
-                          <Box
-                            sx={{
-                              backgroundColor: `${mentor.status === "approved" ? "#def2e6" : mentor.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                              padding: "10px 20px",
-                              borderRadius: "30px",
-                              display: "flex",
-                              alignItems: "center",
-                              width: "fit-content",
-                              color: `${mentor.status === "approved" ? "#16a34a" : mentor.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                              fontSize: "12px",
-                            }}
-                          >
-                            {mentor.status}
-                          </Box>
-                        </Box>
-                      </TableCell>
-                      <TableCell style={{ display: "flex", gap: "10px" }}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "100%",
-                          }}
-                        >
-                          {mentor.status === "pending" ? (
-                            <Box sx={{ display: "flex", gap: "10px" }}>
-                              <ApproveButton
-                                style={{ fontFamily: "Poppins" }}
-                                onClick={() =>
-                                  mentor.user_id &&
-                                  handleApprove(mentor.user_id)
-                                }
-                              >
-                                Approve
-                              </ApproveButton>
-                              <RejectButton
-                                style={{ fontFamily: "Poppins" }}
-                                onClick={() =>
-                                  mentor.user_id && handleReject(mentor.user_id)
-                                }
-                              >
-                                Reject
-                              </RejectButton>
-                            </Box>
-                          ) : mentor.status === "approved" ? (
-                            <ViewProfile
-                              onClick={() => {
-                                router.push(`/admin/mentors/${mentor.user_id}`);
-                              }}
-                            >
-                              View Profile
-                            </ViewProfile>
-                          ) : (
-                            ""
-                          )}
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )} */}
+      
               </TableBody>
             </Table>
           </TableContainer>
         </PlatformOverview>
-      </ActivityContainer>
+      </ActivityContainer> */}
     </StudentDashboardContainer>
   );
 }

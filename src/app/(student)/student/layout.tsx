@@ -43,17 +43,22 @@ const StudentMenuItems = [
     icon: LayoutDashboard,
   },
   {
-    path: "/student/projects-and-internships",
-    label: "Projects & Internships",
+    path: "/student/projects",
+    label: "Projects",
     icon: FolderOpen,
   },
   {
-    path: "/student/jobs-and-internships",
-    label: "Jobs & Internships",
+    path: "/student/internships",
+    label: "Internships",
+    icon: FolderOpen,
+  },
+  {
+    path: "/student/jobs",
+    label: "Jobs",
     icon: Briefcase,
   },
-  { path: "/student/feedbacks", label: "Feedbacks", icon: MessageSquare },
   { path: "/student/assignments", label: "Assignments", icon: BookOpenText },
+  { path: "/student/feedbacks", label: "Feedbacks", icon: MessageSquare },
   {
     path: "/student/logout",
     label: "Logout",

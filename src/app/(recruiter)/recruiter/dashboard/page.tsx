@@ -2,12 +2,20 @@
 
 import { ApproveButton } from "@/app/(admin)/admin/recruiters/styled";
 import { useAuth } from "@/context/AuthContext";
-import { Briefcase, Building, MessageSquareText, Search, Upload, User } from "lucide-react";
+import {
+  Briefcase,
+  Building,
+  MessageSquareText,
+  Search,
+  Upload,
+  User,
+} from "lucide-react";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import { Task } from "@mui/icons-material";
 
 export default function RecruiterDashboardPage() {
-
+  const { user } = useAuth();
+  return (
     <div
       style={{
         width: "100%",
@@ -142,8 +150,7 @@ export default function RecruiterDashboardPage() {
                 borderRadius: "8px",
               }}
             >
-              
-              <MessageSquareText color="#fff" size={24}/>
+              <MessageSquareText color="#fff" size={24} />
             </div>
           </div>
           <div

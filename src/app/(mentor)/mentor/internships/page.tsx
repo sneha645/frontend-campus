@@ -10,7 +10,7 @@ import {
   TableSubHeading,
   HeaderSubContainer,
 } from "@/app/(admin)/admin/recruiters/styled";
-import { FormModal } from "@/app/(student)/student/projects-and-internships/styled";
+import { FormModal } from "@/app/(student)/student/projects/styled";
 import { Project, projectTableColumns } from "@/types/type";
 import {
   Alert,
@@ -58,7 +58,9 @@ import Link from "next/link";
 export default function InternshipsPage() {
   const [assignedInternships, setAssignedInternships] = useState<Project[]>([]);
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
-  const [selectedInternship, setSelectedInternship] = useState<Project | null>(null);
+  const [selectedInternship, setSelectedInternship] = useState<Project | null>(
+    null,
+  );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchInternship, setSearchInternship] = useState("");

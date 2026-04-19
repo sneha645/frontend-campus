@@ -33,7 +33,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert, Box } from "@mui/material";
 import { useAuth } from "@/context/AuthContext";
-import { FormModal } from "../(student)/student/projects-and-internships/styled";
+import { FormModal } from "../(student)/student/projects/styled";
 import axios from "axios";
 
 export default function SignInPage() {

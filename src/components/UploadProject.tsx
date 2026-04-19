@@ -17,20 +17,24 @@ import {
   TextAreaInput,
   TechStackContainer,
   Option,
-} from "@/app/(student)/student/projects-and-internships/styled";
+} from "@/app/(student)/student/projects/styled";
 import axios from "axios";
 import { User } from "@/types/type";
 import { Alert } from "@mui/material";
 
 export const UploadProject = ({
   setOpenProjectModal,
+  onProjectUploaded,
 }: {
   setOpenProjectModal: (open: boolean) => void;
+  onProjectUploaded: () => void;
 }) => {
   const [image, setImage] = useState<File | null>(null);
   const [mentors, setMentors] = useState<User[]>([]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [validationError, setValidationError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -44,7 +48,7 @@ export const UploadProject = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setLoading(true);
     if (
       !formData.title ||
       !formData.description ||
@@ -53,8 +57,13 @@ export const UploadProject = ({
       !formData.technologies ||
       !formData.projectUrl ||
       !formData.githubUrl ||
-      !formData.mentorId
+      !formData.mentorId ||
+      !image
     ) {
+      setValidationError("All fields are required");
+      setTimeout(() => {
+        setValidationError("");
+      }, 3000);
       return;
     }
 
@@ -76,8 +85,6 @@ export const UploadProject = ({
         formDataToSend.append("projectImage", image);
       }
 
-      console.log(formDataToSend);
-
       const response = await axios.post(
         "http://localhost:3000/api/student/project",
         formDataToSend,
@@ -88,8 +95,14 @@ export const UploadProject = ({
           },
         },
       );
+      setLoading(false);
 
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 3000);
       setOpenProjectModal(false);
+      onProjectUploaded();
       setFormData({
         title: "",
         description: "",
@@ -100,11 +113,13 @@ export const UploadProject = ({
         githubUrl: "",
         mentorId: "",
       });
-
-      setSuccess(response.data.message);
     } catch (error: any) {
       console.log(error.response?.data?.message);
       setError(error.response?.data?.message);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      setLoading(false);
     }
   };
 
@@ -254,7 +269,7 @@ export const UploadProject = ({
         </FormInputContainer>
 
         <FormButtonContainer>
-          <FormButton type="submit">Submit</FormButton>
+          <FormButton type="submit">{loading ? "Submitting..." : "Submit"}</FormButton>
 
           <ResetButton
             type="button"
@@ -284,6 +299,12 @@ export const UploadProject = ({
           {error && (
             <Alert severity="error" style={{ position: "absolute", right: 0 }}>
               {error}
+            </Alert>
+          )}
+
+          {validationError && (
+            <Alert severity="warning" style={{ position: "absolute", right: 0 }}>
+              {validationError}
             </Alert>
           )}
         </FormButtonContainer>

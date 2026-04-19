@@ -242,7 +242,7 @@ import {
 import axios from "axios";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FormModal } from "../projects-and-internships/styled";
+import { FormModal } from "../projects/styled";
 
 export default function AssignmentsPage() {
   const [assignments, setAssignments] = useState<any[]>([]);

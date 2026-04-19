@@ -1,15 +1,13 @@
 import { Modal } from "@mui/material";
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const StudentInternshipsContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background: #f5f5f5;
-  height: 100%;
-  width: 100%;
-  overflow-y: auto;
 `;
 
 export const ButtonContainer = styled.div`
@@ -89,12 +87,16 @@ export const Title = styled.h1`
   font-weight: 500;
 `;
 
-export const Status = styled.div`
+export const Status = styled.div<{ $color: string }>(
+  ({ $color = "pending" }) => `
   font-size: 12px;
   font-weight: 400;
   padding: 4px 8px;
   border-radius: 4px;
-`;
+  color: ${$color === "pending" ? "#f59e0b" : $color === "approved" ? "#16a34a" : "#e11d48"};
+  background-color: ${$color === "pending" ? "#fef3c7" : $color === "approved" ? "#def2e6" : "#fbdfe5"};
+`,
+);
 
 export const DateContainer = styled.div`
   display: flex;
