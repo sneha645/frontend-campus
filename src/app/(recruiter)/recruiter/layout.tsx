@@ -20,7 +20,7 @@ import {
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
-import { Briefcase, Building2 } from "lucide-react";
+import { Briefcase, Building2, User } from "lucide-react";
 import {
   AvatarContainer,
   AvatarEmail,
@@ -40,11 +40,11 @@ const RecruiterMenuItems = [
     label: "Job Postings",
     icon: Briefcase,
   },
-  // {
-  //   path: "/recruiter/applications",
-  //   label: "Applications",
-  //   icon: User,
-  // },
+  {
+    path: "/recruiter/applications",
+    label: "Applications",
+    icon: User,
+  },
 ];
 
 export default function RecruiterLayout({ children }: { children: ReactNode }) {

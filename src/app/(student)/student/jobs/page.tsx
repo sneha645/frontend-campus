@@ -31,6 +31,7 @@ import {
   ViewDetailsButton,
 } from "./styled";
 import {
+  ApproveButton,
   HeaderSubContainer,
   HeadingContainer,
   SearchContainer,
@@ -125,7 +126,13 @@ export default function JobsPage() {
                   </JobDetailSubContainer>
                   <JobDetailSubContainer>
                     <Clock8 size={16} color="#666" />
-                    <JobDetailText>{job.createdAt.split("T")[0].split("-").reverse().join("-")}</JobDetailText>
+                    <JobDetailText>
+                      {job.createdAt
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                    </JobDetailText>
                   </JobDetailSubContainer>
                 </JobDetailsContainer>
               </JobInfoContainer>
@@ -311,11 +318,19 @@ export const ApplyForm = ({
   setOpenApplyModal: (open: boolean) => void;
 }) => {
   const [resume, setResume] = useState<File | null>(null);
+  const [validation, setValidation] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
   console.log(jobId);
   const handleApply = async () => {
+    if (!resume) {
+      setValidation("Please upload resume");
+      setTimeout(() => {
+        setValidation("");
+      }, 2000);
+      return;
+    }
     const formDataToSend = new FormData();
 
     if (resume) {
@@ -334,12 +349,23 @@ export const ApplyForm = ({
       );
       if (response.status === 200) {
         setSuccess("Applied successfully");
-        setOpenApplyModal(false);
+        setTimeout(() => {
+          setOpenApplyModal(false);
+        }, 2000);
       }
       console.log(response.data);
     } catch (error) {
-      setError("Failed to apply");
-      console.log(error);
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error resetting password";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
+      setError(message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
   return (
@@ -358,6 +384,11 @@ export const ApplyForm = ({
       {error && (
         <Alert severity="error" style={{ position: "relative", top: "0" }}>
           {error}
+        </Alert>
+      )}
+      {validation && (
+        <Alert severity="warning" style={{ position: "relative", top: "0" }}>
+          {validation}
         </Alert>
       )}
       <label htmlFor="companyName">Resume</label>
@@ -390,19 +421,9 @@ export const ApplyForm = ({
           }}
         />
       </div>
-      <button
-        style={{
-          padding: "10px 20px",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          cursor: "pointer",
-        }}
-        onClick={handleApply}
-      >
+      <ApproveButton style={{ width: "100%" }} onClick={handleApply}>
         Apply Now
-      </button>
+      </ApproveButton>
     </div>
   );
 };

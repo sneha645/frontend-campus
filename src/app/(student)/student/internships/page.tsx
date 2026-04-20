@@ -81,7 +81,7 @@ export default function InternshipPage() {
 
   return (
     <StudentInternshipsContainer>
-      {/* <HeaderContainer>
+      <HeaderContainer>
         <HeaderContent>
           <Heading>Upload Your Internships</Heading>
           <HeaderSubContent>
@@ -171,7 +171,7 @@ export default function InternshipPage() {
           setOpenInternshipModal={setOpenInternshipModal}
           onInternshipUploaded={fetchInternships}
         />
-      </FormModal> */}
+      </FormModal>
     </StudentInternshipsContainer>
   );
 }

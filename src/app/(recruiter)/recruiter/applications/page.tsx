@@ -1,5 +1,6 @@
 "use client";
 
+import { Job } from "@/types/type";
 import axios from "axios";
 import {
   Briefcase,
@@ -13,10 +14,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ApplicationsPage() {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const router = useRouter();
 
   const getMyJobs = async () => {
-    const router = useRouter();
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
@@ -206,7 +207,7 @@ export default function ApplicationsPage() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  router.push(`/applications/${job.job_id}`);
+                  router.push(`/recruiter/applications/${job.job_id}`);
                 }}
               >
                 View Applicants

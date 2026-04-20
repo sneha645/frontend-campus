@@ -57,6 +57,11 @@ const StudentMenuItems = [
     label: "Jobs",
     icon: Briefcase,
   },
+  {
+    path: "/student/applied",
+    label: "Applied Jobs",
+    icon: Briefcase,
+  },
   { path: "/student/assignments", label: "Assignments", icon: BookOpenText },
   { path: "/student/feedbacks", label: "Feedbacks", icon: MessageSquare },
   {
