@@ -195,7 +195,7 @@ export default function CompanyProfilePage() {
           </CompanyProfileHeader>
           <Hrline />
           <FormContainer>
-            <Form onSubmit={handleSubmit}>
+            <Form >
               <InputGrid>
                 <InputContainer>
                   <Label htmlFor="">Company Name</Label>
@@ -319,7 +319,7 @@ export default function CompanyProfilePage() {
               </InputContainer>
             </Form>
             <ButtonContainer>
-              <SubmitButton type="submit">Submit</SubmitButton>
+              <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
               <ResetButton type="reset">Reset</ResetButton>
             </ButtonContainer>
           </FormContainer>

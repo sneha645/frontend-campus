@@ -20,7 +20,7 @@ import {
 } from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Box } from "@mui/material";
-import { Briefcase, Building2, User } from "lucide-react";
+import { Briefcase, Building2, LayoutDashboard, LogOut, User } from "lucide-react";
 import {
   AvatarContainer,
   AvatarEmail,
@@ -30,6 +30,11 @@ import {
 } from "@/app/(admin)/admin/styled";
 
 const RecruiterMenuItems = [
+  {
+    path: "/recruiter/dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+  },
   {
     path: "/recruiter/company-profile",
     label: "Company Profile",
@@ -45,6 +50,11 @@ const RecruiterMenuItems = [
     label: "Applications",
     icon: User,
   },
+  {
+    path: "/recruiter/logout",
+    label: "Logout",
+    icon: LogOut,
+  }
 ];
 
 export default function RecruiterLayout({ children }: { children: ReactNode }) {
