@@ -55,6 +55,8 @@ import {
 } from "@/types/type";
 import { useAuth } from "@/context/AuthContext";
 import {
+  Feedback,
+  FeedbackSection,
   ProjectInfoContainer,
   ProjectInfoLabel,
   ProjectInfoSubContainer,
@@ -66,7 +68,7 @@ import {
   ProjectStatus,
 } from "@/app/(mentor)/mentor/projects/styled";
 import Link from "next/link";
-import { Feedback, FeedbackSection } from "../feedbacks/styled";
+
 
 export default function AssignmentsPage() {
   const { user } = useAuth();

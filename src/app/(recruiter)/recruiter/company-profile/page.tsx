@@ -182,6 +182,7 @@ export default function CompanyProfilePage() {
       )}
       <CompanyProfileSubContainer>
         <CompanyProfileForm>
+          
           <CompanyProfileHeader>
             <CompanyProfileSubHeader>
               <FormHeading>Basic Company Details</FormHeading>

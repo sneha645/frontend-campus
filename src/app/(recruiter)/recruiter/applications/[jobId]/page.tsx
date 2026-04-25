@@ -138,8 +138,7 @@ export default function ApplicationsPage() {
             <Search size={20} />
             <SearchInput
               placeholder="Search recruiter"
-              //   value={searchRecruiter}
-              //   onChange={(e) => setSearchRecruiter(e.target.value)}
+           
             />
           </SearchContainer>
         </PaperContainer>
@@ -175,7 +174,7 @@ export default function ApplicationsPage() {
                       {application.job.title}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {application.appliedAt}
+                      {application.appliedDate}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box
@@ -232,16 +231,7 @@ export default function ApplicationsPage() {
                 ))}
             </TableBody>
           </Table>
-          {/* <TablePagination
-            rowsPerPageOptions={[10, 20, 30]}
-            component={"div"}
-            count={paginatiedRecruiter.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{ fontFamily: "Poppins" }}
-          /> */}
+ 
         </TableContainer>
       </Paper>
     </div>
