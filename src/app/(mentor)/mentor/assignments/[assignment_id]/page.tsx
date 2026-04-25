@@ -27,7 +27,12 @@ import { Search } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AssignmentContainer } from "../styled";
-import { submittedAssignmentTableColumns } from "@/types/type";
+import {
+  Assignment,
+  SubmittedAssignment,
+  submittedAssignmentTableColumns,
+} from "@/types/type";
+import { ApproveButton, RejectButton } from "../../projects/styled";
 
 export default function AssignmentPage() {
   const { assignment_id } = useParams();
@@ -36,7 +41,9 @@ export default function AssignmentPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchAssignmentStudent, setSearchAssignmentStudent] = useState("");
-  const [submittedAssignments, setSubmittedAssignments] = useState([]);
+  const [submittedAssignments, setSubmittedAssignments] = useState<
+    SubmittedAssignment[]
+  >([]);
 
   const getSubmittedAssignments = async () => {
     try {
@@ -221,9 +228,10 @@ export default function AssignmentPage() {
                           width: "100%",
                           display: "flex",
                           alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        {assignment.submittedAt}
+                        {assignment.submittedAt.split("T")[0]}
                       </Box>
                     </TableCell>
                     <TableCell>
@@ -232,55 +240,77 @@ export default function AssignmentPage() {
                           width: "100%",
                           display: "flex",
                           alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        {assignment.assignment.deadline}
+                        {assignment.assignment.assignment_deadline}
                       </Box>
                     </TableCell>
                     <TableCell>
                       <Box
                         sx={{
-                          backgroundColor: `${assignment.status === "approved" ? "#def2e6" : assignment.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                          padding: "10px 20px",
-                          borderRadius: "30px",
+                          width: "100%",
                           display: "flex",
                           alignItems: "center",
-                          width: "fit-content",
-                          color: `${assignment.status === "approved" ? "#16a34a" : assignment.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                          fontSize: "12px",
+                          justifyContent: "center",
                         }}
                       >
-                        {assignment.status}
+                        <Box
+                          sx={{
+                            backgroundColor: `${assignment.status === "approved" ? "#def2e6" : assignment.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "fit-content",
+                            color: `${assignment.status === "approved" ? "#16a34a" : assignment.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {assignment.status === "pending" ? "Submitted" : assignment.status}
+                        </Box>
                       </Box>
                     </TableCell>
 
                     <TableCell>
-                      <ViewProfile
-                        onClick={() => {
-                          window.open(
-                            `http://localhost:3000${assignment.fileUrl}`,
-                            "_blank",
-                          );
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "10px",
                         }}
                       >
-                        View Assignment
-                      </ViewProfile>
-                      {assignment.status === "pending" && (
                         <ViewProfile
-                          onClick={() =>
-                            handleApprove(assignment.submission_id)
-                          }
+                          onClick={() => {
+                            window.open(
+                              `http://localhost:3000${assignment.fileUrl}`,
+                              "_blank",
+                            );
+                          }}
                         >
-                          Approve
+                          View Assignment
                         </ViewProfile>
-                      )}
-                      {assignment.status === "pending" && (
-                        <ViewProfile
-                          onClick={() => handleReject(assignment.submission_id)}
-                        >
-                          Reject
-                        </ViewProfile>
-                      )}
+                        {assignment.status === "pending" && (
+                          <ApproveButton
+                            onClick={() =>
+                              handleApprove(assignment.submission_id)
+                            }
+                          >
+                            Approve
+                          </ApproveButton>
+                        )}
+                        {assignment.status === "pending" && (
+                          <RejectButton
+                            onClick={() =>
+                              handleReject(assignment.submission_id)
+                            }
+                          >
+                            Reject
+                          </RejectButton>
+                        )}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

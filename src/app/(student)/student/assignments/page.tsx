@@ -26,22 +26,41 @@ import axios from "axios";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormModal } from "../projects/styled";
-import { AssignmentContainer } from "./styled";
-import { recentAssignmentsTableColumns } from "@/types/type";
+import {
+  AssignmentContainer,
+  AssignmentDescriptionContainer,
+  AssignmentInfoContainer,
+  AssignmentInfoLabel,
+  AssignmentInfoSubContainer,
+  AssignmentInfoValue,
+  AssignmentModalContainer,
+  AssignmentModalHeader,
+  AssignmentModalSubContainer,
+  AssignmentModalTitle,
+  AssignmentUploadInput,
+  HrLine,
+  SubmitButton,
+  UploadAssignmentContainer,
+  UploadAssignmentDescriptionStyled,
+  UploadAssignmentHeader,
+  UploadAssignmentSubContainer,
+  UploadAssignmentTitle,
+  UploadAssignmentTitleStyled,
+  UploadedAssignmentContainer,
+} from "./styled";
+import { Assignment, recentAssignmentsTableColumns } from "@/types/type";
 
 export default function AssignmentsPage() {
   const [searchAssignment, setSearchAssignment] = useState("");
-  const [assignments, setAssignments] = useState<any[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  // const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
-  // const [selectedAssignment, setSelectedAssignment] = useState<any | null>(
-  //   null,
-  // );
-  // const [selectedAssignmentId, setSelectedAssignmentId] = useState<string>("");
-  // const [uploadAssignmentModal, setUploadAssignmentModal] = useState(false);
-
-  // const [searchAssignment, setSearchAssignment] = useState("");
+  const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] =
+    useState<Assignment | null>(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string>("");
+  const [selectedMentorId, setSelectedMentorId] = useState<string>("");
+  const [uploadAssignmentModal, setUploadAssignmentModal] = useState(false);
 
   const fetchAssignments = async () => {
     try {
@@ -59,16 +78,9 @@ export default function AssignmentsPage() {
     }
   };
 
-  // useEffect(() => {
-  //   fetchAssignments();
-  // }, []);
-
-  // // 👉 Open modal only AFTER assignment is set
-  // useEffect(() => {
-  //   if (selectedAssignment) {
-  //     setOpenAssignmentModal(true);
-  //   }
-  // }, [selectedAssignment]);
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   const filteredAssignments = useMemo(() => {
     return assignments.filter((p) =>
@@ -168,21 +180,66 @@ export default function AssignmentsPage() {
                         fontFamily: "Poppins",
                       }}
                     >
-                      {assignment.submissiontype}
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {assignment.assignment_deadline}
+                      </Box>
                     </TableCell>
                     <TableCell
                       style={{
                         fontFamily: "Poppins",
                       }}
                     >
-                      {assignment.assignment_assignto}
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {assignment.submissiontype}
+                      </Box>
                     </TableCell>
+
                     <TableCell
                       style={{
                         fontFamily: "Poppins",
                       }}
                     >
-                      {assignment.assignment_deadline}
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            backgroundColor: `${
+                              assignment.assignment_status === "submitted"
+                                ? "#def2e6"
+                                : "#fdefd8"
+                            }`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            width: "fit-content",
+                            color: `${assignment.assignment_status === "submitted" ? "#16a34a" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {assignment.assignment_status}
+                        </Box>
+                      </Box>
                     </TableCell>
 
                     <TableCell
@@ -191,20 +248,47 @@ export default function AssignmentsPage() {
                         gap: "10px",
                       }}
                     >
-                      <ApproveButton
-                        style={{ width: "fit-content" }}
-                        // onClick={() => {
-                        //   setUploadAssignmentModal(true);
-                        //   setSelectedAssignmentId(assignment.assignment_id);
-                        // }}
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "10px",
+                        }}
                       >
-                        Upload File
-                      </ApproveButton>
-                      <ViewProfile
-                      // onClick={() => setSelectedAssignment(assignment)}
-                      >
-                        View Assignment
-                      </ViewProfile>
+                        {assignment.assignment_status === "assigned" && (
+                          <>
+                            <ApproveButton
+                              style={{ width: "fit-content" }}
+                              onClick={() => {
+                                setUploadAssignmentModal(true);
+                                setSelectedAssignmentId(
+                                  assignment.assignment_id,
+                                );
+                                setSelectedMentorId(
+                                  assignment.mentor.user_id || "",
+                                );
+                              }}
+                            >
+                              Upload File
+                            </ApproveButton>
+
+                            <ViewProfile
+                              onClick={() => {
+                                setSelectedAssignment(assignment);
+                                setOpenAssignmentModal(true);
+                              }}
+                            >
+                              View Assignment
+                            </ViewProfile>
+                          </>
+                        )}
+
+                        {assignment.assignment_status === "submitted" && (
+                          <ViewProfile>View Submission</ViewProfile>
+                        )}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))
@@ -224,22 +308,27 @@ export default function AssignmentsPage() {
         />
       </Paper>
 
-      {/* <AssignmentModal
+      <AssignmentModal
         open={openAssignmentModal}
         onClose={() => {
           setOpenAssignmentModal(false);
-          setSelectedAssignment(null); // reset
+          setSelectedAssignment(null);
         }}
         assignment={selectedAssignment}
-      /> */}
+      />
 
-      {/* <FormModal
+      <FormModal
         open={uploadAssignmentModal}
         onClose={() => setUploadAssignmentModal(false)}
         style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
       >
-        <UploadAssignmentForm assignmentId={selectedAssignmentId} />
-      </FormModal> */}
+        <UploadAssignmentForm
+          mentorId={selectedMentorId}
+          assignmentId={selectedAssignmentId}
+          fetchAssignments={fetchAssignments}
+          setUploadAssignmentModal={setUploadAssignmentModal}
+        />
+      </FormModal>
     </AssignmentContainer>
   );
 }
@@ -253,129 +342,124 @@ const AssignmentModal = ({
   onClose: () => void;
   assignment: any;
 }) => {
-  // ✅ Prevent rendering when null
   if (!assignment) return null;
 
   return (
     <FormModal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          background: "white",
-          padding: "30px",
-          width: "500px",
-          borderRadius: "10px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-        }}
-      >
-        <h2>{assignment.assignment_title}</h2>
+      <AssignmentModalContainer>
+        <AssignmentModalHeader>
+          <AssignmentModalTitle>
+            {assignment.assignment_title}
+          </AssignmentModalTitle>
+        </AssignmentModalHeader>
+        <HrLine />
 
-        <p>
-          <strong>Assigned To:</strong> {assignment.assignment_assignto}
-        </p>
-
-        <p>
-          <strong>Submission Type:</strong> {assignment.submissiontype}
-        </p>
-
-        <p>
-          <strong>Deadline:</strong> {assignment.assignment_deadline}
-        </p>
-
-        <p>
-          <strong>Status:</strong> {assignment.status}
-        </p>
-
-        <p>
-          <strong>Description:</strong> {assignment.assignment_description}
-        </p>
-      </Box>
+        <AssignmentModalSubContainer>
+          <AssignmentInfoContainer>
+            <AssignmentInfoSubContainer>
+              <AssignmentInfoLabel>Assigned To:</AssignmentInfoLabel>
+              <AssignmentInfoValue>
+                {assignment.assignment_assignto} Year
+              </AssignmentInfoValue>
+            </AssignmentInfoSubContainer>
+            <AssignmentInfoSubContainer>
+              <AssignmentInfoLabel>Submission Type:</AssignmentInfoLabel>
+              <AssignmentInfoValue>
+                {assignment.submissiontype}
+              </AssignmentInfoValue>
+            </AssignmentInfoSubContainer>
+            <AssignmentInfoSubContainer>
+              <AssignmentInfoLabel>Deadline:</AssignmentInfoLabel>
+              <AssignmentInfoValue>
+                {assignment.assignment_deadline}
+              </AssignmentInfoValue>
+            </AssignmentInfoSubContainer>
+          </AssignmentInfoContainer>
+          <AssignmentInfoSubContainer>
+            <AssignmentInfoLabel>Description:</AssignmentInfoLabel>
+            <AssignmentDescriptionContainer>
+              <AssignmentInfoValue>
+                {assignment.assignment_description}
+              </AssignmentInfoValue>
+            </AssignmentDescriptionContainer>
+          </AssignmentInfoSubContainer>
+        </AssignmentModalSubContainer>
+      </AssignmentModalContainer>
     </FormModal>
   );
 };
 
 export const UploadAssignmentForm = ({
   assignmentId,
+  mentorId,
+  fetchAssignments,
+  setUploadAssignmentModal,
 }: {
   assignmentId: string;
+  mentorId: string;
+  fetchAssignments: () => void;
+  setUploadAssignmentModal: (open: boolean) => void;
 }) => {
   const [file, setFile] = useState<File | null>(null);
 
-  console.log(assignmentId);
   const handleUploadAssignment = async () => {
     const formDataToSend = new FormData();
 
     if (file) {
       formDataToSend.append("file", file);
     }
+    formDataToSend.append("assignmentId", assignmentId);
+    formDataToSend.append("mentorId", mentorId);
+
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/student/submitAssignment/${assignmentId}`,
+      await axios.post(
+        `http://localhost:3000/api/student/submitAssignment`,
         formDataToSend,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
           },
         },
       );
-      console.log(response.data);
+
+      fetchAssignments();
+      setFile(null);
+      setUploadAssignmentModal(false);
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "6px",
-      }}
-    >
-      <label htmlFor="companyName">Resume</label>
-      <div
-        style={{
-          backgroundColor: "#e3e8edff",
-          display: "flex",
-          alignItems: "flex-start",
-          flexDirection: "column",
-          gap: "6px",
-          padding: "20px",
-          borderRadius: "4px",
-          border: "1px dashed #0000003d",
-        }}
-      >
-        <h1 style={{ fontSize: "16px", fontWeight: "600" }}>Upload Resume</h1>
-        <p style={{ fontSize: "14px", color: "#666666" }}>
-          PDF, DOC, DOCX Recommended 512x512px Used across job listings and
-          candidate search.
-        </p>
-        <input
-          type="file"
-          id="resume"
-          style={{ cursor: "pointer" }}
-          accept=".pdf,.doc,.docx"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              setFile(e.target.files[0]);
-            }
-          }}
-        />
-      </div>
-      <button
-        style={{
-          padding: "10px 20px",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          cursor: "pointer",
-        }}
-        onClick={handleUploadAssignment}
-      >
-        Apply Now
-      </button>
-    </div>
+    <UploadAssignmentContainer>
+      <UploadAssignmentHeader>
+        <UploadAssignmentTitle>Upload Assignment</UploadAssignmentTitle>
+      </UploadAssignmentHeader>
+      <HrLine />
+      <UploadedAssignmentContainer>
+        <UploadAssignmentSubContainer>
+          <UploadAssignmentTitleStyled>
+            Upload Resume
+          </UploadAssignmentTitleStyled>
+          <UploadAssignmentDescriptionStyled>
+            PDF, DOC, DOCX Recommended 512x512px Used across job listings and
+            candidate search.
+          </UploadAssignmentDescriptionStyled>
+          <AssignmentUploadInput
+            type="file"
+            id="resume"
+            style={{ cursor: "pointer" }}
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                setFile(e.target.files[0]);
+              }
+            }}
+          />
+        </UploadAssignmentSubContainer>
+        <SubmitButton onClick={handleUploadAssignment}>
+          Submit Assignment
+        </SubmitButton>
+      </UploadedAssignmentContainer>
+    </UploadAssignmentContainer>
   );
 };

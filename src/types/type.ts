@@ -1,3 +1,28 @@
+export interface SubmittedAssignment {
+  submission_id: string;
+  assignment: Assignment;
+  student: User;
+  fileUrl: string;
+  status: string;
+  feedback: string;
+  score: number;
+  mentor: User;
+  submittedAt: string;
+}
+
+export interface Assignment {
+  assignment_id: string;
+  assignment_title: string;
+  assignment_description: string;
+  assignment_assignto: string;
+  assignment_deadline: string;
+  submissiontype: string;
+  mentor: User;
+  assignment_status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface User {
   user_id?: string;
   name: string;
@@ -310,7 +335,7 @@ export const recentApplicationsTableColumns: readonly RecentApplicationsTableCol
   ];
 
 export interface RecentAssignmentsTableColumns {
-  id: "title" | "deadline" | "submissiontype" | "actions";
+  id: "title" | "deadline" | "submissiontype" | "status" | "actions";
   label: string;
   minWidth: number;
   align: "left" | "right" | "center";
@@ -319,10 +344,16 @@ export interface RecentAssignmentsTableColumns {
 export const recentAssignmentsTableColumns: readonly RecentAssignmentsTableColumns[] =
   [
     { id: "title", label: "Title", minWidth: 100, align: "left" },
-    { id: "deadline", label: "Deadline", minWidth: 100, align: "left" },
+    { id: "deadline", label: "Deadline", minWidth: 100, align: "center" },
     {
       id: "submissiontype",
       label: "Submission Type",
+      minWidth: 100,
+      align: "center",
+    },
+    {
+      id: "status",
+      label: "Status",
       minWidth: 100,
       align: "center",
     },

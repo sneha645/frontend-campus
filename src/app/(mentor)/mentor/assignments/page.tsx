@@ -63,56 +63,6 @@ export default function AssignmentsPage() {
     submissiontype: "",
   });
 
-  const createAssignment = async () => {
-    if (
-      !assignmentData.assignment_title ||
-      !assignmentData.assignment_description ||
-      !assignmentData.assignment_assignto ||
-      !assignmentData.assignment_deadline ||
-      !assignmentData.submissiontype
-    ) {
-      setValidation("Please fill all the fields");
-      setTimeout(() => {
-        setValidation("");
-      }, 2000);
-      return;
-    }
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:3000/api/mentor/assignment",
-        assignmentData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setLoading(false);
-        setAssignmentData({
-          assignment_title: "",
-          assignment_description: "",
-          assignment_assignto: "",
-          assignment_deadline: "",
-          submissiontype: "",
-        });
-      }
-    } catch (error) {
-      const backendMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error resetting password";
-      const message = Array.isArray(backendMessage)
-        ? backendMessage.join(", ")
-        : backendMessage;
-      setError(message);
-      setLoading(false);
-    }
-  };
-
   const fetchAssignments = async () => {
     try {
       const res = await axios.get(
@@ -151,6 +101,56 @@ export default function AssignmentsPage() {
     },
     [],
   );
+
+  const createAssignment = async () => {
+    if (
+      !assignmentData.assignment_title ||
+      !assignmentData.assignment_description ||
+      !assignmentData.assignment_assignto ||
+      !assignmentData.assignment_deadline ||
+      !assignmentData.submissiontype
+    ) {
+      setValidation("Please fill all the fields");
+      setTimeout(() => {
+        setValidation("");
+      }, 2000);
+      return;
+    }
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:3000/api/mentor/assignment",
+        assignmentData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      fetchAssignments();
+      setSuccess(response.data.message);
+      setLoading(false);
+      setAssignmentData({
+        assignment_title: "",
+        assignment_description: "",
+        assignment_assignto: "",
+        assignment_deadline: "",
+        submissiontype: "",
+      });
+    } catch (error) {
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error resetting password";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
+      setError(message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchAssignments();
