@@ -23,7 +23,7 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
-import { Search } from "lucide-react";
+import { Calendar, FileIcon, Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormModal } from "../projects/styled";
 import {
@@ -48,19 +48,43 @@ import {
   UploadAssignmentTitleStyled,
   UploadedAssignmentContainer,
 } from "./styled";
-import { Assignment, recentAssignmentsTableColumns } from "@/types/type";
+import {
+  Assignment,
+  recentAssignmentsTableColumns,
+  SubmittedAssignment,
+} from "@/types/type";
+import { useAuth } from "@/context/AuthContext";
+import {
+  ProjectInfoContainer,
+  ProjectInfoLabel,
+  ProjectInfoSubContainer,
+  ProjectInfoValue,
+  ProjectModalContainer,
+  ProjectModalHeader,
+  ProjectModalSubContainer,
+  ProjectModalTitle,
+  ProjectStatus,
+} from "@/app/(mentor)/mentor/projects/styled";
+import Link from "next/link";
+import { Feedback, FeedbackSection } from "../feedbacks/styled";
 
 export default function AssignmentsPage() {
-  const [searchAssignment, setSearchAssignment] = useState("");
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const { user } = useAuth();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchAssignment, setSearchAssignment] = useState("");
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
-  const [selectedAssignment, setSelectedAssignment] =
-    useState<Assignment | null>(null);
   const [selectedAssignmentId, setSelectedAssignmentId] = useState<string>("");
   const [selectedMentorId, setSelectedMentorId] = useState<string>("");
   const [uploadAssignmentModal, setUploadAssignmentModal] = useState(false);
+  const [submission, setSubmission] = useState<SubmittedAssignment | null>(
+    null,
+  );
+  const [assignmentSubmissionModal, setAssignmentSubmissionModal] =
+    useState(false);
+  const [selectedAssignment, setSelectedAssignment] =
+    useState<Assignment | null>(null);
 
   const fetchAssignments = async () => {
     try {
@@ -73,6 +97,29 @@ export default function AssignmentsPage() {
         },
       );
       setAssignments(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSubmission = async ({
+    assignmentId,
+    studentId,
+  }: {
+    assignmentId: string;
+    studentId: string;
+  }) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/student/assignments/${assignmentId}/${studentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      setAssignmentSubmissionModal(true);
+      setSubmission(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -210,40 +257,6 @@ export default function AssignmentsPage() {
 
                     <TableCell
                       style={{
-                        fontFamily: "Poppins",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            backgroundColor: `${
-                              assignment.assignment_status === "submitted"
-                                ? "#def2e6"
-                                : "#fdefd8"
-                            }`,
-                            padding: "10px 20px",
-                            borderRadius: "30px",
-                            display: "flex",
-                            alignItems: "center",
-                            width: "fit-content",
-                            color: `${assignment.assignment_status === "submitted" ? "#16a34a" : "#f59e0b"}`,
-                            fontSize: "12px",
-                          }}
-                        >
-                          {assignment.assignment_status}
-                        </Box>
-                      </Box>
-                    </TableCell>
-
-                    <TableCell
-                      style={{
                         display: "flex",
                         gap: "10px",
                       }}
@@ -257,37 +270,38 @@ export default function AssignmentsPage() {
                           gap: "10px",
                         }}
                       >
-                        {assignment.assignment_status === "assigned" && (
-                          <>
-                            <ApproveButton
-                              style={{ width: "fit-content" }}
-                              onClick={() => {
-                                setUploadAssignmentModal(true);
-                                setSelectedAssignmentId(
-                                  assignment.assignment_id,
-                                );
-                                setSelectedMentorId(
-                                  assignment.mentor.user_id || "",
-                                );
-                              }}
-                            >
-                              Upload File
-                            </ApproveButton>
+                        <ApproveButton
+                          style={{ width: "fit-content" }}
+                          onClick={() => {
+                            setUploadAssignmentModal(true);
+                            setSelectedAssignmentId(assignment.assignment_id);
+                            setSelectedMentorId(
+                              assignment.mentor.user_id || "",
+                            );
+                          }}
+                        >
+                          Upload File
+                        </ApproveButton>
 
-                            <ViewProfile
-                              onClick={() => {
-                                setSelectedAssignment(assignment);
-                                setOpenAssignmentModal(true);
-                              }}
-                            >
-                              View Assignment
-                            </ViewProfile>
-                          </>
-                        )}
+                        <ViewProfile
+                          onClick={() => {
+                            setSelectedAssignment(assignment);
+                            setOpenAssignmentModal(true);
+                          }}
+                        >
+                          View Assignment
+                        </ViewProfile>
 
-                        {assignment.assignment_status === "submitted" && (
-                          <ViewProfile>View Submission</ViewProfile>
-                        )}
+                        <ViewProfile
+                          onClick={() => {
+                            fetchSubmission({
+                              assignmentId: assignment.assignment_id,
+                              studentId: user?.user_id || "",
+                            });
+                          }}
+                        >
+                          View Submission
+                        </ViewProfile>
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -315,6 +329,12 @@ export default function AssignmentsPage() {
           setSelectedAssignment(null);
         }}
         assignment={selectedAssignment}
+      />
+
+      <AssignmentSubmissionModal
+        open={assignmentSubmissionModal}
+        onClose={() => setAssignmentSubmissionModal(false)}
+        submission={submission}
       />
 
       <FormModal
@@ -461,5 +481,86 @@ export const UploadAssignmentForm = ({
         </SubmitButton>
       </UploadedAssignmentContainer>
     </UploadAssignmentContainer>
+  );
+};
+
+export const AssignmentSubmissionModal = ({
+  open,
+  onClose,
+  submission,
+}: {
+  open: boolean;
+  onClose: () => void;
+  submission: SubmittedAssignment | null;
+}) => {
+  return (
+    <FormModal open={open} onClose={onClose}>
+      <ProjectModalContainer>
+        <ProjectModalHeader>
+          <ProjectModalTitle>
+            {submission?.assignment.assignment_title}
+          </ProjectModalTitle>
+        </ProjectModalHeader>
+        <HrLine />
+        <ProjectModalSubContainer>
+          <ProjectInfoContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Student</ProjectInfoLabel>
+              <ProjectInfoValue>{submission?.student.name}</ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Status</ProjectInfoLabel>
+              <ProjectStatus
+                style={{
+                  color: `${submission?.status === "approved" ? "#16a34a" : submission?.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                  backgroundColor: `${submission?.status === "approved" ? "#def2e6" : submission?.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                }}
+              >
+                {submission?.status}
+              </ProjectStatus>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Submitted Date</ProjectInfoLabel>
+              <ProjectInfoValue>
+                <Calendar size={18} color="#00000099" />
+                {submission?.submittedAt.split("T")[0]}
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Assignment Deadline</ProjectInfoLabel>
+              <ProjectInfoValue>
+                <Calendar size={18} color="#00000099" />
+                {submission?.assignment.assignment_deadline}
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Assignment File</ProjectInfoLabel>
+              <ProjectInfoValue style={{ color: "#0b75ff" }}>
+                <FileIcon style={{ color: "#0b75ff", fontSize: "18px" }} />
+                <Link
+                  href={`http://localhost:3000${submission?.fileUrl}`}
+                  target="_blank"
+                >
+                  {submission?.assignment.assignment_title}
+                </Link>
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+          </ProjectInfoContainer>
+
+          {submission?.status === "approved" && (
+            <>
+              <FeedbackSection>
+                <ProjectInfoLabel>Feedback</ProjectInfoLabel>
+                <Feedback>{submission?.feedback}</Feedback>
+              </FeedbackSection>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Score</ProjectInfoLabel>
+                <Feedback>{submission?.score}/10</Feedback>
+              </ProjectInfoSubContainer>
+            </>
+          )}
+        </ProjectModalSubContainer>
+      </ProjectModalContainer>
+    </FormModal>
   );
 };

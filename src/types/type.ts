@@ -335,7 +335,12 @@ export const recentApplicationsTableColumns: readonly RecentApplicationsTableCol
   ];
 
 export interface RecentAssignmentsTableColumns {
-  id: "title" | "deadline" | "submissiontype" | "status" | "actions";
+  id:
+    | "title"
+    | "deadline"
+    | "submissiontype"
+    // | "status"
+    | "actions";
   label: string;
   minWidth: number;
   align: "left" | "right" | "center";
@@ -351,12 +356,12 @@ export const recentAssignmentsTableColumns: readonly RecentAssignmentsTableColum
       minWidth: 100,
       align: "center",
     },
-    {
-      id: "status",
-      label: "Status",
-      minWidth: 100,
-      align: "center",
-    },
+    // {
+    //   id: "status",
+    //   label: "Status",
+    //   minWidth: 100,
+    //   align: "center",
+    // },
     {
       id: "actions",
       label: "Actions",

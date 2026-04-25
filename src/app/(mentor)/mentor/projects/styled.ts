@@ -45,6 +45,7 @@ export const ProjectModalSubContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  width: 100%;
 `;
 
 export const ProjectInfoContainer = styled.div`
@@ -116,6 +117,28 @@ export const FeedbackInput = styled.textarea`
   align-items: center;
   gap: 10px;
   resize: none;
+
+  &:focus {
+    outline: none;
+    border-color: #0b75ff;
+  }
+
+  &:hover {
+    border-color: #0b75ff;
+  }
+`;
+
+export const ScoreInput = styled.input`
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   &:focus {
     outline: none;

@@ -23,7 +23,13 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
-import { Search } from "lucide-react";
+import {
+  Calendar,
+  CircleCheckBig,
+  CircleX,
+  FileIcon,
+  Search,
+} from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AssignmentContainer } from "../styled";
@@ -32,7 +38,27 @@ import {
   SubmittedAssignment,
   submittedAssignmentTableColumns,
 } from "@/types/type";
-import { ApproveButton, RejectButton } from "../../projects/styled";
+import {
+  ActionButtonContainer,
+  ApproveButton,
+  Feedback,
+  FeedbackInput,
+  FeedbackSection,
+  HrLine,
+  ProjectInfoContainer,
+  ProjectInfoLabel,
+  ProjectInfoSubContainer,
+  ProjectInfoValue,
+  ProjectModalContainer,
+  ProjectModalHeader,
+  ProjectModalSubContainer,
+  ProjectModalTitle,
+  ProjectStatus,
+  RejectButton,
+  ScoreInput,
+} from "../../projects/styled";
+import { FormModal } from "@/app/(student)/student/internships/styled";
+import Link from "next/link";
 
 export default function AssignmentPage() {
   const { assignment_id } = useParams();
@@ -44,68 +70,22 @@ export default function AssignmentPage() {
   const [submittedAssignments, setSubmittedAssignments] = useState<
     SubmittedAssignment[]
   >([]);
+  const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] =
+    useState<SubmittedAssignment | null>(null);
 
   const getSubmittedAssignments = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3000/api/mentor/submitted-assignments/${assignment_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
       );
       setSubmittedAssignments(response.data);
     } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleApprove = async (id: string) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/api/mentor/approve-assignment/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
-      getSubmittedAssignments();
-    } catch (error) {
-      setError("Failed to approve assignment");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
-      console.log(error);
-    }
-  };
-
-  const handleReject = async (id: string) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/api/mentor/reject-assignment/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
-      getSubmittedAssignments();
-    } catch (error) {
-      setError("Failed to reject assignment");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
       console.log(error);
     }
   };
@@ -267,7 +247,9 @@ export default function AssignmentPage() {
                             fontSize: "12px",
                           }}
                         >
-                          {assignment.status === "pending" ? "Submitted" : assignment.status}
+                          {assignment.status === "pending"
+                            ? "Submitted"
+                            : assignment.status}
                         </Box>
                       </Box>
                     </TableCell>
@@ -284,32 +266,12 @@ export default function AssignmentPage() {
                       >
                         <ViewProfile
                           onClick={() => {
-                            window.open(
-                              `http://localhost:3000${assignment.fileUrl}`,
-                              "_blank",
-                            );
+                            setSelectedAssignment(assignment);
+                            setOpenAssignmentModal(true);
                           }}
                         >
                           View Assignment
                         </ViewProfile>
-                        {assignment.status === "pending" && (
-                          <ApproveButton
-                            onClick={() =>
-                              handleApprove(assignment.submission_id)
-                            }
-                          >
-                            Approve
-                          </ApproveButton>
-                        )}
-                        {assignment.status === "pending" && (
-                          <RejectButton
-                            onClick={() =>
-                              handleReject(assignment.submission_id)
-                            }
-                          >
-                            Reject
-                          </RejectButton>
-                        )}
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -328,6 +290,215 @@ export default function AssignmentPage() {
           />
         </TableContainer>
       </Paper>
+      <AssignmentActionModal
+        open={openAssignmentModal}
+        onClose={() => setOpenAssignmentModal(false)}
+        assignment={selectedAssignment}
+        refreshAssignments={getSubmittedAssignments}
+      />
     </AssignmentContainer>
   );
 }
+
+export const AssignmentActionModal = ({
+  open,
+  onClose,
+  assignment,
+  refreshAssignments,
+}: {
+  open: boolean;
+  onClose: () => void;
+  assignment: SubmittedAssignment | null;
+  refreshAssignments: () => void;
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [action, setAction] = useState({
+    feedback: "",
+    status: "",
+    score: "",
+  });
+  const [validationError, setValidationError] = useState("");
+
+  if (!assignment) return null;
+
+  const handleApproveProject = async () => {
+    if (!action.feedback || !action.score) {
+      setValidationError("Please fill all the fields");
+      setTimeout(() => setValidationError(""), 3000);
+      return;
+    }
+
+    if (Number(action.score) < 0 || Number(action.score) > 100) {
+      setValidationError("Score must be between 0 and 100");
+      setTimeout(() => setValidationError(""), 3000);
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.post(
+        `http://localhost:3000/api/mentor/approve-assignment/${assignment.submission_id}`,
+        {
+          status: "approved",
+          feedback: action.feedback,
+          score: action.score,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      refreshAssignments();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRejectProject = async () => {
+    if (!action.feedback) {
+      setValidationError("Please fill the feedback");
+      setTimeout(() => setValidationError(""), 3000);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post(
+        `http://localhost:3000/api/mentor/reject-assignment/${assignment.submission_id}`,
+        {
+          status: "rejected",
+          score: "0",
+          feedback: action.feedback,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      refreshAssignments();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <FormModal open={open} onClose={onClose}>
+      <ProjectModalContainer>
+        {validationError && (
+          <Alert severity="error" sx={{ position: "absolute", top: "20px" }}>
+            {validationError}
+          </Alert>
+        )}
+        <ProjectModalHeader>
+          <ProjectModalTitle>
+            {assignment.assignment.assignment_title}
+          </ProjectModalTitle>
+        </ProjectModalHeader>
+        <HrLine />
+        <ProjectModalSubContainer>
+          <ProjectInfoContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Student</ProjectInfoLabel>
+              <ProjectInfoValue>{assignment.student.name}</ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Status</ProjectInfoLabel>
+              <ProjectStatus
+                style={{
+                  color: `${assignment?.status === "approved" ? "#16a34a" : assignment?.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                  backgroundColor: `${assignment?.status === "approved" ? "#def2e6" : assignment?.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                }}
+              >
+                {assignment?.status}
+              </ProjectStatus>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Submitted Date</ProjectInfoLabel>
+              <ProjectInfoValue>
+                <Calendar size={18} color="#00000099" />
+                {assignment?.submittedAt.split("T")[0]}
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Assignment Deadline</ProjectInfoLabel>
+              <ProjectInfoValue>
+                <Calendar size={18} color="#00000099" />
+                {assignment?.assignment.assignment_deadline}
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Assignment File</ProjectInfoLabel>
+              <ProjectInfoValue style={{ color: "#0b75ff" }}>
+                <FileIcon style={{ color: "#0b75ff", fontSize: "18px" }} />
+                <Link
+                  href={`http://localhost:3000${assignment?.fileUrl}`}
+                  target="_blank"
+                >
+                  {assignment?.assignment.assignment_title}
+                </Link>
+              </ProjectInfoValue>
+            </ProjectInfoSubContainer>
+          </ProjectInfoContainer>
+
+          {assignment?.status === "submitted" && (
+            <>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Score (out of 10)</ProjectInfoLabel>
+                <ScoreInput
+                  type="number"
+                  min={0}
+                  max={10}
+                  placeholder="Enter score out of 10"
+                  value={action.score}
+                  onChange={(e) =>
+                    setAction({ ...action, score: e.target.value })
+                  }
+                />
+              </ProjectInfoSubContainer>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Evaluation Feedback</ProjectInfoLabel>
+                <FeedbackInput
+                  placeholder="Enter feedback"
+                  value={action.feedback}
+                  onChange={(e) =>
+                    setAction({ ...action, feedback: e.target.value })
+                  }
+                />
+              </ProjectInfoSubContainer>
+              <ActionButtonContainer>
+                <ApproveButton onClick={handleApproveProject}>
+                  <CircleCheckBig size={18} />
+                  {loading ? "Approving..." : "Approve"}
+                </ApproveButton>
+                <RejectButton onClick={handleRejectProject}>
+                  <CircleX size={18} />
+                  {loading ? "Rejecting..." : "Reject"}
+                </RejectButton>
+              </ActionButtonContainer>
+            </>
+          )}
+
+          {assignment?.status === "approved" && (
+            <>
+              <FeedbackSection>
+                <ProjectInfoLabel>Feedback</ProjectInfoLabel>
+                <Feedback>{assignment?.feedback}</Feedback>
+              </FeedbackSection>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Score</ProjectInfoLabel>
+                <Feedback>{assignment?.score}/10</Feedback>
+              </ProjectInfoSubContainer>
+            </>
+          )}
+        </ProjectModalSubContainer>
+      </ProjectModalContainer>
+    </FormModal>
+  );
+};
