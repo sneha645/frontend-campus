@@ -78,6 +78,7 @@ export interface Project {
   student: User | string;
   createdAt: string;
   updatedAt: string;
+  feedback?: string;
 }
 
 export interface Internship {
@@ -94,6 +95,8 @@ export interface Internship {
   student: User | string;
   createdAt: string;
   updatedAt: string;
+  feedback?: string;
+  projectUrl: string;
 }
 
 export interface Recruiter {

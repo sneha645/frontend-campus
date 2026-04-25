@@ -269,7 +269,9 @@ export const UploadProject = ({
         </FormInputContainer>
 
         <FormButtonContainer>
-          <FormButton type="submit">{loading ? "Submitting..." : "Submit"}</FormButton>
+          <FormButton type="submit">
+            {loading ? "Submitting..." : "Submit"}
+          </FormButton>
 
           <ResetButton
             type="button"
@@ -303,7 +305,10 @@ export const UploadProject = ({
           )}
 
           {validationError && (
-            <Alert severity="warning" style={{ position: "absolute", right: 0 }}>
+            <Alert
+              severity="warning"
+              style={{ position: "absolute", right: 0 }}
+            >
               {validationError}
             </Alert>
           )}

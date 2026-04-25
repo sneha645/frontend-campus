@@ -134,9 +134,7 @@ export const UploadInternship = ({
           },
         },
       );
-      console.log(response);
-      const data = await response.data;
-      setMentors(data);
+      setMentors(response.data);
     } catch (error) {
       console.log(error);
     }

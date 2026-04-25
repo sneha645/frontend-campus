@@ -52,7 +52,6 @@ export const ProjectInfoContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  padding-bottom: 20px;
 `;
 
 export const ProjectInfoSubContainer = styled.div`
@@ -117,6 +116,15 @@ export const FeedbackInput = styled.textarea`
   align-items: center;
   gap: 10px;
   resize: none;
+
+  &:focus {
+    outline: none;
+    border-color: #0b75ff;
+  }
+
+  &:hover {
+    border-color: #0b75ff;
+  }
 `;
 
 export const ActionButtonContainer = styled.div`
@@ -172,4 +180,31 @@ export const RejectButton = styled.button`
   &:active {
     transform: scale(0.98);
   }
+`;
+
+export const FeedbackSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const Feedback = styled.p`
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #fdefd8;
+  padding: 20px;
+  border-radius: 8px;
+`;
+
+export const Technology = styled.span<{ $backgroundColor?: string }>`
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
+  color: #0f172a;
+  font-weight: 500;
 `;

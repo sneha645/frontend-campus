@@ -36,7 +36,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActionButtonContainer,
   ApproveButton,
+  Feedback,
   FeedbackInput,
+  FeedbackSection,
   HrLine,
   ProjectContainer,
   ProjectDescription,
@@ -51,6 +53,7 @@ import {
   ProjectModalTitle,
   ProjectStatus,
   RejectButton,
+  Technology,
 } from "./styled";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "next/link";
@@ -261,10 +264,13 @@ export const ProjectModal = ({
   project: Project | null;
   refreshProjects: () => void;
 }) => {
+  const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [validationError, setValidationError] = useState("");
 
   const handleApproveProject = async () => {
+    setLoading(true);
+    if (!project) return;
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -274,7 +280,7 @@ export const ProjectModal = ({
     }
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:3000/api/mentor/approveProject/${project?.project_id}`,
         {
           status: "approved",
@@ -287,15 +293,22 @@ export const ProjectModal = ({
           },
         },
       );
-      console.log(response.data);
+
       refreshProjects();
+      setFeedback("");
       onClose();
     } catch (error) {
       console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRejectProject = async () => {
+    
+    setLoading(true);
+    if (!project) return;
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -305,7 +318,7 @@ export const ProjectModal = ({
     }
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:3000/api/mentor/rejectProject/${project?.project_id}`,
         {
           status: "rejected",
@@ -318,13 +331,20 @@ export const ProjectModal = ({
           },
         },
       );
-      console.log(response.data);
+
       refreshProjects();
+      setFeedback("");
       onClose();
     } catch (error) {
       console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (!project) return null;
+
   return (
     <FormModal open={open} onClose={onClose}>
       <ProjectModalContainer>
@@ -376,8 +396,8 @@ export const ProjectModal = ({
               <ProjectInfoLabel>Github Repository</ProjectInfoLabel>
               <ProjectInfoValue style={{ color: "#0b75ff" }}>
                 <GitHubIcon style={{ color: "#0b75ff", fontSize: "18px" }} />
-                <Link href={project?.githubUrl} target="_blank">
-                  {project?.githubUrl}
+                <Link href={project.githubUrl} target="_blank">
+                  {project.githubUrl}
                 </Link>
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
@@ -385,36 +405,66 @@ export const ProjectModal = ({
               <ProjectInfoLabel>Live Link</ProjectInfoLabel>
               <ProjectInfoValue style={{ color: "#0b75ff" }}>
                 <SquareArrowOutUpRight size={18} color="#0b75ff" />
-                <Link href={project?.projectUrl} target="_blank">
-                  {project?.projectUrl}
+                <Link href={project.projectUrl} target="_blank">
+                  {project.projectUrl}
                 </Link>
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
           </ProjectInfoContainer>
+          <ProjectInfoSubContainer>
+            <ProjectInfoLabel>Technologies Used</ProjectInfoLabel>
+            <ProjectInfoValue>
+              {(typeof project.technologies === "string"
+                ? project.technologies.split(",")
+                : Array.isArray(project.technologies)
+                  ? project.technologies
+                  : []
+              )
+                .map((tech) => tech.trim())
+                .filter((tech) => tech !== "")
+                .map((tech, index) => (
+                  <Technology key={index} $backgroundColor="#f1f5f9">
+                    {tech}
+                  </Technology>
+                ))}
+            </ProjectInfoValue>
+          </ProjectInfoSubContainer>
           <ProjectInfoSubContainer>
             <ProjectInfoLabel>Description</ProjectInfoLabel>
             <ProjectDescriptionContainer>
               <ProjectDescription>{project?.description}</ProjectDescription>
             </ProjectDescriptionContainer>
           </ProjectInfoSubContainer>
-          <ProjectInfoSubContainer>
-            <ProjectInfoLabel>Evaluation Feedback</ProjectInfoLabel>
-            <FeedbackInput
-              placeholder="Enter feedback"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            />
-          </ProjectInfoSubContainer>
-          <ActionButtonContainer>
-            <ApproveButton onClick={handleApproveProject}>
-              <CircleCheckBig size={18} />
-              Approve Project
-            </ApproveButton>
-            <RejectButton onClick={handleRejectProject}>
-              <CircleX size={18} />
-              Reject Project
-            </RejectButton>
-          </ActionButtonContainer>
+
+          {project?.status === "pending" && (
+            <>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Evaluation Feedback</ProjectInfoLabel>
+                <FeedbackInput
+                  placeholder="Enter feedback"
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                />
+              </ProjectInfoSubContainer>
+              <ActionButtonContainer>
+                <ApproveButton onClick={handleApproveProject}>
+                  <CircleCheckBig size={18} />
+                  {loading ? "Approving..." : "Approve Project"}
+                </ApproveButton>
+                <RejectButton onClick={handleRejectProject}>
+                  <CircleX size={18} />
+                  {loading ? "Rejecting..." : "Reject Project"}
+                </RejectButton>
+              </ActionButtonContainer>
+            </>
+          )}
+
+          {project?.status === "approved" && (
+            <FeedbackSection>
+              <ProjectInfoLabel>Feedback</ProjectInfoLabel>
+              <Feedback>{project?.feedback}</Feedback>
+            </FeedbackSection>
+          )}
         </ProjectModalSubContainer>
       </ProjectModalContainer>
     </FormModal>

@@ -53,7 +53,6 @@ export default function MentorsPage() {
           },
         },
       );
-      console.log(response);
       const data = await response.data;
       setMentors(data);
     } catch (error) {
@@ -103,13 +102,12 @@ export default function MentorsPage() {
           },
         },
       );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
-      console.log(response);
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
+
       fetchMentor();
     } catch (error) {
       setError("Failed to approve mentor");
@@ -132,13 +130,12 @@ export default function MentorsPage() {
           },
         },
       );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
-      console.log(response);
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
+
       fetchMentor();
     } catch (error) {
       setError("Failed to reject mentor");
@@ -234,7 +231,11 @@ export default function MentorsPage() {
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {mentor.createdAt?.split("T")[0].split("-").reverse().join("-")}
+                        {mentor.createdAt
+                          ?.split("T")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>

@@ -55,7 +55,7 @@ export default function StudentsPage() {
           },
         },
       );
-      console.log(response);
+
       const data = await response.data;
       setStudents(data);
     } catch (error) {
@@ -105,16 +105,15 @@ export default function StudentsPage() {
           },
         },
       );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
-      console.log(response);
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 5000);
+
       fetchStudents();
-    } catch (error) {
-      setError("Failed to approve student");
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Failed to approve student");
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -134,9 +133,17 @@ export default function StudentsPage() {
           },
         },
       );
-      console.log(response);
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
       fetchStudents();
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Failed to reject student");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
       console.log(error);
     }
   };
@@ -225,7 +232,11 @@ export default function StudentsPage() {
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {student.createdAt?.split("T")[0].split("-").reverse().join("-")}
+                        {student.createdAt
+                          ?.split("T")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>

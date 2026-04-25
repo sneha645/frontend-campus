@@ -11,7 +11,7 @@ import {
   HeaderSubContainer,
 } from "@/app/(admin)/admin/recruiters/styled";
 import { FormModal } from "@/app/(student)/student/projects/styled";
-import { Project, projectTableColumns } from "@/types/type";
+import { Internship, Project, projectTableColumns } from "@/types/type";
 import {
   Alert,
   Box,
@@ -36,7 +36,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActionButtonContainer,
   ApproveButton,
+  Feedback,
   FeedbackInput,
+  FeedbackSection,
   HrLine,
   ProjectContainer,
   ProjectDescription,
@@ -51,16 +53,18 @@ import {
   ProjectModalTitle,
   ProjectStatus,
   RejectButton,
+  Technology,
 } from "../projects/styled";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "next/link";
 
 export default function InternshipsPage() {
-  const [assignedInternships, setAssignedInternships] = useState<Project[]>([]);
-  const [openInternshipModal, setOpenInternshipModal] = useState(false);
-  const [selectedInternship, setSelectedInternship] = useState<Project | null>(
-    null,
+  const [assignedInternships, setAssignedInternships] = useState<Internship[]>(
+    [],
   );
+  const [openInternshipModal, setOpenInternshipModal] = useState(false);
+  const [selectedInternship, setSelectedInternship] =
+    useState<Internship | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchInternship, setSearchInternship] = useState("");
@@ -260,13 +264,16 @@ export const InternshipModal = ({
 }: {
   open: boolean;
   onClose: () => void;
-  internship: Project | null;
+  internship: Internship | null;
   refreshInternships: () => void;
 }) => {
   const [feedback, setFeedback] = useState("");
   const [validationError, setValidationError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleApproveInternship = async () => {
+    setLoading(true);
+    if (!internship) return;
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -277,7 +284,7 @@ export const InternshipModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/mentor/approveInternship/${internship?.project_id}`,
+        `http://localhost:3000/api/mentor/approveInternship/${internship?.internship_id}`,
         {
           status: "approved",
           feedback,
@@ -289,15 +296,21 @@ export const InternshipModal = ({
           },
         },
       );
-      console.log(response.data);
+
       refreshInternships();
+      setFeedback("");
       onClose();
     } catch (error) {
       console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRejectInternship = async () => {
+    setLoading(true);
+    if (!internship) return;
     if (!feedback) {
       setValidationError("Please enter feedback");
       setTimeout(() => {
@@ -308,7 +321,7 @@ export const InternshipModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/mentor/rejectInternship/${internship?.project_id}`,
+        `http://localhost:3000/api/mentor/rejectInternship/${internship?.internship_id}`,
         {
           status: "rejected",
           feedback,
@@ -320,13 +333,18 @@ export const InternshipModal = ({
           },
         },
       );
-      console.log(response.data);
+
       refreshInternships();
+      setFeedback("");
       onClose();
     } catch (error) {
       console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
+  if (!internship) return null;
   return (
     <FormModal open={open} onClose={onClose}>
       <ProjectModalContainer>
@@ -375,21 +393,34 @@ export const InternshipModal = ({
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
-              <ProjectInfoLabel>Github Repository</ProjectInfoLabel>
+              <ProjectInfoLabel>Company</ProjectInfoLabel>
+              <ProjectInfoValue>{internship.companyName}</ProjectInfoValue>
+            </ProjectInfoSubContainer>
+            <ProjectInfoSubContainer>
+              <ProjectInfoLabel>Project Link</ProjectInfoLabel>
               <ProjectInfoValue style={{ color: "#0b75ff" }}>
                 <GitHubIcon style={{ color: "#0b75ff", fontSize: "18px" }} />
-                <Link href={internship?.githubUrl} target="_blank">
-                  {internship?.githubUrl}
+                <Link href={internship.projectUrl} target="_blank">
+                  {internship.projectUrl}
                 </Link>
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
             <ProjectInfoSubContainer>
-              <ProjectInfoLabel>Live Link</ProjectInfoLabel>
-              <ProjectInfoValue style={{ color: "#0b75ff" }}>
-                <SquareArrowOutUpRight size={18} color="#0b75ff" />
-                <Link href={internship?.projectUrl} target="_blank">
-                  {internship?.projectUrl}
-                </Link>
+              <ProjectInfoLabel>Technologies Used</ProjectInfoLabel>
+              <ProjectInfoValue>
+                {(typeof internship.technologies === "string"
+                  ? internship.technologies.split(",")
+                  : Array.isArray(internship.technologies)
+                    ? internship.technologies
+                    : []
+                )
+                  .map((tech) => tech.trim())
+                  .filter((tech) => tech !== "")
+                  .map((tech, index) => (
+                    <Technology key={index} $backgroundColor="#f1f5f9">
+                      {tech}
+                    </Technology>
+                  ))}
               </ProjectInfoValue>
             </ProjectInfoSubContainer>
           </ProjectInfoContainer>
@@ -399,24 +430,35 @@ export const InternshipModal = ({
               <ProjectDescription>{internship?.description}</ProjectDescription>
             </ProjectDescriptionContainer>
           </ProjectInfoSubContainer>
-          <ProjectInfoSubContainer>
-            <ProjectInfoLabel>Evaluation Feedback</ProjectInfoLabel>
-            <FeedbackInput
-              placeholder="Enter feedback"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            />
-          </ProjectInfoSubContainer>
-          <ActionButtonContainer>
-            <ApproveButton onClick={handleApproveInternship}>
-              <CircleCheckBig size={18} />
-              Approve Project
-            </ApproveButton>
-            <RejectButton onClick={handleRejectInternship}>
-              <CircleX size={18} />
-              Reject Project
-            </RejectButton>
-          </ActionButtonContainer>
+          {internship?.status === "pending" && (
+            <>
+              <ProjectInfoSubContainer>
+                <ProjectInfoLabel>Evaluation Feedback</ProjectInfoLabel>
+                <FeedbackInput
+                  placeholder="Enter feedback"
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                />
+              </ProjectInfoSubContainer>
+              <ActionButtonContainer>
+                <ApproveButton onClick={handleApproveInternship}>
+                  <CircleCheckBig size={18} />
+                  {loading ? "Approving..." : "Approve Internship"}
+                </ApproveButton>
+                <RejectButton onClick={handleRejectInternship}>
+                  <CircleX size={18} />
+                  {loading ? "Rejecting..." : "Reject Internship"}
+                </RejectButton>
+              </ActionButtonContainer>
+            </>
+          )}
+
+          {internship?.status === "approved" && (
+            <FeedbackSection>
+              <ProjectInfoLabel>Feedback</ProjectInfoLabel>
+              <Feedback>{internship?.feedback}</Feedback>
+            </FeedbackSection>
+          )}
         </ProjectModalSubContainer>
       </ProjectModalContainer>
     </FormModal>

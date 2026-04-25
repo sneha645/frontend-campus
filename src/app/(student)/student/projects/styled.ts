@@ -209,19 +209,39 @@ export const FormLabel = styled.label`
 
 export const FormInput = styled.input`
   width: 100%;
+  border: none;
+  outline: none;
+  background-color: #fff;
+  border-radius: 4px;
   padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
 `;
 
 export const TextAreaInput = styled.textarea`
   width: 100%;
   padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  background-color: #fff;
   border-radius: 4px;
   resize: none;
+  outline: none;
+
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
 `;
 
 export const FormDateContainer = styled.div`
@@ -234,11 +254,22 @@ export const FormDateSubContainer = styled.div`
 `;
 
 export const FormDateInput = styled.input`
+  border: none;
+  outline: none;
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: #fff;
+
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
 `;
 
 export const TechStackContainer = styled.div`
@@ -248,11 +279,22 @@ export const TechStackContainer = styled.div`
 `;
 
 export const Select = styled.select`
+  border: none;
+  outline: none;
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: #fff;
+
+  box-shadow: 0 0 0 1px #00000033;
+
+  &:focus {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 2px #0b75ff;
+  }
 `;
 
 export const Option = styled.option`

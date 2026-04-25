@@ -338,6 +338,7 @@ export default function SignUpPage() {
                     setUser({ ...user, department: e.target.value })
                   }
                 >
+                  <Option value="">Select Department</Option>
                   <Option value="computer-science">Computer Science</Option>
                   <Option value="information-technology">
                     Information Technology
@@ -377,6 +378,7 @@ export default function SignUpPage() {
                     setUser({ ...user, experience: e.target.value })
                   }
                 >
+                  <Option value="">Select Experience</Option>
                   <Option value="1">1</Option>
                   <Option value="2">2</Option>
                   <Option value="3">3</Option>

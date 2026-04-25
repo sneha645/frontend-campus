@@ -50,7 +50,7 @@ export default function AdminDashboardPage() {
   const { user } = useAuth();
   return (
     <DashboardContainer>
-      <HeaderContainer>
+      {/* <HeaderContainer>
         <HeaderContent>
           <Heading>Welcome back, {user?.name}!</Heading>
           <HeaderSubContent>
@@ -232,7 +232,7 @@ export default function AdminDashboardPage() {
             </ProgressSubContainer>
           </ProgressContainer>
         </PlatformOverview>
-      </ActivityContainer>
+      </ActivityContainer> */}
     </DashboardContainer>
   );
 }

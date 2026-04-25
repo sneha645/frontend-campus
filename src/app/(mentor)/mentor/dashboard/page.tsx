@@ -58,7 +58,7 @@ export default function DashboardPage() {
   const { user } = useAuth();
   return (
     <DashboardContainer>
-      <HeaderContainer>
+      {/* <HeaderContainer>
         <HeaderContent>
           <Heading>Welcome back, Prof. {user?.name}!</Heading>
           <HeaderSubContent>
@@ -289,7 +289,7 @@ export default function DashboardPage() {
             </Button>
           </ProgressContainer>
         </PlatformOverview>
-      </ActivityContainer>
+      </ActivityContainer> */}
     </DashboardContainer>
   );
 }
