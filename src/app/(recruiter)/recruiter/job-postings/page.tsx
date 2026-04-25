@@ -147,7 +147,10 @@ export default function JobPostingsPage() {
               </JobDetailsSubContainer>
               <JobDetailsSubContainer>
                 <Clock8 size={16} color="#666" />
-                <JobText>Posted {job.createdAt.split("T")[0].split("-").reverse().join("-")}</JobText>
+                <JobText>
+                  Posted{" "}
+                  {job.createdAt.split("T")[0].split("-").reverse().join("-")}
+                </JobText>
               </JobDetailsSubContainer>
               <JobDetailsSubContainer>
                 <IndianRupee size={16} color="#666" />
@@ -175,7 +178,7 @@ export default function JobPostingsPage() {
         <UploadJob
           setOpenJobModal={setOpenJobModal}
           companyId={profile?.company_id || ""}
-          getCompanyProfile={getMyJobs}
+          getMyJobs={getMyJobs}
         />
       </FormModal>
 
@@ -242,7 +245,7 @@ export default function JobPostingsPage() {
           </FooterText>
         </JobCardModal>
       </FormModal>
-      <FormModal
+      {/* <FormModal
         open={openJobModal}
         onClose={() => setOpenJobModal(false)}
         style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
@@ -250,8 +253,9 @@ export default function JobPostingsPage() {
         <UploadJob
           setOpenJobModal={setOpenJobModal}
           companyId={profile?.company_id}
+          getMyJobs={getMyJobs}
         />
-      </FormModal>
+      </FormModal> */}
     </JobPostingsContainer>
   );
 }

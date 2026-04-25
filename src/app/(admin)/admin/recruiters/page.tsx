@@ -106,12 +106,12 @@ export default function RecruiterPage() {
           },
         },
       );
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
+
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
+
       console.log(response);
       fetchRecruiters();
     } catch (error) {
@@ -136,12 +136,11 @@ export default function RecruiterPage() {
         },
       );
 
-      if (response.status === 200) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          setSuccess("");
-        }, 2000);
-      }
+      setSuccess(response.data.message);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
+
       console.log(response);
       fetchRecruiters();
     } catch (error) {
@@ -237,7 +236,11 @@ export default function RecruiterPage() {
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {recruiter.createdAt?.split("T")[0].split("-").reverse().join("-")}
+                        {recruiter.createdAt
+                          ?.split("T")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")}
                       </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
@@ -303,7 +306,8 @@ export default function RecruiterPage() {
                       </Box>
                     </TableCell>
                   </TableRow>
-                )))}
+                ))
+              )}
             </TableBody>
           </Table>
           <TablePagination

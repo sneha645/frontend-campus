@@ -49,6 +49,7 @@ export default function CompanyProfilePage() {
   const [validation, setValidation] = useState("");
   const [sucess, setSucess] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [companyProfile, setCompanyProfile] = useState({
     companyName: "",
@@ -61,6 +62,7 @@ export default function CompanyProfilePage() {
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     if (
@@ -121,12 +123,14 @@ export default function CompanyProfilePage() {
       });
       setCompanyLogo(null);
       getCompanyProfile();
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError("Failed to create company profile");
       setTimeout(() => {
         setError("");
       }, 2000);
+      setLoading(false);
     }
   };
 
@@ -182,7 +186,6 @@ export default function CompanyProfilePage() {
       )}
       <CompanyProfileSubContainer>
         <CompanyProfileForm>
-          
           <CompanyProfileHeader>
             <CompanyProfileSubHeader>
               <FormHeading>Basic Company Details</FormHeading>
@@ -196,7 +199,7 @@ export default function CompanyProfilePage() {
           </CompanyProfileHeader>
           <Hrline />
           <FormContainer>
-            <Form >
+            <Form onSubmit={handleSubmit}>
               <InputGrid>
                 <InputContainer>
                   <Label htmlFor="">Company Name</Label>
@@ -318,11 +321,13 @@ export default function CompanyProfilePage() {
                   </LogoInputContainer>
                 </InputContainer>
               </InputContainer>
+              <ButtonContainer>
+                <SubmitButton type="submit">
+                  {loading ? "Submitting" : "Submit"}
+                </SubmitButton>
+                <ResetButton type="reset">Reset</ResetButton>
+              </ButtonContainer>
             </Form>
-            <ButtonContainer>
-              <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-              <ResetButton type="reset">Reset</ResetButton>
-            </ButtonContainer>
           </FormContainer>
         </CompanyProfileForm>
 

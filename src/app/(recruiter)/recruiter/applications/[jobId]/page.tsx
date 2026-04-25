@@ -10,6 +10,7 @@ import {
   Button,
   Box,
   TablePagination,
+  Alert,
 } from "@mui/material";
 
 import {
@@ -27,6 +28,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Application } from "@/types/type";
 
 export interface ApplicationTableColumns {
   id: "studentName" | "jobType" | "appliedAt" | "status" | "actions";
@@ -45,10 +47,10 @@ export const applicationTableColumns: readonly ApplicationTableColumns[] = [
 
 export default function ApplicationsPage() {
   const { jobId } = useParams();
-  console.log(jobId);
-  const router = useRouter();
+  const [success, setSucess] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const [applications, setApplications] = useState<any[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
   console.log(applications);
 
   const getApplications = async () => {
@@ -75,6 +77,7 @@ export default function ApplicationsPage() {
 
   const handleShortlist = async (appId: string) => {
     try {
+      console.log("appId", appId);
       const token = localStorage.getItem("token");
       const response = await axios.post(
         `http://localhost:3000/api/recruiter/applicanttShortlisted/${appId}`,
@@ -85,11 +88,19 @@ export default function ApplicationsPage() {
           },
         },
       );
-      const data = await response.data;
-      console.log(data);
+      console.log("response", response.data);
+
+      setSucess(response.data.message);
+      setTimeout(() => {
+        setSucess("");
+      }, 2000);
       getApplications();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
 
@@ -105,11 +116,17 @@ export default function ApplicationsPage() {
           },
         },
       );
-      const data = await response.data;
-      console.log(data);
+      setSucess(response.data.message);
+      setTimeout(() => {
+        setSucess("");
+      }, 2000);
       getApplications();
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
   return (
@@ -125,6 +142,22 @@ export default function ApplicationsPage() {
         overflowY: "hidden",
       }}
     >
+      {success && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "20px" }}
+          severity="success"
+        >
+          {success}
+        </Alert>
+      )}
+      {error && (
+        <Alert
+          style={{ position: "absolute", top: "10px", right: "20px" }}
+          severity="error"
+        >
+          {error}
+        </Alert>
+      )}
       <Paper style={{ width: "100%", height: "100%" }}>
         <PaperContainer>
           <HeadingContainer>
@@ -136,10 +169,7 @@ export default function ApplicationsPage() {
           </HeadingContainer>
           <SearchContainer>
             <Search size={20} />
-            <SearchInput
-              placeholder="Search recruiter"
-           
-            />
+            <SearchInput placeholder="Search recruiter" />
           </SearchContainer>
         </PaperContainer>
         <TableContainer style={{ height: "100%", position: "relative" }}>
@@ -165,7 +195,7 @@ export default function ApplicationsPage() {
               {applications &&
                 applications?.length > 0 &&
                 applications?.map((application) => (
-                  <TableRow key={application.email}>
+                  <TableRow key={application.application_id}>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       {application.student.name}
                     </TableCell>
@@ -174,18 +204,18 @@ export default function ApplicationsPage() {
                       {application.job.title}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {application.appliedDate}
+                      {application.createdAt.split("T")[0]}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box
                         sx={{
-                          backgroundColor: `${application.status === "approved" ? "#def2e6" : application.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                          backgroundColor: `${application.status === "shortlisted" ? "#def2e6" : application.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
                           padding: "10px 20px",
                           borderRadius: "30px",
                           display: "flex",
                           alignItems: "center",
                           width: "fit-content",
-                          color: `${application.status === "approved" ? "#16a34a" : application.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                          color: `${application.status === "shortlisted" ? "#16a34a" : application.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
                           fontSize: "12px",
                         }}
                       >
@@ -231,7 +261,6 @@ export default function ApplicationsPage() {
                 ))}
             </TableBody>
           </Table>
- 
         </TableContainer>
       </Paper>
     </div>

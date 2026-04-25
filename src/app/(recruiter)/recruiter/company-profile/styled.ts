@@ -132,7 +132,6 @@ export const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
-  padding: 20px;
 `;
 
 export const SubmitButton = styled.button`

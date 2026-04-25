@@ -336,6 +336,7 @@ export const ApplyForm = ({
     if (resume) {
       formDataToSend.append("resume", resume);
     }
+
     try {
       const response = await axios.post(
         `http://localhost:3000/api/student/apply/${jobId}`,
@@ -347,13 +348,12 @@ export const ApplyForm = ({
           },
         },
       );
-      if (response.status === 200) {
-        setSuccess("Applied successfully");
-        setTimeout(() => {
-          setOpenApplyModal(false);
-        }, 2000);
-      }
-      console.log(response.data);
+
+      setSuccess(response.data.message);
+      setOpenApplyModal(false);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
     } catch (error) {
       const backendMessage =
         error?.response?.data?.message ||
@@ -391,6 +391,7 @@ export const ApplyForm = ({
           {validation}
         </Alert>
       )}
+
       <label htmlFor="companyName">Resume</label>
       <div
         style={{

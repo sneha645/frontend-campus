@@ -1,3 +1,13 @@
+export interface Application {
+  application_id: string;
+  student: User;
+  job: Job;
+  status: string;
+  resumeUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface SubmittedAssignment {
   submission_id: string;
   assignment: Assignment;

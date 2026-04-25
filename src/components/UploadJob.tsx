@@ -19,32 +19,32 @@ import { Alert } from "@mui/material";
 export const UploadJob = ({
   setOpenJobModal,
   companyId,
-  getCompanyProfile,
+  getMyJobs,
 }: {
   setOpenJobModal: (open: boolean) => void;
-  companyId: string;
-  getCompanyProfile: () => void;
+  companyId: string | undefined;
+  getMyJobs: () => void;
 }) => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState("");
 
   const [jobData, setJobData] = useState({
     title: "",
-    location: "",
+    description: "",
     jobType: "",
     experience: "",
     salary: "",
     requirements: "",
     responsibilities: "",
     benefits: "",
-    description: "",
   });
 
   const createJob = async () => {
+    setLoading(true);
     if (
       !jobData.title ||
-      !jobData.location ||
       !jobData.jobType ||
       !jobData.experience ||
       !jobData.responsibilities ||
@@ -71,16 +71,17 @@ export const UploadJob = ({
           },
         },
       );
-      if (response.data) {
-        setSuccess("Job posted successfully");
-        setTimeout(() => {
-          setSuccess("");
-          setOpenJobModal(false);
-        }, 2000);
-        getCompanyProfile();
-      }
+
+      setSuccess(response.data.message);
+      setOpenJobModal(false);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
+      getMyJobs();
+      setLoading(false);
     } catch (error) {
       setError("Failed to post job");
+      setLoading(false);
       setTimeout(() => {
         setError("");
       }, 2000);
@@ -96,17 +97,6 @@ export const UploadJob = ({
             placeholder="Enter job title"
             value={jobData.title}
             onChange={(e) => setJobData({ ...jobData, title: e.target.value })}
-          />
-        </Field>
-
-        <Field>
-          <Label>Location *</Label>
-          <Input
-            placeholder="Enter location"
-            value={jobData.location}
-            onChange={(e) =>
-              setJobData({ ...jobData, location: e.target.value })
-            }
           />
         </Field>
 
@@ -190,12 +180,14 @@ export const UploadJob = ({
       </Field>
 
       <ButtonGroup>
-        <PrimaryButton onClick={createJob}>Post Job</PrimaryButton>
+        <PrimaryButton onClick={createJob} disabled={loading}>
+          {loading ? "Posting..." : "Post Job"}
+        </PrimaryButton>
         <SecondaryButton
           onClick={() =>
             setJobData({
               title: "",
-              location: "",
+
               jobType: "",
               experience: "",
               salary: "",

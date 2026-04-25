@@ -161,13 +161,13 @@ export default function AppliedJobsPage() {
                     <TableCell>
                       <Box
                         sx={{
-                          backgroundColor: `${job.status === "applied" ? "#def2e6" : job.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                          backgroundColor: `${job.status === "shortlisted" ? "#def2e6" : job.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
                           padding: "10px 20px",
                           borderRadius: "30px",
                           display: "flex",
                           alignItems: "center",
                           width: "fit-content",
-                          color: `${job.status === "applied" ? "#16a34a" : job.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                          color: `${job.status === "shortlisted" ? "#16a34a" : job.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
                           fontSize: "12px",
                         }}
                       >
