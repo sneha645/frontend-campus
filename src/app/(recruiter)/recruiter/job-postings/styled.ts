@@ -6,9 +6,6 @@ export const JobPostingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;
 
 export const Button = styled.button`
@@ -34,7 +31,7 @@ export const JobCard = styled.div`
   height: fit-content;
   padding: 20px;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -42,20 +39,37 @@ export const JobCard = styled.div`
   margin-bottom: 20px;
 `;
 
+export const JobContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`;
+
 export const JobSubContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
+`;
+
+export const JobLogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
 `;
 
 export const JobTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 `;
 
 export const JobTitle = styled.h1`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
 `;
 
@@ -69,18 +83,23 @@ export const Status = styled.div<{ $status: string }>(
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
+  width: fit-content;
 `,
 );
 
 export const JobDetailsContainer = styled.div`
   display: flex;
-  gap: 30px;
+  gap: 20px;
 `;
 
 export const JobDetailsSubContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
 `;
 
 export const JobText = styled.p`
@@ -95,12 +114,12 @@ export const ButtonContainer = styled.div`
 `;
 
 export const ViewJobButton = styled.button`
-  color: #000;
+  color: #fff;
   border-radius: 4px;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 400;
-  border: 1px solid #e5e7eb;
+  background-color: #007bff;
   cursor: pointer;
   transition: all 0.3s ease;
 
@@ -109,17 +128,12 @@ export const ViewJobButton = styled.button`
   }
 `;
 
-
-
-
-
-
 /* Card */
 export const JobCardModal = styled.div`
   max-width: 600px;
   margin: 30px auto;
   padding: 24px;
-  border-radius: 16px;
+  border-radius: 4px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   background-color: #fff;
   font-family: Arial, sans-serif;
@@ -133,6 +147,8 @@ export const Header = styled.div`
 export const Title = styled.h2`
   margin: 0;
   color: #222;
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 export const CompanyName = styled.p`
@@ -178,6 +194,7 @@ export const SectionWrapper = styled.div`
 export const SectionTitle = styled.h4`
   margin-bottom: 6px;
   color: #333;
+  font-weight: 600;
 `;
 
 export const List = styled.ul`

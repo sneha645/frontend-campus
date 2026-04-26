@@ -15,6 +15,7 @@ import {
 
 import {
   ApproveButton,
+  HeaderSubContainer,
   HeadingContainer,
   PaperContainer,
   RejectButton,
@@ -27,7 +28,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Application } from "@/types/type";
 
 export interface ApplicationTableColumns {
@@ -40,18 +41,47 @@ export interface ApplicationTableColumns {
 export const applicationTableColumns: readonly ApplicationTableColumns[] = [
   { id: "studentName", label: "Name", minWidth: 100, align: "left" },
   { id: "jobType", label: "Job Type", minWidth: 100, align: "left" },
-  { id: "appliedAt", label: "Applied At", minWidth: 100, align: "left" },
-  { id: "status", label: "Status", minWidth: 100, align: "left" },
-  { id: "actions", label: "Actions", minWidth: 100, align: "left" },
+  { id: "appliedAt", label: "Applied At", minWidth: 100, align: "center" },
+  { id: "status", label: "Status", minWidth: 100, align: "center" },
+  { id: "actions", label: "Actions", minWidth: 100, align: "center" },
 ];
 
 export default function ApplicationsPage() {
   const { jobId } = useParams();
   const [success, setSucess] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [searchApplications, setSearchApplications] = useState<string>("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [applications, setApplications] = useState<Application[]>([]);
   console.log(applications);
+
+  const filteredApplications = useMemo(() => {
+    return applications.filter((a) =>
+      a.student.name.toLowerCase().includes(searchApplications.toLowerCase()),
+    );
+  }, [applications, searchApplications]);
+
+  const paginatiedApplications = useMemo(() => {
+    const start = page * rowsPerPage;
+    return filteredApplications.slice(start, start + rowsPerPage);
+  }, [filteredApplications, page, rowsPerPage]);
+
+  const handleChangePage = useCallback(
+    (_: unknown, newPage: number) => {
+      setPage(newPage);
+    },
+    [setPage],
+  );
+
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    },
+    [setPage, setRowsPerPage],
+  );
 
   const getApplications = async () => {
     try {
@@ -134,12 +164,9 @@ export default function ApplicationsPage() {
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: "20px",
         gap: "20px",
         height: "100%",
         width: "100%",
-        overflow: "auto",
-        overflowY: "hidden",
       }}
     >
       {success && (
@@ -158,19 +185,32 @@ export default function ApplicationsPage() {
           {error}
         </Alert>
       )}
-      <Paper style={{ width: "100%", height: "100%" }}>
+      <Paper
+        style={{
+          width: "100%",
+          height: "100%",
+          boxShadow: "none",
+          border: "1px solid #e5e7eb",
+        }}
+      >
         <PaperContainer>
           <HeadingContainer>
-            <TableHeading>New Recruiter Requests</TableHeading>
-            <TableSubHeading>
-              Pending requests list with manual moderation for approvals,
-              rejects and compliance review.
-            </TableSubHeading>
+            <TableHeading>Applications</TableHeading>
+
+            <HeaderSubContainer>
+              <TableSubHeading>
+                Review applications, moderate approvals, and keep application
+              </TableSubHeading>
+              <SearchContainer>
+                <Search size={16} color="#666" />
+                <SearchInput
+                  placeholder="Search applications"
+                  value={searchApplications}
+                  onChange={(e) => setSearchApplications(e.target.value)}
+                />
+              </SearchContainer>
+            </HeaderSubContainer>
           </HeadingContainer>
-          <SearchContainer>
-            <Search size={20} />
-            <SearchInput placeholder="Search recruiter" />
-          </SearchContainer>
         </PaperContainer>
         <TableContainer style={{ height: "100%", position: "relative" }}>
           <Table>
@@ -204,27 +244,58 @@ export default function ApplicationsPage() {
                       {application.job.title}
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
-                      {application.createdAt.split("T")[0]}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {application.createdAt.split("T")[0]}
+                      </Box>
                     </TableCell>
                     <TableCell style={{ fontFamily: "Poppins" }}>
                       <Box
                         sx={{
-                          backgroundColor: `${application.status === "shortlisted" ? "#def2e6" : application.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
-                          padding: "10px 20px",
-                          borderRadius: "30px",
                           display: "flex",
                           alignItems: "center",
-                          width: "fit-content",
-                          color: `${application.status === "shortlisted" ? "#16a34a" : application.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
-                          fontSize: "12px",
+                          justifyContent: "center",
                         }}
                       >
-                        {application.status}
+                        <Box
+                          sx={{
+                            backgroundColor: `${application.status === "shortlisted" ? "#def2e6" : application.status === "rejected" ? "#fbdfe5" : "#fdefd8"}`,
+                            padding: "10px 20px",
+                            borderRadius: "30px",
+                            display: "flex",
+                            alignItems: "center",
+
+                            width: "fit-content",
+                            color: `${application.status === "shortlisted" ? "#16a34a" : application.status === "rejected" ? "#e11d48" : "#f59e0b"}`,
+                            fontSize: "12px",
+                          }}
+                        >
+                          {application.status}
+                        </Box>
                       </Box>
                     </TableCell>
-                    <TableCell style={{ display: "flex", gap: "10px" }}>
+                    <TableCell
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
                       {application.status === "applied" && (
-                        <Box sx={{ display: "flex", gap: "10px" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            gap: "10px",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
                           <ApproveButton
                             style={{ fontFamily: "Poppins" }}
                             onClick={() =>
@@ -261,6 +332,15 @@ export default function ApplicationsPage() {
                 ))}
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30]}
+            component={"div"}
+            count={paginatiedApplications.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Paper>
     </div>

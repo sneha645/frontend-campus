@@ -376,7 +376,7 @@ export const ApplyForm = ({
         gap: "6px",
       }}
     >
-      {success && (
+      {!success && (
         <Alert severity="success" style={{ position: "relative", top: "0" }}>
           {success}
         </Alert>

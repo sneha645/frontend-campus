@@ -1,65 +1,107 @@
 import styled from "styled-components";
 
-/* Container */
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 800px;
   background-color: white;
-  padding: 20px;
   border-radius: 4px;
   box-shadow: 0 0 0 1px #00000033;
 `;
 
-/* Grid */
+export const FormHeading = styled.h1`
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 100%;
+  color: #000;
+  padding: 20px;
+`;
+
+export const Hrline = styled.hr`
+  color: #ccc;
+`;
+
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  padding: 20px;
 `;
 
-/* Field Wrapper */
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
-/* Label */
-export const Label = styled.label``;
+export const Label = styled.label`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
+  color: #000;
+`;
 
-/* Input */
 export const Input = styled.input`
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+
+  &:focus {
+    outline: none;
+    border-color: #0b75ff;
+  }
+
+  &:hover {
+    border-color: #0b75ff;
+  }
 `;
 
-/* Select */
 export const Select = styled.select`
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+
+    &:focus {
+    outline: none;
+    border-color: #0b75ff;
+  }
+
+  &:hover {
+    border-color: #0b75ff;
+  }
 `;
 
-/* Textarea */
 export const TextArea = styled.textarea`
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
   resize: none;
   height: 100px;
+
+    &:focus {
+    outline: none;
+    border-color: #0b75ff;
+  }
+
+  &:hover {
+    border-color: #0b75ff;
+  }
 `;
 
-/* Button Container */
+export const FieldRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0px 20px;
+`;
+
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   position: relative;
+  padding: 20px;
 `;
 
-/* Buttons */
 export const PrimaryButton = styled.button`
   display: flex;
   align-items: center;
@@ -75,7 +117,7 @@ export const PrimaryButton = styled.button`
 
   &:active {
     transform: scale(0.98);
-  }  
+  }
 `;
 
 export const SecondaryButton = styled.button`
@@ -93,5 +135,5 @@ export const SecondaryButton = styled.button`
 
   &:active {
     transform: scale(0.98);
-  }  
+  }
 `;

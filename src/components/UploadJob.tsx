@@ -13,6 +13,9 @@ import {
   ButtonGroup,
   PrimaryButton,
   SecondaryButton,
+  FormHeading,
+  Hrline,
+  FieldRow,
 } from "./styled";
 import { Alert } from "@mui/material";
 
@@ -90,6 +93,8 @@ export const UploadJob = ({
 
   return (
     <FormContainer>
+      <FormHeading>Upload Job</FormHeading>
+      <Hrline />
       <Grid>
         <Field>
           <Label>Job Title *</Label>
@@ -98,22 +103,6 @@ export const UploadJob = ({
             value={jobData.title}
             onChange={(e) => setJobData({ ...jobData, title: e.target.value })}
           />
-        </Field>
-
-        <Field>
-          <Label>Job Type *</Label>
-          <Select
-            value={jobData.jobType}
-            onChange={(e) =>
-              setJobData({ ...jobData, jobType: e.target.value })
-            }
-          >
-            <option value="">Select job type</option>
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
-            <option value="contract">Contract</option>
-            <option value="internship">Internship</option>
-          </Select>
         </Field>
 
         <Field>
@@ -148,36 +137,56 @@ export const UploadJob = ({
         </Field>
       </Grid>
 
-      <Field>
-        <Label>Responsibilities *</Label>
-        <TextArea
-          placeholder="Enter responsibilities"
-          value={jobData.responsibilities}
-          onChange={(e) =>
-            setJobData({ ...jobData, responsibilities: e.target.value })
-          }
-        />
-      </Field>
+      <FieldRow>
+        <Field>
+          <Label>Job Type *</Label>
+          <Select
+            value={jobData.jobType}
+            onChange={(e) =>
+              setJobData({ ...jobData, jobType: e.target.value })
+            }
+          >
+            <option value="">Select job type</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+          </Select>
+        </Field>
 
-      <Field>
-        <Label>Benefits *</Label>
-        <TextArea
-          placeholder="Enter benefits"
-          value={jobData.benefits}
-          onChange={(e) => setJobData({ ...jobData, benefits: e.target.value })}
-        />
-      </Field>
+        <Field>
+          <Label>Responsibilities *</Label>
+          <TextArea
+            placeholder="Enter responsibilities"
+            value={jobData.responsibilities}
+            onChange={(e) =>
+              setJobData({ ...jobData, responsibilities: e.target.value })
+            }
+          />
+        </Field>
 
-      <Field>
-        <Label>Description *</Label>
-        <TextArea
-          placeholder="Enter description"
-          value={jobData.description}
-          onChange={(e) =>
-            setJobData({ ...jobData, description: e.target.value })
-          }
-        />
-      </Field>
+        <Field>
+          <Label>Benefits *</Label>
+          <TextArea
+            placeholder="Enter benefits"
+            value={jobData.benefits}
+            onChange={(e) =>
+              setJobData({ ...jobData, benefits: e.target.value })
+            }
+          />
+        </Field>
+
+        <Field>
+          <Label>Description *</Label>
+          <TextArea
+            placeholder="Enter description"
+            value={jobData.description}
+            onChange={(e) =>
+              setJobData({ ...jobData, description: e.target.value })
+            }
+          />
+        </Field>
+      </FieldRow>
 
       <ButtonGroup>
         <PrimaryButton onClick={createJob} disabled={loading}>

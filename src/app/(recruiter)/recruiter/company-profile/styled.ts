@@ -6,12 +6,10 @@ export const CompanyProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
 `;
 
 export const CompanyProfileSubContainer = styled.div`
   display: flex;
-  flex-direction: row;
   gap: 20px;
   width: 100%;
 `;
@@ -19,7 +17,7 @@ export const CompanyProfileSubContainer = styled.div`
 export const CompanyProfileForm = styled.div`
   width: 65%;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -35,7 +33,6 @@ export const CompanyProfileHeader = styled.div`
 export const CompanyProfileSubHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
 `;
 
 export const FormHeading = styled.h1`
@@ -88,6 +85,17 @@ export const Input = styled.input`
   border: 1px solid #e5e7eb;
   border-radius: 4px;
   font-size: 14px;
+
+  &::placeholder {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px #007bff;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -97,6 +105,17 @@ export const TextArea = styled.textarea`
   border-radius: 4px;
   font-size: 14px;
   resize: none;
+
+  &::placeholder {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px #007bff;
+  }
 `;
 
 export const LogoInputContainer = styled.div`
@@ -169,7 +188,7 @@ export const ResetButton = styled.button`
 export const CompanyProfile = styled.div`
   width: 35%;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -219,7 +238,8 @@ export const Website = styled.a`
 
 export const Description = styled.p`
   font-size: 14px;
-  color: #666666;
+  color: #000;
+  font-weight: 400;
 `;
 
 export const ProfileInfo = styled.div`
@@ -248,9 +268,8 @@ export const InfoValue = styled.p`
 
 export const NotFound = styled.div`
   width: 35%;
-  height: 500px;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;

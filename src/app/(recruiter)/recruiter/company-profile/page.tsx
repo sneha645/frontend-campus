@@ -351,6 +351,8 @@ export default function CompanyProfilePage() {
 
               <Hrline />
               <ProfileInfo>
+                <Description>{profile?.aboutCompany}</Description>
+
                 <InfoContainer>
                   <InfoLabel>Industry</InfoLabel>
                   <InfoValue>{profile?.industry}</InfoValue>
@@ -367,7 +369,6 @@ export default function CompanyProfilePage() {
                   <InfoLabel>Company Email</InfoLabel>
                   <InfoValue>{profile?.companyEmail}</InfoValue>
                 </InfoContainer>
-                <Description>{profile?.aboutCompany}</Description>
               </ProfileInfo>
             </ProfileHeader>
           </CompanyProfile>

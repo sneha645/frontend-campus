@@ -6,12 +6,13 @@ import axios from "axios";
 import {
   Briefcase,
   Clock8,
+  Code,
   IndianRupee,
   MapPin,
   Plus,
   Search,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Button,
   ButtonContainer,
@@ -19,7 +20,6 @@ import {
   JobDetailsContainer,
   JobDetailsSubContainer,
   JobPostingsContainer,
-  JobSubContainer,
   JobText,
   JobTitle,
   JobTitleContainer,
@@ -37,6 +37,9 @@ import {
   List,
   FooterText,
   CompanyName,
+  JobContainer,
+  JobSubContainer,
+  JobLogoContainer,
 } from "./styled";
 import {
   HeaderSubContainer,
@@ -97,6 +100,12 @@ export default function JobPostingsPage() {
     }
   };
 
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((r) =>
+      r.title.toLowerCase().includes(searchJob.toLowerCase()),
+    );
+  }, [jobs, searchJob]);
+
   useEffect(() => {
     getCompanyProfile();
     getMyJobs();
@@ -129,47 +138,63 @@ export default function JobPostingsPage() {
           </Box>
         </HeaderSubContainer>
       </HeadingContainer>
-      {jobs?.map((job) => (
-        <JobCard key={job.job_id}>
-          <JobSubContainer>
-            <JobTitleContainer>
-              <JobTitle>{job.title}</JobTitle>
-              <Status $status={job.status}>{job.status}</Status>
-            </JobTitleContainer>
-            <JobDetailsContainer>
-              <JobDetailsSubContainer>
-                <Briefcase size={16} color="#666" />
-                <JobText>{job.jobType}</JobText>
-              </JobDetailsSubContainer>
-              <JobDetailsSubContainer>
-                <MapPin size={16} color="#666" />
-                <JobText>{job.company.location}</JobText>
-              </JobDetailsSubContainer>
-              <JobDetailsSubContainer>
-                <Clock8 size={16} color="#666" />
-                <JobText>
-                  Posted{" "}
-                  {job.createdAt.split("T")[0].split("-").reverse().join("-")}
-                </JobText>
-              </JobDetailsSubContainer>
-              <JobDetailsSubContainer>
-                <IndianRupee size={16} color="#666" />
-                <JobText>{job.salary}</JobText>
-              </JobDetailsSubContainer>
-            </JobDetailsContainer>
-          </JobSubContainer>
-          <ButtonContainer>
-            <ViewJobButton
-              onClick={() => {
-                setOpenJobViewModal(true);
-                setSelectedJobId(job.job_id);
-              }}
-            >
-              View Job
-            </ViewJobButton>
-          </ButtonContainer>
-        </JobCard>
-      ))}
+      {filteredJobs.length < 1 ? (
+        <TableSubHeading>No jobs found</TableSubHeading>
+      ) : (
+        filteredJobs?.map((job) => (
+          <JobCard key={job.job_id}>
+            <JobContainer>
+              <JobSubContainer>
+                <JobLogoContainer>
+                  <Code size={36} color="#000" />
+                </JobLogoContainer>
+              </JobSubContainer>
+              <JobSubContainer>
+                <JobTitleContainer>
+                  <JobTitle>{job.title}</JobTitle>
+                  <Status $status={job.status}>{job.status}</Status>
+                </JobTitleContainer>
+                <JobDetailsContainer>
+                  <JobDetailsSubContainer>
+                    <Briefcase size={16} color="#666" />
+                    <JobText>{job.jobType}</JobText>
+                  </JobDetailsSubContainer>
+                  <JobDetailsSubContainer>
+                    <MapPin size={16} color="#666" />
+                    <JobText>{job.company.location}</JobText>
+                  </JobDetailsSubContainer>
+                  <JobDetailsSubContainer>
+                    <Clock8 size={16} color="#666" />
+                    <JobText>
+                      Posted{" "}
+                      {job.createdAt
+                        .split("T")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                    </JobText>
+                  </JobDetailsSubContainer>
+                  <JobDetailsSubContainer>
+                    <IndianRupee size={16} color="#666" />
+                    <JobText>{job.salary}</JobText>
+                  </JobDetailsSubContainer>
+                </JobDetailsContainer>
+              </JobSubContainer>
+            </JobContainer>
+            <ButtonContainer>
+              <ViewJobButton
+                onClick={() => {
+                  setOpenJobViewModal(true);
+                  setSelectedJobId(job.job_id);
+                }}
+              >
+                View Job
+              </ViewJobButton>
+            </ButtonContainer>
+          </JobCard>
+        ))
+      )}
+
       <FormModal
         open={openJobModal}
         onClose={() => setOpenJobModal(false)}
@@ -245,17 +270,6 @@ export default function JobPostingsPage() {
           </FooterText>
         </JobCardModal>
       </FormModal>
-      {/* <FormModal
-        open={openJobModal}
-        onClose={() => setOpenJobModal(false)}
-        style={{ display: "flex", alignItems: "center", justifySelf: "center" }}
-      >
-        <UploadJob
-          setOpenJobModal={setOpenJobModal}
-          companyId={profile?.company_id}
-          getMyJobs={getMyJobs}
-        />
-      </FormModal> */}
     </JobPostingsContainer>
   );
 }
