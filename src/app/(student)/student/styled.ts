@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
 `;
 
 export const Header = styled.div`
@@ -26,10 +26,13 @@ export const LeftHeader = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-  width: fit-content;
+  height: 78px;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 14px;
+  border-bottom: 1px solid #f0f0f0;
 `;
 
 export const IconContainer = styled.div`
@@ -48,14 +51,16 @@ export const LogoTitle = styled.h1`
 `;
 
 export const RightHeader = styled.div`
-  height: 100%;
-  width: 84%;
+  width: 100%;
+  height: 70px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px;
+  padding-left: 14px;
   background-color: #f7f8fa;
   border-bottom: 1px solid #f0f0f0;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
 `;
 
 export const PageTitle = styled.h1`
@@ -77,15 +82,14 @@ export const SideBar = styled.div`
   flex-direction: column;
   background-color: #fff;
   border-right: 1px solid #f0f0f0;
-  padding: 14px;
-  position: relative;
 `;
 
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 40px;
+  padding: 14px;
+  height: 100%;
 `;
 
 export const MenuHeading = styled.h1`
@@ -117,9 +121,11 @@ export const MainBar = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-color: #f7f8fa;
+  position: relative;
+  z-index: 1;
+  scrollbar-width: none;
+  overflow-y: auto;
 `;
 
 export const LogoutContainer = styled.div`
@@ -140,4 +146,13 @@ export const LogoutBtn = styled.button`
   background-color: #e11d48;
   font-size: 16px;
   border-radius: 4px;
+`;
+
+export const ContentContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  margin-top: 70px;
+  margin-bottom: 14px;
+  background-color: #f7f8fa;
 `;

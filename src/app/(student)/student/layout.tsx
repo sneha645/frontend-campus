@@ -5,6 +5,7 @@ import { redirect, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import {
   Container,
+  ContentContainer,
   Header,
   IconContainer,
   LeftHeader,
@@ -92,48 +93,85 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   };
 
   return (
+    // <Container>
+    //   <Header>
+    //     <LeftHeader>
+    //       <LogoContainer>
+    //         <IconContainer>
+    //           <SchoolOutlinedIcon
+    //             style={{ color: "#ffff", fontSize: "20px" }}
+    //           />
+    //         </IconContainer>
+    //         <LogoTitle>CampusConnect</LogoTitle>
+    //       </LogoContainer>
+    //     </LeftHeader>
+    //     <RightHeader>
+    //       <PageTitle>{activeMenu}</PageTitle>
+    //     </RightHeader>
+    //   </Header>
+    //   <Main>
+    //     <SideBar>
+    //       <Menu>
+    //         <Box>
+    //           {StudentMenuItems.map((item, index) => (
+    //             <MenuBtn
+    //               $active={activeMenu === item.label}
+    //               key={index}
+    //               onClick={() => handleMenuClick(item.label, item.path)}
+    //             >
+    //               <item.icon size={20} />
+    //               {item.label}
+    //             </MenuBtn>
+    //           ))}
+    //         </Box>
+    //       </Menu>
+    //       <AvatarContainer>
+    //         <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
+    //         <AvatarInfoContainer>
+    //           <AvatarName>{user.name}</AvatarName>
+    //           <AvatarEmail>{user.email}</AvatarEmail>
+    //         </AvatarInfoContainer>
+    //       </AvatarContainer>
+    //     </SideBar>
+    //     <MainBar>{children}</MainBar>
+    //   </Main>
+    // </Container>
     <Container>
-      <Header>
-        <LeftHeader>
-          <LogoContainer>
-            <IconContainer>
-              <SchoolOutlinedIcon
-                style={{ color: "#ffff", fontSize: "20px" }}
-              />
-            </IconContainer>
-            <LogoTitle>CampusConnect</LogoTitle>
-          </LogoContainer>
-        </LeftHeader>
+      <SideBar>
+        <LogoContainer>
+          <IconContainer>
+            <SchoolOutlinedIcon style={{ color: "#ffff", fontSize: "20px" }} />
+          </IconContainer>
+          <LogoTitle>CampusConnect</LogoTitle>
+        </LogoContainer>
+        <Menu>
+          {StudentMenuItems.map((item, index) => (
+            <MenuBtn
+              $active={activeMenu === item.label}
+              key={index}
+              onClick={() => handleMenuClick(item.label, item.path)}
+            >
+              <item.icon size={20} />
+              {item.label}
+            </MenuBtn>
+          ))}
+        </Menu>
+        <AvatarContainer>
+          <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
+          <AvatarInfoContainer>
+            <AvatarName>{user.name}</AvatarName>
+            <AvatarEmail>{user.email}</AvatarEmail>
+          </AvatarInfoContainer>
+        </AvatarContainer>
+      </SideBar>
+      <MainBar>
         <RightHeader>
           <PageTitle>{activeMenu}</PageTitle>
         </RightHeader>
-      </Header>
-      <Main>
-        <SideBar>
-          <Menu>
-            <Box>
-              {StudentMenuItems.map((item, index) => (
-                <MenuBtn
-                  $active={activeMenu === item.label}
-                  key={index}
-                  onClick={() => handleMenuClick(item.label, item.path)}
-                >
-                  <item.icon size={20} />
-                  {item.label}
-                </MenuBtn>
-              ))}
-            </Box>
-          </Menu>
-          <AvatarContainer>
-            <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
-            <AvatarInfoContainer>
-              <AvatarName>{user.name}</AvatarName>
-              <AvatarEmail>{user.email}</AvatarEmail>
-            </AvatarInfoContainer>
-          </AvatarContainer>
-        </SideBar>
-        <MainBar>{children}</MainBar>
-      </Main>
+        <ContentContainer>{children}</ContentContainer>
+      </MainBar>
     </Container>
   );
 }
+
+

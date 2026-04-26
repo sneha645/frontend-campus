@@ -58,7 +58,7 @@ export default function StudentDashboardPage() {
   const { user } = useAuth();
   return (
     <StudentDashboardContainer>
-      {/* <HeaderContainer>
+      <HeaderContainer>
         <HeaderContent>
           <Heading>Welcome back, {user?.name}!</Heading>
           <HeaderSubContent>
@@ -214,7 +214,7 @@ export default function StudentDashboardPage() {
             </Table>
           </TableContainer>
         </PlatformOverview>
-      </ActivityContainer> */}
+      </ActivityContainer>
     </StudentDashboardContainer>
   );
 }

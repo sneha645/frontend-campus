@@ -141,10 +141,6 @@ export const AvatarContainer = styled.div`
   padding: 16px 30px;
   background-color: #fff;
   border-top: 1px solid #f0f0f0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 `;
 
 export const AvatarImage = styled(Avatar)(
