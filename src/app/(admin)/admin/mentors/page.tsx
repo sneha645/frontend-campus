@@ -34,11 +34,10 @@ import { useRouter } from "next/navigation";
 export default function MentorsPage() {
   const router = useRouter();
   const [page, setPage] = useState(0);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchMentor, setSearchMentor] = useState("");
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
-
   const [mentors, setMentors] = useState<User[]>([]);
 
   const fetchMentor = async () => {
@@ -150,7 +149,7 @@ export default function MentorsPage() {
     <MentorContainer>
       {success && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="success"
         >
           {success}
@@ -158,7 +157,7 @@ export default function MentorsPage() {
       )}
       {error && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="error"
         >
           {error}
@@ -222,7 +221,7 @@ export default function MentorsPage() {
               ) : (
                 paginatiedMentors?.map((mentor) => (
                   <TableRow key={mentor.email}>
-                    <TableCell style={{ fontFamily: "Poppins" }}>
+                    <TableCell style={{ fontFamily: "Poppins", fontWeight: '600' }}>
                       {mentor.name}
                     </TableCell>
 

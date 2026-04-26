@@ -6,7 +6,4 @@ export const StudentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;

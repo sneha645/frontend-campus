@@ -6,8 +6,6 @@ export const MentorContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
 `;
 
 export const ProfileHeader = styled.div`
@@ -148,11 +146,17 @@ export const StatusBadge = styled.div<{ status: string }>`
   font-weight: 600;
   width: fit-content;
   text-transform: capitalize;
-  
-  background-color: ${props => 
-    props.status === 'approved' ? '#def2e6' : 
-    props.status === 'rejected' ? '#fbdfe5' : '#fdefd8'};
-  color: ${props => 
-    props.status === 'approved' ? '#16a34a' : 
-    props.status === 'rejected' ? '#e11d48' : '#f59e0b'};
+
+  background-color: ${(props) =>
+    props.status === "approved"
+      ? "#def2e6"
+      : props.status === "rejected"
+        ? "#fbdfe5"
+        : "#fdefd8"};
+  color: ${(props) =>
+    props.status === "approved"
+      ? "#16a34a"
+      : props.status === "rejected"
+        ? "#e11d48"
+        : "#f59e0b"};
 `;

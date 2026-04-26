@@ -9,16 +9,13 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Button,
   Box,
   TablePagination,
   Alert,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Recruiter } from "@/types/type";
 import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
-import { Dot, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   ApproveButton,
   HeaderSubContainer,
@@ -37,13 +34,11 @@ import { useRouter } from "next/navigation";
 export default function RecruiterPage() {
   const router = useRouter();
   const [page, setPage] = useState(0);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchRecruiter, setSearchRecruiter] = useState("");
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
-
   const [recruiters, setRecruiters] = useState<User[]>([]);
-  console.log("recruiters", recruiters);
 
   const fetchRecruiters = async () => {
     const token = localStorage.getItem("token");
@@ -56,7 +51,7 @@ export default function RecruiterPage() {
           },
         },
       );
-      console.log(response);
+
       const data = await response.data;
       setRecruiters(data);
     } catch (error) {
@@ -156,7 +151,7 @@ export default function RecruiterPage() {
     <RecruiterContainer>
       {success && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="success"
         >
           {success}
@@ -164,7 +159,7 @@ export default function RecruiterPage() {
       )}
       {error && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="error"
         >
           {error}
@@ -227,7 +222,7 @@ export default function RecruiterPage() {
               ) : (
                 paginatiedRecruiter?.map((recruiter) => (
                   <TableRow key={recruiter.email}>
-                    <TableCell style={{ fontFamily: "Poppins" }}>
+                    <TableCell style={{ fontFamily: "Poppins", fontWeight: '600' }}>
                       {recruiter.name}
                     </TableCell>
 

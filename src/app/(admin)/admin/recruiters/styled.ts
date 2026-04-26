@@ -6,9 +6,7 @@ export const RecruiterContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
+
 `;
 
 export const PaperContainer = styled.div`
@@ -23,7 +21,7 @@ export const HeadingContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
 `;
 
 export const TableHeading = styled.h1`

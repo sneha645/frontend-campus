@@ -7,9 +7,6 @@ export const LogoutContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;
 
 export const LogoutCard = styled(Box)`

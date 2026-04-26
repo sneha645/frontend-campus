@@ -1,6 +1,6 @@
 "use client";
 
-import { recruiterTableColumns, studentTableColumns, User } from "@/types/type";
+import { studentTableColumns, User } from "@/types/type";
 import {
   Paper,
   TableContainer,
@@ -15,10 +15,8 @@ import {
   Alert,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Recruiter } from "@/types/type";
 import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
-import { Dot, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   ApproveButton,
   HeaderSubContainer,
@@ -37,11 +35,10 @@ import { useRouter } from "next/navigation";
 export default function StudentsPage() {
   const router = useRouter();
   const [page, setPage] = useState(0);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchStudent, setSearchStudent] = useState("");
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
-
   const [students, setStudents] = useState<User[]>([]);
 
   const fetchStudents = async () => {
@@ -152,7 +149,7 @@ export default function StudentsPage() {
     <StudentContainer>
       {success && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="success"
         >
           {success}
@@ -160,7 +157,7 @@ export default function StudentsPage() {
       )}
       {error && (
         <Alert
-          style={{ position: "absolute", top: "10px", right: "100px" }}
+          style={{ position: "absolute", top: "10px", right: "100px", zIndex: '99999' }}
           severity="error"
         >
           {error}
@@ -223,7 +220,7 @@ export default function StudentsPage() {
               ) : (
                 paginatiedStudents?.map((student) => (
                   <TableRow key={student.email}>
-                    <TableCell style={{ fontFamily: "Poppins" }}>
+                    <TableCell style={{ fontFamily: "Poppins", fontWeight: '600' }}>
                       {student.name}
                     </TableCell>
 
