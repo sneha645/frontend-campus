@@ -12,6 +12,7 @@ import {
   ViewProfile,
 } from "@/app/(admin)/admin/recruiters/styled";
 import {
+  Alert,
   Box,
   Paper,
   Table,
@@ -69,7 +70,6 @@ import {
 } from "@/app/(mentor)/mentor/projects/styled";
 import Link from "next/link";
 
-
 export default function AssignmentsPage() {
   const { user } = useAuth();
   const [page, setPage] = useState(0);
@@ -87,6 +87,8 @@ export default function AssignmentsPage() {
     useState(false);
   const [selectedAssignment, setSelectedAssignment] =
     useState<Assignment | null>(null);
+
+  const [error, setError] = useState("");
 
   const fetchAssignments = async () => {
     try {
@@ -123,7 +125,18 @@ export default function AssignmentsPage() {
       setAssignmentSubmissionModal(true);
       setSubmission(res.data);
     } catch (error) {
-      console.log(error);
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error resetting password";
+      const message = Array.isArray(backendMessage)
+        ? backendMessage.join(", ")
+        : backendMessage;
+      console.log(message);
+      setError(message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
 
@@ -158,6 +171,20 @@ export default function AssignmentsPage() {
 
   return (
     <AssignmentContainer>
+      {error && (
+        <Alert
+          severity="error"
+          sx={{
+            mb: 2,
+            position: "absolute",
+            right: "20px",
+            top: "10px",
+            zIndex: 1000,
+          }}
+        >
+          {error}
+        </Alert>
+      )}
       <Paper
         style={{
           width: "100%",
@@ -423,8 +450,21 @@ export const UploadAssignmentForm = ({
   setUploadAssignmentModal: (open: boolean) => void;
 }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [validation, setValidation] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleUploadAssignment = async () => {
+    setLoading(true);
+    if (!file) {
+      setValidation("Please upload an assignment");
+      setTimeout(() => {
+        setValidation("");
+      }, 2000);
+      setLoading(false);
+      return;
+    }
     const formDataToSend = new FormData();
 
     if (file) {
@@ -445,14 +485,62 @@ export const UploadAssignmentForm = ({
       );
 
       fetchAssignments();
-      setFile(null);
+      setSuccess("Assignment uploaded successfully");
+      setLoading(false);
       setUploadAssignmentModal(false);
+      setFile(null);
+      setTimeout(() => {
+        setSuccess("");
+      }, 2000);
     } catch (error) {
-      console.log(error);
+      setError("Error uploading assignment");
+      setLoading(false);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   };
   return (
     <UploadAssignmentContainer>
+      {validation && (
+        <Alert
+          severity="warning"
+          sx={{
+            position: "absolute",
+            top: "20px",
+            zIndex: 1000,
+          }}
+        >
+          {validation}
+        </Alert>
+      )}
+
+      {success && (
+        <Alert
+          severity="success"
+          sx={{
+            position: "absolute",
+            top: "20px",
+            zIndex: 1000,
+          }}
+        >
+          {success}
+        </Alert>
+      )}
+
+      {error && (
+        <Alert
+          severity="error"
+          sx={{
+            position: "absolute",
+            top: "20px",
+            zIndex: 1000,
+          }}
+        >
+          {error}
+        </Alert>
+      )}
+
       <UploadAssignmentHeader>
         <UploadAssignmentTitle>Upload Assignment</UploadAssignmentTitle>
       </UploadAssignmentHeader>

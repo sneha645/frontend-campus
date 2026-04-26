@@ -7,7 +7,6 @@ export const StudentProjectsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -55,7 +54,7 @@ export const UploadButton = styled.button`
 export const ProjectGrid = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 `;
 

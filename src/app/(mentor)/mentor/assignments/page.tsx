@@ -282,7 +282,7 @@ export default function AssignmentsPage() {
               </Select>
             </InputContainer>
             <InputContainer>
-              <InputLabel htmlFor="">Submission Date</InputLabel>
+              <InputLabel htmlFor="">Deadline</InputLabel>
               <Input
                 type="date"
                 value={assignmentData.assignment_deadline}

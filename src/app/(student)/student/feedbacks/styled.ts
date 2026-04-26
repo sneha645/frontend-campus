@@ -6,9 +6,6 @@ export const StudentFeedbacksContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;
 
 export const FeedbacksContainer = styled.div`
@@ -27,7 +24,7 @@ export const FeedbackCard = styled.div`
   align-items: center;
   gap: 20px;
   position: relative;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #e2e8f0;
 `;
 
 export const ImageContainer = styled.div`
@@ -64,14 +61,16 @@ export const FeedbackTitle = styled.h1`
   margin: 0;
 `;
 
-export const FeedbackStatus = styled.div<{$status:string}>(({$status = "pending"}) => `
+export const FeedbackStatus = styled.div<{ $status: string }>(
+  ({ $status = "pending" }) => `
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 999px;
   background-color: ${$status === "approved" ? "#def2e6" : $status === "pending" ? "#fdefd8" : "#fbdfe5"};
   color: ${$status === "approved" ? "#16a34a" : $status === "pending" ? "#f59e0b" : "#e11d48"};
   font-weight: 400;
-`);
+`,
+);
 
 export const FeedbackDescription = styled.p`
   font-size: 14px;
@@ -87,21 +86,23 @@ export const TechnologyContainer = styled.div`
   gap: 10px;
 `;
 
-export const Technology = styled.div<{$backgroundColor:string}>(({$backgroundColor}) => `
+export const Technology = styled.div<{ $backgroundColor: string }>(
+  ({ $backgroundColor }) => `
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 999px;
   background-color: ${$backgroundColor};
   color: #111827;
   font-weight: 400;
-`);
+`,
+);
 
 export const FeedbackSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   height: 120px;
-  width: 300px
+  width: 300px;
 `;
 
 export const Feedback = styled.p`
@@ -118,3 +119,20 @@ export const Feedback = styled.p`
   align-items: center;
   justify-content: center;
 `;
+
+export const Tab = styled.button<{ $active: boolean }>(
+  ({ $active }) => `
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background-color: ${$active ? "#0b75ff" : "transparent"};
+  color: ${$active ? "#fff" : "#0b75ff"};
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #0b75ff;
+  &:hover {
+    background-color: ${$active ? "#0b75ff" : "#fff"};
+  }
+`,
+);

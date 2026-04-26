@@ -48,7 +48,6 @@ import {
 export default function InternshipPage() {
   const [internships, setInternships] = useState<Internship[]>([]);
   const [searchInternship, setSearchInternship] = useState("");
-
   const [openInternshipModal, setOpenInternshipModal] = useState(false);
 
   const fetchInternships = async () => {
@@ -116,8 +115,8 @@ export default function InternshipPage() {
       )}
 
       <ProjectGrid>
-        {internships.map((item, index) => (
-          <ProjectCard key={`internship-${index}`}>
+        {filteredInternships.map((item) => (
+          <ProjectCard key={item.internship_id}>
             <ProjectImageContainer>
               <ProjectImage
                 src={`http://localhost:3000${item.certificateUrl}`}

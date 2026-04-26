@@ -6,9 +6,6 @@ export const ProjectContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;
 
 export const ProjectModalContainer = styled.div`

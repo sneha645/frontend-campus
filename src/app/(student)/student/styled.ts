@@ -155,4 +155,10 @@ export const ContentContainer = styled.div`
   margin-top: 70px;
   margin-bottom: 14px;
   background-color: #f7f8fa;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
 `;

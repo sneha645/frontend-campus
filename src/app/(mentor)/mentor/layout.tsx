@@ -3,23 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { redirect, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import {
-  Container,
-  Header,
-  IconContainer,
-  LeftHeader,
-  LogoContainer,
-  LogoTitle,
-  Main,
-  MainBar,
-  Menu,
-  MenuBtn,
-  PageTitle,
-  RightHeader,
-  SideBar,
-} from "./styled";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import { Box } from "@mui/material";
 import {
   BookOpenText,
   FolderOpen,
@@ -33,6 +17,19 @@ import {
   AvatarInfoContainer,
   AvatarName,
 } from "@/app/(admin)/admin/styled";
+import {
+  Container,
+  ContentContainer,
+  IconContainer,
+  LogoContainer,
+  LogoTitle,
+  MainBar,
+  Menu,
+  MenuBtn,
+  PageTitle,
+  RightHeader,
+  SideBar,
+} from "@/app/(student)/student/styled";
 
 const StudentMenuItems = [
   {
@@ -62,7 +59,7 @@ const StudentMenuItems = [
   },
 ];
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function MentorLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
@@ -84,47 +81,39 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <Container>
-      <Header>
-        <LeftHeader>
-          <LogoContainer>
-            <IconContainer>
-              <SchoolOutlinedIcon
-                style={{ color: "#ffff", fontSize: "20px" }}
-              />
-            </IconContainer>
-            <LogoTitle>CampusConnect</LogoTitle>
-          </LogoContainer>
-        </LeftHeader>
+      <SideBar>
+        <LogoContainer>
+          <IconContainer>
+            <SchoolOutlinedIcon style={{ color: "#ffff", fontSize: "20px" }} />
+          </IconContainer>
+          <LogoTitle>CampusConnect</LogoTitle>
+        </LogoContainer>
+        <Menu>
+          {StudentMenuItems.map((item, index) => (
+            <MenuBtn
+              $active={activeMenu === item.label}
+              key={index}
+              onClick={() => handleMenuClick(item.label, item.path)}
+            >
+              <item.icon size={20} />
+              {item.label}
+            </MenuBtn>
+          ))}
+        </Menu>
+        <AvatarContainer>
+          <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
+          <AvatarInfoContainer>
+            <AvatarName>{user.name}</AvatarName>
+            <AvatarEmail>{user.email}</AvatarEmail>
+          </AvatarInfoContainer>
+        </AvatarContainer>
+      </SideBar>
+      <MainBar>
         <RightHeader>
           <PageTitle>{activeMenu}</PageTitle>
         </RightHeader>
-      </Header>
-      <Main>
-        <SideBar>
-          <Menu>
-            <Box>
-              {StudentMenuItems.map((item, index) => (
-                <MenuBtn
-                  $active={activeMenu === item.label}
-                  key={index}
-                  onClick={() => handleMenuClick(item.label, item.path)}
-                >
-                  <item.icon size={20} />
-                  {item.label}
-                </MenuBtn>
-              ))}
-            </Box>
-          </Menu>
-          <AvatarContainer>
-            <AvatarImage>{user.name.charAt(0).toUpperCase()}</AvatarImage>
-            <AvatarInfoContainer>
-              <AvatarName>{user.name}</AvatarName>
-              <AvatarEmail>{user.email}</AvatarEmail>
-            </AvatarInfoContainer>
-          </AvatarContainer>
-        </SideBar>
-        <MainBar>{children}</MainBar>
-      </Main>
+        <ContentContainer>{children}</ContentContainer>
+      </MainBar>
     </Container>
   );
 }

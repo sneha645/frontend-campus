@@ -6,14 +6,11 @@ export const AssignmentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-  overflow: auto;
-  overflow-y: hidden;
 `;
 
 export const PublishButton = styled.button`
   background-color: #007bff;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 14px;
   color: #fff;
   font-size: 16px;
@@ -102,7 +99,7 @@ export const TextArea = styled.textarea`
 
 export const Select = styled.select`
   outline: none;
-  border-radius: 4px;
+  border-radius: 4px !important;
   border: 1px solid #e5e7eb;
   padding: 10px;
   font-size: 14px;

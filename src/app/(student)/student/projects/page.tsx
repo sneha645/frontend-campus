@@ -49,7 +49,6 @@ import {
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchProject, setSearchProject] = useState("");
-
   const [openProjectModal, setOpenProjectModal] = useState(false);
 
   const fetchProjects = async () => {
@@ -117,7 +116,7 @@ export default function ProjectsPage() {
       )}
 
       <ProjectGrid>
-        {filteredProjects?.map((project, index) => (
+        {filteredProjects?.map((project) => (
           <ProjectCard key={project.project_id}>
             <ProjectImageContainer>
               <ProjectImage src={`http://localhost:3000${project.imageUrl}`} />
